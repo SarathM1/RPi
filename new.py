@@ -9,20 +9,29 @@ import threading
 
 
 class Sim900(object):
+    
     def __init__ (self,port,baud=9600,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stop=serial.STOPBITS_ONE, timeout=1):
         self.serialPort = serial.Serial(port,baud,bytesize,parity,stop,timeout)
-
+        self.check = 'AT+CIPSTART="UDP","52.74.91.12","50001"'
     def sendAtCommand(self,command):
         self.serialPort.write(bytes(command+'\r\n',encoding='ascii'))
+        #if self.check in str(bytes(str(command),'UTF-8')):
         self.status =  self.readCommandResponse()
+        #else:
+        #self.status = 'dummy Ok'
+        #time.sleep(2)
+        
         return self.status
 
     def readCommandResponse(self):
         time.sleep(0.25)
+
         while True:
             try:
 
                 msg = self.serialPort.read(100).decode('ascii').strip()
+                print ('In functn,msg =',msg)
+                return msg
             except Exception as e:
                 msg ='ERROR'
                 print('msg:'+str(e))
@@ -30,8 +39,8 @@ class Sim900(object):
                 #print (type(self.serialPort.read(100)))
                 #print('msg:'+str(e))
                 #break
-            if msg:
-                return msg
+            """if msg:
+                return msg"""
 
     def __del__(self):
         self.serialPort.close()
@@ -125,75 +134,62 @@ if __name__ == '__main__':
                 instrument.mode = minimalmodbus.MODE_ASCII
             except Exception as e:
                 print (e)"""
-            try:
-                modem = Sim900('/dev/ttyS0')
-                try:
-                    modem.sendAtCommand('AT')
-                    print (modem.status)
-                except Exception as e:
-                    print ('at:'+str(e))
-                try:
-                    modem.sendAtCommand('AT+CREG?')
-                    print (modem.status)
-                except Exception as e:
-                    print ('at+creg?:'+str(e))
-                try:
-       
-                    modem.sendAtCommand('AT+CGATT=1')
-                    print (modem.status)
-                except Exception as e:
-                    print ('at+cgatt=1:'+str(e))    
-                modem.sendAtCommand('AT+CSTT="www"')
-                print (modem.status)
-                modem.sendAtCommand('AT+CIICR')
-                print (modem.status)
-                modem.sendAtCommand('AT+CIFSR')
-                print (modem.status)
-                modem.sendAtCommand('AT+CCLK')
-                print (modem.status)
+            
+            modem = Sim900('/dev/ttyS0')
+        
                 
-            except Exception as e:
-                print('whole:'+str(e))
-            level='1'
+            
+            level='0'
 
-            e = 'ERROR'
+            
             device = 'DGD001'
             while True:
-                lock.clear()
-                currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.gmtime())
-                level=30
-                """packet = device + ';' + str(level) + ';' + str(currentTime)+'\x1A'
-                                                                print ('gmtime: ' + currentTime)"""
-
-                
-                modem.sendAtCommand('AT+CIPSTART="UDP","52.74.91.12","50001"')
-                print (modem.status)
-
-                if e in str(bytes(str(modem.status),'UTF-8')) :
-                    print ('Error here')
-                    raise serial.SerialException
-
-                modem.sendAtCommand('AT+CIPSEND')
-                
-                """try:
-                    #level = instrument.read_register(4105)
+                try:
+                    e = 'ERROR'
+                    lock.clear()
+                    #currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.gmtime())
+                    #level=30
+                    level = str(int(level)+1)                                           # level should be read here
+                    currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                    packet = device + ';' + str(level) + ';' + str(currentTime)+'\x1A'
+                    print ('localtime: ' + currentTime)
                     
-                except Exception as e:
-                    print (e)"""
-                #level='2'
-                
-                currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.gmtime())
-                packet = device + ';' + str(level) + ';' + str(currentTime)+'\x1A'
-                print ('gmtime: ' + currentTime)
-                modem.sendAtCommand(packet)
-                print (modem.status)
-                modem.sendAtCommand('AT+CIPCLOSE')
-                #time.sleep(1)
-                print(packet)
-                print('----------------------------------------------------')
-                lock.set()
-                time.sleep(5)
-                level = str(int(level)+1)
+
+                    
+                    modem.sendAtCommand('AT+CIPSTART="UDP","52.74.91.12","50001"')
+                    print (modem.status)
+
+                    if e in str(bytes(str(modem.status),'UTF-8')) :
+                        print ('Error here')
+                        raise serial.SerialException
+
+                    modem.sendAtCommand('AT+CIPSEND')
+                    
+                    """try:
+                        #level = instrument.read_register(4105)
+                        
+                    except Exception as e:
+                        print (e)"""
+                    #level='2'
+                    
+                    #currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                    #packet = device + ';' + str(level) + ';' + str(currentTime)+'\x1A'
+                    #print ('localtime: ' + currentTime)
+                    modem.sendAtCommand(packet)
+                    print (modem.status)
+                    modem.sendAtCommand('AT+CIPCLOSE')
+                    #time.sleep(1)
+                    print(packet)
+                    print('----------------------------------------------------')
+                    lock.set()
+                    time.sleep(5)
+                except serial.SerialException as e:
+                    print (e)
+                    print (device,str(level),str(currentTime))
+                    c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
+                    conn2.commit()
+                    print('\nProgram aborted because there is error in opening the serial port.\n' )
+                    continue
 
 
         except serial.SerialException as e:
