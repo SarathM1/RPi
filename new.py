@@ -12,7 +12,7 @@ class Sim900(object):
     
     def __init__ (self,port,baud=9600,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stop=serial.STOPBITS_ONE, timeout=1):
         self.serialPort = serial.Serial(port,baud,bytesize,parity,stop,timeout)
-        self.check = 'AT+CIPSTART="UDP","52.74.91.12","50001"'
+        #self.check = 'AT+CIPSTART="UDP","52.74.91.12","50001"'
     def sendAtCommand(self,command):
         self.serialPort.write(bytes(command+'\r\n',encoding='ascii'))
         #if self.check in str(bytes(str(command),'UTF-8')):
