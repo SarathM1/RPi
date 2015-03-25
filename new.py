@@ -41,7 +41,7 @@ class Sim900(object):
 		try:
 
 			msg = self.serialPort.read(100).decode('ascii').strip()
-			#print ('In functn,msg =',msg)
+			print ('In functn,msg =',msg,' type = ',type(msg))
 			return msg
 		except Exception as e:
 			msg ='ERROR'
@@ -73,10 +73,11 @@ class workerThread(threading.Thread):
 			for item in data:
 				try:
 					modem = Sim900('/dev/ttyS0')
-					modem.sendAtCommand('AT+CIPSTART="UDP","52.74.91.12","50002"')
-					#print (modem.status)
-					if 'ERROR' in str(bytes(str(modem.status),'UTF-8')):
-						print ('Error here')
+					modem.sendAtCommand('AT+CIPSTART="UDP","52.74.32.242","50002"')
+					#52.74.32.242
+					print ('Thread CIPStatus:'+modem.status)
+					if   '' in str(bytes(str(modem.status),'UTF-8')) :
+						#print ('Error here')
 						raise serial.SerialException
 					packet = str(item[0]) + ';' + str(item[1]) + ';' + str(item[2]) +'\x1A'
 					print ('Thread: '+packet )
@@ -142,7 +143,7 @@ if __name__ == '__main__':
 		level='0'
 
 		
-		device = 'DGD001'
+		device = 'live'
 		while True:
 			try:
 				e = 'ERROR'
@@ -152,14 +153,15 @@ if __name__ == '__main__':
 				level = str(int(level)+1)                                           # level should be read here
 				currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
 				packet = device + ';' + str(level) + ';' + str(currentTime)+'\x1A'
-				print ('localtime: ' + currentTime)
+				#print ('localtime: ' + currentTime)
 				
 
 				
-				modem.sendAtCommand('AT+CIPSTART="UDP","52.74.91.12","50001"')
-				#print (modem.status)
+				modem.sendAtCommand('AT+CIPSTART="UDP","52.74.32.242","50001"')
+				#52.74.32.242
+				print (modem.status)
 
-				if e in str(bytes(str(modem.status),'UTF-8')) :
+				if 'ERROR' in str(bytes(str(modem.status),'UTF-8'))  or str(bytes(str(modem.status),'UTF-8')) =='':
 					#print ('Error here')
 					raise serial.SerialException
 
@@ -186,7 +188,7 @@ if __name__ == '__main__':
 			except serial.SerialException as e:
 				#print (e)
 				print (device,str(level),str(currentTime))
-				c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
+				c.execute("INSERT INTO table1 values(?,?,?)",( 'backup',str(level),str(currentTime) ))
 				conn2.commit()
 				print('\nMain Program aborted:' )
 				PrintException()
