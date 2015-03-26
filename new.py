@@ -23,7 +23,10 @@ class Sim900(object):
 	
 	def __init__ (self,port,baud=9600,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stop=serial.STOPBITS_ONE, timeout=1):
 		self.serialPort = serial.Serial(port,baud,bytesize,parity,stop,timeout)
-	def sendAtCommand(self,code,command):
+	def sendAtCommand(self,code,command,event=0):
+		if event!=0:								# To avoid at commands being send from thread when live() is active
+			while(event.is_set()==False):
+				pass
 		self.serialPort.write(bytes(command+'\r\n',encoding='ascii'))
 		self.status =  self.readCommandResponse(code,command)
 		#return self.status
@@ -70,25 +73,35 @@ class database():
 		data=c.fetchall()
 		conn.close()
 		return data
+	def insertDb(self,device,level,currentTime):
+		conn=sqlite3.connect("backup.db")
+		c=conn.cursor()
+		c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
+		conn.commit()
+		conn.close()
+	def deleteDb(self,time,level):
+		conn=sqlite3.connect("backup.db")
+		c=conn.cursor()
+		sql = "DELETE FROM table1 WHERE time=? and level=?"
+		c.execute(sql,[time,level])
+		conn.commit()
+		conn.close()
 
 
-def sendPacket(code,packet):
+def sendPacket(code,packet,event=0):
 	modem = Sim900('/dev/ttyS0')
-	modem.sendAtCommand(code,'ATE0')
-	modem.sendAtCommand(code,'AT')
-	if code=='thread':
-		modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.32.242","50002"')#52.74.32.242
-	else:
-		modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.32.242","50001"')#52.74.32.242
-	modem.sendAtCommand(code,'AT+CIPSEND')
-	modem.sendAtCommand(code,packet)
+	modem.sendAtCommand(code,'ATE0',event)
+	modem.sendAtCommand(code,'AT',event)
+	modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.32.242","50001"',event)#52.74.32.242
+	modem.sendAtCommand(code,'AT+CIPSEND',event)
+	modem.sendAtCommand(code,packet,event)
 	temp = modem.status.split('-')
 	temp = temp[0]
-	if temp == 'gsmError' :
+	if  'gsmError' in temp:
 		flag = 'sendError'
 	else:
-		flag= 'success'
-	modem.sendAtCommand(code,'AT+CIPCLOSE')
+		flag = 'success'
+	modem.sendAtCommand(code,'AT+CIPCLOSE',event)
 	
 	return flag	
 	
@@ -101,52 +114,41 @@ class backFill(threading.Thread):
 		
 
 	def run(self):
-		
-		print ('In Thread\n\n')
-
 		while True:
 			self.event.wait()
-			print (1)
+			
 			data = self.db.fetchData()
-			print (data,type(data))
-			time.sleep(1)
-			for item in data:
-				print (item)
+			if not data:
+				print ('Database is empty')
 				time.sleep(1)
-			"""for item in data:
+			for item in data:
 				try:
 					#packet = str(item[0]) + ';' + str(item[1]) + ';' + str(item[2]) +'\x1A'
 					packet = 'backfill' + ';' + str(item[1]) + ';' + str(item[2]) +'\x1A'
 					print ('_________In thread________' )
 					
-					flag=sendPacket('thread',packet)
+					flag=sendPacket('thread',packet,self.event)
 					if flag ==	'sendError':
 						print ('Sending failed')
 						break
 					else:
 						print ('Sending success(thread):'+packet)
-						conn1 = sqlite3.connect("backup.db")
-						c=conn1.cursor()
-						sql = "DELETE FROM table1 WHERE time=? and level=?"
-						c.execute(sql,[item[2],item[1]])
-						conn1.commit()
-						conn1.close()
+						self.db.deleteDb(item[2],item[1])
 					
 					
 				except Exception as e:
 					print('Error inThread')
 					PrintException()
 					#continue
-				time.sleep(1)"""
+				time.sleep(1)
 
 class live(threading.Thread):
 	def __init__(self,event):
 		
 		
 		threading.Thread.__init__(self)
+		self.db=database()
 		self.event = event
-		self.conn = sqlite3.connect("backup.db")
-		self.c=self.conn.cursor()
 		self.level='0'
 		self.device = 'live'
 		self.currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
@@ -168,11 +170,11 @@ class live(threading.Thread):
 				
 				#Packet sending and verification
 				flag = sendPacket('main',packet)  				#<----------flag checks whether sending is succesful
-				
+				print ('flag=',flag)
 				if flag ==	'sendError':
 					print ('Sending failed')
-					self.c.execute("INSERT INTO table1 values(?,?,?)",( 'backup',str(level),str(currentTime) ))
-					self.conn.commit()
+					self.db.insertDb(self.device,self.level,self.currentTime)
+					
 				else:
 					print ('Sending success:'+packet)
 					
