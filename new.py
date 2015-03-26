@@ -50,17 +50,27 @@ class Sim900(object):
 
 
 
+class database():
 
-
-def db_init():
-	conn = sqlite3.connect("backup.db")
-	c=conn.cursor()
-	try:
-		c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
+	def db_init(self):
+		conn = sqlite3.connect("backup.db")
+		c=conn.cursor()
+		try:
+			c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
+			conn.close()
+		except Exception as e:
+			print ('db_init ERROR:'+str(e))
+			pass
+		finally:
+			conn.close()
+	def fetchData(self):
+		conn=sqlite3.connect("backup.db")
+		c=conn.cursor()
+		c.execute("SELECT * FROM table1 ORDER BY ROWID")
+		data=c.fetchall()
 		conn.close()
-	except Exception as e:
-		print ('db_init ERROR:'+str(e))
-		pass
+		return data
+
 
 def sendPacket(code,packet):
 	modem = Sim900('/dev/ttyS0')
@@ -82,20 +92,28 @@ def sendPacket(code,packet):
 	
 	return flag	
 	
-class workerThread(threading.Thread):
+class backFill(threading.Thread):
 	
-	def __init__(self):
+	def __init__(self,event):
 		threading.Thread.__init__(self)
+		self.event = event
+		self.db=database()
+		
+
 	def run(self):
 		
 		print ('In Thread\n\n')
+
 		while True:
-			conn = sqlite3.connect("backup.db")
-			c=conn.cursor()
-			c.execute("SELECT * FROM table1 ORDER BY ROWID")
-			data = c.fetchall()
-			conn.close()
+			self.event.wait()
+			print (1)
+			data = self.db.fetchData()
+			print (data,type(data))
+			time.sleep(1)
 			for item in data:
+				print (item)
+				time.sleep(1)
+			"""for item in data:
 				try:
 					#packet = str(item[0]) + ';' + str(item[1]) + ';' + str(item[2]) +'\x1A'
 					packet = 'backfill' + ';' + str(item[1]) + ';' + str(item[2]) +'\x1A'
@@ -104,6 +122,7 @@ class workerThread(threading.Thread):
 					flag=sendPacket('thread',packet)
 					if flag ==	'sendError':
 						print ('Sending failed')
+						break
 					else:
 						print ('Sending success(thread):'+packet)
 						conn1 = sqlite3.connect("backup.db")
@@ -112,20 +131,72 @@ class workerThread(threading.Thread):
 						c.execute(sql,[item[2],item[1]])
 						conn1.commit()
 						conn1.close()
-						
+					
 					
 				except Exception as e:
 					print('Error inThread')
 					PrintException()
-					continue
+					#continue
+				time.sleep(1)"""
 
-def Main():
+class live(threading.Thread):
+	def __init__(self,event):
+		
+		
+		threading.Thread.__init__(self)
+		self.event = event
+		self.conn = sqlite3.connect("backup.db")
+		self.c=self.conn.cursor()
+		self.level='0'
+		self.device = 'live'
+		self.currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+	
+	def run(self):
+		
+		while True:
+			try:
+				self.event.clear()
+
+				#-------------------------------------------------------------------------------------------------# 
+				print('s----------------------------------------------------')
+				
+				#making packet
+				self.level = str(int(self.level)+1)                #<--------- level should be read here
+				
+				packet = self.device + ';' + str(self.level) + ';' + str(self.currentTime)+'\x1A'
+				#-------------------------------------------------------------------------------------------------#
+				
+				#Packet sending and verification
+				flag = sendPacket('main',packet)  				#<----------flag checks whether sending is succesful
+				
+				if flag ==	'sendError':
+					print ('Sending failed')
+					self.c.execute("INSERT INTO table1 values(?,?,?)",( 'backup',str(level),str(currentTime) ))
+					self.conn.commit()
+				else:
+					print ('Sending success:'+packet)
+					
+				
+
+				print('e----------------------------------------------------')
+				#-------------------------------------------------------------------------------------------------#
+
+				self.event.set()
+				time.sleep(10)
+			except serial.SerialException as e:
+				print('\nMain Program aborted:' )
+				PrintException()
+				#continue
+
+"""
+def liveData(event):
 	conn = sqlite3.connect("backup.db")
 	c=conn.cursor()
 	level='0'
 	device = 'live'
 	while True:
 		try:
+			self.event.wait()
 			print('s----------------------------------------------------')
 			##################################################################################################
 			#making packet
@@ -151,12 +222,20 @@ def Main():
 			print('\nMain Program aborted:' )
 			PrintException()
 			continue
+"""
+def main():
+	db=database()
+	db.db_init()
+	event = threading.Event()
+	t1 = backFill(event)
+	t2 = live(event)
+	t1.start()
+	t2.start()
+	t1.join()
+	t2.join()
 
 if __name__ == '__main__':
-	thread = workerThread()
-	thread.start()
-	db_init()
-	Main()
+	main()
 
 
 		
