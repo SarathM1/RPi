@@ -41,7 +41,7 @@ class Sim900(object):
 		try:
 
 			msg = self.serialPort.read(100).decode('ascii').strip()
-			print ('In functn,msg =',msg,' type = ',type(msg))
+			#print ('In functn,msg =',msg,' type = ',type(msg))
 			return msg
 		except Exception as e:
 			msg ='ERROR'
