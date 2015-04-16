@@ -92,7 +92,7 @@ def sendPacket(code,packet,event=0):
 	modem = Sim900('/dev/ttyS0')
 	modem.sendAtCommand(code,'ATE0',event)
 	modem.sendAtCommand(code,'AT',event)
-	modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.32.242","50001"',event)#52.74.32.242
+	modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.117.230","50001"',event)#52.74.117.230
 	modem.sendAtCommand(code,'AT+CIPSEND',event)
 	modem.sendAtCommand(code,packet,event)
 	temp = modem.status.split('-')
@@ -151,7 +151,7 @@ class live(threading.Thread):
 		self.event = event
 		self.level='0'
 		self.device = 'live'
-		self.currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+		
 	
 	def run(self):
 		
@@ -164,7 +164,7 @@ class live(threading.Thread):
 				
 				#making packet
 				self.level = str(int(self.level)+1)                #<--------- level should be read here
-				
+				self.currentTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
 				packet = self.device + ';' + str(self.level) + ';' + str(self.currentTime)+'\x1A'
 				#-------------------------------------------------------------------------------------------------#
 				
