@@ -30,7 +30,24 @@ class Sim900(object):
         self.serialPort.write(bytes(command+'\r\n',encoding='ascii'))
         self.status =  self.readCommandResponse(code,command)
         #return self.status
-        print (self.status)
+        #print (self.status)
+    def sigStrength(self,csq):  #csq-> reply of AT+CSQ command
+        """This function checks whether the quality of the
+        signal is poor or not
+        poor signal => status='(('+code+'))'+'gsmError-->'+command
+        else        => status='(('+code+'))'+'gsmSucce-->'+ msg +'   (' +command+')'
+        """
+        try:
+            signal_strength = csq.split()[1].split(',')[0]   # Extracting signal strength value from AT+CSQ command
+            if(int(signal_strength)<15):
+                status='low'
+            else:
+                status='good'
+            return status
+        except Exception as e:
+            print(str(e))
+            status='low'
+            return status
 
     def readCommandResponse(self,code,command):
         time.sleep(0.25)
@@ -41,8 +58,9 @@ class Sim900(object):
                 msg='(('+code+'))'+'gsmError-->'+command
             else:
                 if command=='AT+CSQ' and '31' in msg:
-                    signal_strength = msg.split()[1].split(',')[0]   # Extracting signal strength value from AT+CSQ command
-                    if(int(signal_strength)<15):
+                    if (self.sigStrength(msg)=='good'):
+                        msg='(('+code+'))'+'gsmSucce-->'+ msg +'   (' +command+')'
+                    else: 
                         msg='(('+code+'))'+'gsmError-->'+command
                 elif len(command.split(';'))==3 and msg!='SEND OK':    # All packets on split(';') returns 3,  Here we're checking if sending of packet returns SEND OK
                     msg='(('+code+'))'+'gsmError-->'+command
@@ -96,19 +114,24 @@ class database():
         conn.close()
 
 
+
 def sendPacket(code,packet,event=0):
     modem = Sim900('/dev/ttyS0')
     modem.sendAtCommand(code,'ATE0',event)
     modem.sendAtCommand(code,'AT',event)
     modem.sendAtCommand(code,'AT+CSQ',event)
-    modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.117.230","50001"',event)#52.74.117.230
+    f1=modem.status
+    modem.sendAtCommand(code,'AT+CIPSTART="UDP","52.74.36.110","50001"',event)
     modem.sendAtCommand(code,'AT+CIPSEND',event)
     modem.sendAtCommand(code,packet,event)
-    temp = modem.status.split('-')
-    temp = temp[0]
-    if  'gsmError' in temp:
+    f2 = modem.status.split('-')
+    f2 = f2[0]
+    signal_strength = modem.sigStrength(f1)   # Extracting signal strength value from AT+CSQ command
+        
+    if  ('gsmError' in f2) or (signal_strength=='low') or ('gsmExcep' in f2) or ('gsmExcep' in f1):  #Checking all conditions for fialure of package being sent
         flag = 'sendError'
     else:
+
         flag = 'success'
     modem.sendAtCommand(code,'AT+CIPCLOSE',event)
     return flag 
