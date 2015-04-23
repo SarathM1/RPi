@@ -10,10 +10,10 @@ def at(command):
 def checkStatus(success=0,error=0):
 	status = obj.read(100).strip()
 	x=1
-	if not status:
-		return 'gsmModuleOffError'   # If gsm modem doesn't reply
-	else:
-		print 'none'
+	"""if not status:
+			return 'gsmModuleOffError'   # If gsm modem doesn't reply
+		else:
+			print 'none'"""
 	while len(status)==0:
 		if x>20:
 			print '\n\tError, Connection time out, x = '+str(x)+'\n'
@@ -34,14 +34,17 @@ def checkStatus(success=0,error=0):
 
 def send():
 	while True:
+		at('ate0')
+		checkStatus('OK','ERROR')
+
 		at('at+cpin?')
-		checkStatus()
+		checkStatus('OK','ERROR')
 		
 		at('at+csq?')
-		checkStatus()
+		checkStatus('OK','ERROR')
 		
 		at('at+creg?')
-		checkStatus()
+		checkStatus('OK','ERROR')
 		
 		at('at+cgatt?')
 		checkStatus('OK','ERROR')
@@ -65,8 +68,9 @@ def send():
 			at('at+cipsend')
 			checkStatus('>','ERROR')
 			
-			at('packet;packet;packet'+'\x1A'+'\x1A')
-			checkStatus('OK','ERROR')
+			#at('packet;packet;packet'+'\x1A'+'\x1A')
+			obj.write('packet;packet;packet'+'\x1A')
+			checkStatus()
 			
 			at('at+cipclose')
 			checkStatus('OK','ERROR')
