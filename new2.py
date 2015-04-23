@@ -6,8 +6,29 @@ import time
 import logging
 import sqlite3
 import threading
+import os
 import sys
 import linecache
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+ 
+#from sqlalchemy_declarative import Address, Base
+
+Base = declarative_base()
+engine = create_engine('sqlite:///sqlalchemy_example.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+class dieselLevel(Base):
+    __tablename__ = 'dieselLevel'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    device = Column(String(25))
+    level = Column(Integer)
+    mTime = Column(String(30),unique=True)
+
 
 
 def PrintException():
@@ -92,16 +113,14 @@ class Sim900(object):
 class database():
 
     def db_init(self):
-        conn = sqlite3.connect("/home/wa/Documents/RPi/backup.db")
-        c=conn.cursor()
+        db = dieselLevel(name='new person')
+        session.add(new_person)
+        session.commit()
         try:
-            c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
-            conn.close()
+            Base.metadata.create_all(engine)
         except Exception as e:
             print ('db_init ERROR:'+str(e))
             pass
-        finally:
-            conn.close()
     def fetchData(self):
         conn=sqlite3.connect("backup.db")
         c=conn.cursor()
@@ -110,11 +129,9 @@ class database():
         conn.close()
         return data
     def insertDb(self,device,level,currentTime):
-        conn=sqlite3.connect("backup.db")
-        c=conn.cursor()
-        c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
-        conn.commit()
-        conn.close()
+        data = dieselLevel(device=device,level=level,mTime=currentTime)
+        session.add(data)
+        session.commit()
     def deleteDb(self,time,level):
         conn=sqlite3.connect("backup.db")
         c=conn.cursor()
