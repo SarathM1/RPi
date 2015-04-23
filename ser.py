@@ -49,8 +49,8 @@ def send():
 		at('at+cgatt?')
 		checkStatus('OK','ERROR')
 		
-		"""at('at+cipshut')
-		checkStatus('OK','ERROR')"""
+		at('at+cipshut')
+		checkStatus('OK','ERROR')
 		
 		at('at+cstt="bsnlnet"')
 		checkStatus('OK','ERROR')
@@ -65,15 +65,24 @@ def send():
 			at('at+cipstart="TCP","52.74.14.184","50003"')
 			checkStatus('OK','ERROR')
 			
+			msg=obj.read(100).strip()
+			while 'CONNECT OK' not in msg:
+				if 'CONNECT FAIL' in msg or len(msg)==0:
+					break
+				print '-----'
+				print msg
+				print '---'
+				msg=obj.read(100).strip()
+
 			at('at+cipsend')
 			checkStatus('>','ERROR')
 			
 			#at('packet;packet;packet'+'\x1A'+'\x1A')
 			obj.write('packet;packet;packet'+'\x1A')
 			checkStatus()
-			
+			"""
 			at('at+cipclose')
-			checkStatus('OK','ERROR')
+			checkStatus('OK','ERROR')"""
 		else:
 			pass
 		
