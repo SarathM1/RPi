@@ -63,8 +63,8 @@ def send():
 			checkStatus('.','ERROR')
 			
 			at('at+cipstart="TCP","52.74.14.184","50003"')
-			checkStatus('OK','ERROR')
-			
+			flag = checkStatus('OK','FAIL')
+			print 'flag = '+flag    # flag should be error if reply is CONNECT FAIL
 			msg=obj.read(100).strip()
 			while 'CONNECT OK' not in msg:
 				if 'CONNECT FAIL' in msg or len(msg)==0:
