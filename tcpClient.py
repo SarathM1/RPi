@@ -40,7 +40,7 @@ def send():
 		at('at+cpin?')
 		checkStatus('OK','ERROR')
 		
-		at('at+csq?')
+		at('at+csq')
 		checkStatus('OK','ERROR')
 		
 		at('at+creg?')
@@ -62,10 +62,11 @@ def send():
 			at('at+cifsr')
 			checkStatus('.','ERROR')
 			
-			at('at+cipstart="TCP","52.74.14.184","50003"')
+			at('at+cipstart="TCP","52.74.106.150","50003"')
 			flag = checkStatus('OK','FAIL')
 			print 'flag = '+flag    # flag should be error if reply is CONNECT FAIL
 			msg=obj.read(100).strip()
+			
 			while 'CONNECT OK' not in msg:
 				if 'CONNECT FAIL' in msg or len(msg)==0:
 					break
@@ -73,7 +74,7 @@ def send():
 				print msg
 				print '---'
 				msg=obj.read(100).strip()
-
+			
 			at('at+cipsend')
 			checkStatus('>','ERROR')
 			
