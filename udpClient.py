@@ -105,10 +105,13 @@ def sendPacket():
 			
 			obj.write('packet;packet;packet'+'\x1A')
 			#checkStatus()
+			checkStatus('OK','ERROR')
 			
 			sendAt('at+cipclose')
 			checkStatus('OK','ERROR')
 		else:
+			sendAt('at+cipclose')
+			checkStatus('OK','ERROR')
 			pass
 		
 
