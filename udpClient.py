@@ -72,33 +72,34 @@ class Sim900():
             print '{0:20} ==> {1:50}'.format('Other',string)
             return 'other'
 
-    def sendPacket(self,packet):
-        #while True:
-        print '------------------------'
-        self.sendAt('ate0')
-        self.sendAt('at+cpin?')
-        self.sendAt('at+csq')
-        self.sendAt('at+creg?')
-        self.sendAt('at+cgatt?')
-        self.sendAt('at+cipshut')
-        status=self.sendAt('at+cstt="bsnlnet"')
-        if 'connError' in status:
-            flag='Error'
-            pass
-        else:
-            flag = self.sendAt('at+ciicr','OK','ERROR',20)
+    def gsmInit(self,packet):
+        while True:
+            self.sendAt('ate0')
+            self.sendAt('at+cpin?')
+            self.sendAt('at+csq')
+            self.sendAt('at+creg?')
+            self.sendAt('at+cgatt?')
+            self.sendAt('at+cipshut')
+            status=self.sendAt('at+cstt="bsnlnet"')
 
-        #if 'success' in flag:           # Skip the rest if sendError or connError
-        self.sendAt('at+cifsr','.','ERROR')
-        flag = self.sendAt('at+cipstart="UDP","52.74.106.150","50001"')   # Warning!! Enter correct IP address and Port, 50001 -UDP,50003-TCP
-        #print 'flag = '+flag    # flag should be error if reply is CONNECT FAIL
-        self.sendAt('at+cipsend','>','ERROR')
-        self.obj.write('packet;packet;packet'+'\x1A')
-        self.checkStatus('SEND OK','ERROR')
+            flag = self.sendAt('at+ciicr','OK','ERROR',20)
+            self.sendAt('at+cifsr','.','ERROR')
+            flag = self.sendAt('at+cipstart="UDP","52.74.157.254","50001"')
+            if 'Error' in flag:
+                print 'Error in gsmInit'
+                pass
+            else:
+                self.sendAt('at+cipqsend=1')
+                raw_input()
+                self.sendPacket(packet)
+
+    def sendPacket(self,packet):
+        flag='dummy value'              # Just to avoid error  
+        while 'Error' not in flag:
+            self.sendAt('at+cipsend','>','ERROR')
+            self.obj.write('packet;packet;packet'+'\x1A')
+            flag = self.checkStatus('DATA ACCEPT',';')
         self.sendAt('at+cipclose')
-            
-        #else:
-        #self.sendAt('at+cipclose')
 
 class database():
 
@@ -170,7 +171,7 @@ class live(threading.Thread):
             
             print 's-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
             packet='live;2;3'
-            self.gsm.sendPacket(packet)
+            self.gsm.gsmInit(packet)
             print 'e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
             
             self.event.set()  
