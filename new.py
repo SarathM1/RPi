@@ -27,9 +27,10 @@ class Sim900(object):
     def __init__ (self,port,baud=9600,bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stop=serial.STOPBITS_ONE, timeout=1):
         self.serialPort = serial.Serial(port,baud,bytesize,parity,stop,timeout)
     def sendAtCommand(self,code,command,event=0):
-        if event!=0:                                # To avoid at commands being send from thread when live() is active
+        if event!=0:                                # Remove this , doesnt work
             while(event.is_set()==False):
                 pass
+
         self.serialPort.write(bytes(command+'\r\n',encoding='ascii'))
         self.status =  self.readCommandResponse(code,command)
         #return self.status

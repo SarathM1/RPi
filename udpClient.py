@@ -1,94 +1,208 @@
 import serial
 import time
-obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+import threading
+import sqlite3
 
 
-def sendAt(command,success=0,error=0,wait=1):
-	"""
-	Function to send AT commands
-	to GSM Module
-	"""
-	print '{0:20}'.format(command),
-	code=command + '\r\n'
-	obj.write(code)
-	time.sleep(0.25)
-	
-	status=checkStatus(success,error,wait)
-	return status
 
-def checkStatus(success=0,error=0,wait=1):
-	"""
-	Function to wait and respond for Replies from modem for each
-	AT command sent to it 
-	"""
-	status = obj.read(100).strip()
-	
-	
-	cntr=1     					# Timeout in secs
-	while len(status)==0:			
-		
-		if cntr>wait:
-			print '\n\tError, Time out, cntr = '+str(cntr)+'\n'
-			return 'connError'
-		cntr=cntr+1
-		
-		status = obj.read(100)
-		time.sleep(1)
-		if wait>1:         # If waitin for more than 5 sec display count
-			print '\n\t'+str(cntr)
+class Sim900():
+    def __init__ (self):
+        self.obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+    
+    def sendAt(self,command,success='OK',error='ERROR',wait=1):
+        """
+        Function to send AT commands
+        to GSM Module
+        """
+        
+        """if event!=0:                                # To avoid at commands being send from thread when live() is active
+        while(event.is_set()==False):
+            print event.is_set(),event
+            time.sleep(1)"""
+                #pass
+        
+        print '{0:20}'.format(command),
+        code=command + '\r\n'
+        self.obj.write(code)
+        time.sleep(0.25)
+        
+        status=self.checkStatus(success,error,wait)
+        return status
 
-	
-	#print '\t((('+status+')))'
-	
-	"""string = [s.split(' ').strip() for s in status]"""
+    def checkStatus(self,success='OK',error='ERROR',wait=1):
+        """
+        Function to wait and respond for Replies from modem for each
+        AT command sent to it 
+        """
+        try:
+            status = self.obj.read(100).strip()
+        except Exception as e:
+            status=error
+            print e
+        
+        
+        cntr=1                      # Timeout in secs
+        while len(status)==0:           
+            
+            if cntr>wait:
+                print '\n\tError, Time out, cntr = '+str(cntr)+'\n'
+                return 'connError'
+            cntr=cntr+1
+            
+            try:
+                status = self.obj.read(100).strip()
+            except Exception as e:
+                status=error
+                print e
+            
+            time.sleep(1)
+            if wait>1:         # If waitin for more than 5 sec display count
+                print '\n\t'+str(cntr)
 
-	string=status.split('\n')
-	string = ''.join(string)
-	string = string.replace('\r',',')
-	string = string.replace(',,','; ')
+        
+        #print '\t((('+status+')))'
+        
+        
 
-	if success==0 or error==0: # If no arguments are passed to the function,then wait for any key press
-		raw_input()
-	else:
-		if success in status:
-			#print '\t\t',
-			print '{0:20} ==> {1:50}'.format('success',string)
-			return 'success'  # success => AT Command sent
-		elif error in status:
-			print '{0:20} ==> {1:50}'.format('Error',string)
-			return 'sendError'
-		else:
-			print '{0:20} ==> {1:50}'.format('Other',string)
-			return 'other'
+        string=status.split('\n')
+        string = ''.join(string)
+        string = string.replace('\r',' ').replace(',,','; ')
 
-def sendPacket():
-	while True:
-		sendAt('ate0','OK','ERROR')
-		sendAt('at+cpin?','OK','ERROR')
-		sendAt('at+csq','OK','ERROR')
-		sendAt('at+creg?','OK','ERROR')
-		sendAt('at+cgatt?','OK','ERROR')
-		sendAt('at+cipshut','OK','ERROR')
-		status=sendAt('at+cstt="bsnlnet"','OK','ERROR')
-		
-		if 'connError' in status:
-			flag='Error'
-			pass
-		else:
-			flag = sendAt('at+ciicr','OK','ERROR',20)
-		
 
-		if 'success' in flag:           # Skip the rest if sendError or connError
-			sendAt('at+cifsr','.','ERROR')
-			flag = sendAt('at+cipstart="UDP","52.74.106.150","50001"','OK','ERROR')   # Warning!! Enter correct IP address and Port, 50001 -UDP,50003-TCP
-			#print 'flag = '+flag    # flag should be error if reply is CONNECT FAIL
-			sendAt('at+cipsend','>','ERROR')
-			obj.write('packet;packet;packet'+'\x1A')
-			checkStatus('OK','ERROR')
-			sendAt('at+cipclose','OK','ERROR')
-			
-		else:
-			sendAt('at+cipclose','OK','ERROR')
-			
+        
+        if success in status:
+            #print '\t\t',
+            print '{0:20} ==> {1:50}'.format('success',string)
+            return 'success'  # success => AT Command sent
+        elif error in status:
+            print '{0:20} ==> {1:50}'.format('Error',string)
+            return 'sendError'
+        else:
+            print '{0:20} ==> {1:50}'.format('Other',string)
+            return 'other'
 
-sendPacket()
+    def gsmInit(self,packet,case='backfill'):
+        while True:
+            self.sendAt('at')
+            self.sendAt('at+cipclose')
+            self.sendAt('ate0')
+            self.sendAt('at+cpin?')
+            self.sendAt('at+csq')
+            self.sendAt('at+creg?')
+            self.sendAt('at+cgatt?')
+            self.sendAt('at+cipshut')
+            status=self.sendAt('at+cstt="bsnlnet"')
+
+            flag = self.sendAt('at+ciicr','OK','ERROR',20)
+            self.sendAt('at+cifsr','.','ERROR')
+            flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
+            if 'Error' in flag:
+                print 'Error in gsmInit'
+                pass
+            else:
+                self.sendAt('at+cipqsend=1')
+                self.sendPacket(packet,case)
+                break
+            if case != 'backfill':
+                break
+
+    def sendPacket(self,packet,case='backfill'):
+        flag='dummy value'              # Just to avoid error  
+        while 'Error' not in flag:
+            self.sendAt('at+cipsend','>','ERROR')
+            self.obj.write(packet+'\x1A')
+            flag = self.checkStatus('DATA ACCEPT',';')
+            if case != 'backfill':
+                break
+        
+
+class database():
+
+    def db_init(self):
+        conn = sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        c=conn.cursor()
+        try:
+            c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
+            conn.close()
+        except Exception as e:
+            print ('db_init ERROR:'+str(e))
+            pass
+        finally:
+            conn.close()
+    def fetchData(self):
+        conn=sqlite3.connect("backup.db")
+        c=conn.cursor()
+        c.execute("SELECT * FROM table1 ORDER BY ROWID")
+        data=c.fetchall()
+        conn.close()
+        return data
+    def insertDb(self,device,level,currentTime):
+        conn=sqlite3.connect("backup.db")
+        c=conn.cursor()
+        c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
+        conn.commit()
+        conn.close()
+    def deleteDb(self,time,level):
+        conn=sqlite3.connect("backup.db")
+        c=conn.cursor()
+        sql = "DELETE FROM table1 WHERE time=? and level=?"
+        c.execute(sql,[time,level])
+        conn.commit()
+        conn.close()
+
+class backFill(threading.Thread):
+    
+    def __init__(self,event):
+        threading.Thread.__init__(self)
+        self.event = event
+        self.db=database()
+        self.gsm = Sim900()
+
+    def run(self):
+        i=1
+        while True:
+            self.event.wait()
+            packet='backfill;backfill;backfill'
+            self.gsm.sendPacket(packet)            
+            time.sleep(1)
+            
+
+class live(threading.Thread):
+    def __init__(self,event):
+        
+        
+        threading.Thread.__init__(self)
+        self.event = event
+        self.gsm = Sim900()
+    
+    def run(self):
+        
+        while True:
+            
+            self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
+            
+            print 's-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+            packet='live;live;live'
+            self.gsm.gsmInit(packet,'live')
+            print 'e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+            
+            self.event.set()  
+            
+            time.sleep(10)                   #backfill runs for 10 sec's
+            
+def main():
+    db=database()
+    db.db_init()
+    event = threading.Event()
+
+    t1 = backFill(event)
+    t2 = live(event)
+    t1.start()
+    t2.start()
+
+    
+
+if __name__ == '__main__':
+    main()
+            
+
