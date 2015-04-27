@@ -2,13 +2,13 @@ import serial
 import time
 import threading
 import sqlite3
-
+import random
 
 
 class Sim900():
     def __init__ (self):
         self.obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
-    
+        self.db=database()
     def sendAt(self,command,success='OK',error='ERROR',wait=1):
         """
         Function to send AT commands
@@ -81,39 +81,56 @@ class Sim900():
             print '{0:20} ==> {1:50}'.format('Other',string)
             return 'other'
 
-    def gsmInit(self,packet,case='backfill'):
-        while True:
-            self.sendAt('at')
-            self.sendAt('at+cipclose')
-            self.sendAt('ate0')
-            self.sendAt('at+cpin?')
-            self.sendAt('at+csq')
-            self.sendAt('at+creg?')
-            self.sendAt('at+cgatt?')
-            self.sendAt('at+cipshut')
-            status=self.sendAt('at+cstt="bsnlnet"')
+    def gsmInit(self,device,level,time,case='backfill'):
+        #while True:
+        self.sendAt('at')
+        self.sendAt('at+cipclose')
+        self.sendAt('ate0')
+        self.sendAt('at+cpin?')
+        self.sendAt('at+csq')
+        self.sendAt('at+creg?')
+        self.sendAt('at+cgatt?')
+        self.sendAt('at+cipshut')
+        status=self.sendAt('at+cstt="bsnlnet"')
 
-            flag = self.sendAt('at+ciicr','OK','ERROR',20)
-            self.sendAt('at+cifsr','.','ERROR')
-            flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
-            if 'Error' in flag:
-                print 'Error in gsmInit'
-                pass
+        flag = self.sendAt('at+ciicr','OK','ERROR',20)
+        self.sendAt('at+cifsr','.','ERROR')
+        flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
+        if 'Error' in flag:
+            self.db.insertDb(device,level,time)
+            print 'Error in gsmInit'
+            pass
+        else:
+            self.sendAt('at+cipqsend=1')
+            self.sendPacket(device,level,time,case)
+            #break
+        """if case != 'backfill':
+            break"""
+
+    def sendPacket(self,device,level,time,case ='backfill'):
+        #flag='dummy value'              # Just to avoid error
+
+        #while 'Error' not in flag:
+        packet=device+';'+str(level)+';'+str(time)
+        self.sendAt('at+cipsend','>','ERROR')
+        self.obj.write(packet+'\x1A')
+        flag = self.checkStatus('DATA ACCEPT',';')
+        
+        if case != 'backfill':              # case!='backfill' => live
+            if 'Error' in flag:             # Backup data if live sending fails
+                print '\tLive : Failed!!'
+                self.db.insertDb(device,level,time)
             else:
-                self.sendAt('at+cipqsend=1')
-                self.sendPacket(packet,case)
-                break
-            if case != 'backfill':
-                break
+                print '\tLive : Success . .'
+            #break
+        elif case=='backfill':
+            if flag=='success':    #Delete packet from database once backfill has send it to server succesfully
+                print 'backfill : Success . .'
+                self.db.deleteDb('live',time,level)
+            else:
+                print 'device = ',device
+                print 'backfill : Failed!!'
 
-    def sendPacket(self,packet,case='backfill'):
-        flag='dummy value'              # Just to avoid error  
-        while 'Error' not in flag:
-            self.sendAt('at+cipsend','>','ERROR')
-            self.obj.write(packet+'\x1A')
-            flag = self.checkStatus('DATA ACCEPT',';')
-            if case != 'backfill':
-                break
         
 
 class database():
@@ -130,23 +147,23 @@ class database():
         finally:
             conn.close()
     def fetchData(self):
-        conn=sqlite3.connect("backup.db")
+        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
         c=conn.cursor()
-        c.execute("SELECT * FROM table1 ORDER BY ROWID")
-        data=c.fetchall()
+        c.execute("SELECT * FROM table1 ORDER BY ROWID LIMIT 1")
+        data=c.fetchone()
         conn.close()
         return data
     def insertDb(self,device,level,currentTime):
-        conn=sqlite3.connect("backup.db")
+        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
         c=conn.cursor()
         c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
         conn.commit()
         conn.close()
-    def deleteDb(self,time,level):
-        conn=sqlite3.connect("backup.db")
+    def deleteDb(self,device,time,level):
+        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
         c=conn.cursor()
-        sql = "DELETE FROM table1 WHERE time=? and level=?"
-        c.execute(sql,[time,level])
+        sql = "DELETE FROM table1 WHERE device=? and time=? and level=?"
+        c.execute(sql,[device,time,level])
         conn.commit()
         conn.close()
 
@@ -162,10 +179,13 @@ class backFill(threading.Thread):
         i=1
         while True:
             self.event.wait()
-            packet='backfill;backfill;backfill'
-            self.gsm.sendPacket(packet)            
-            time.sleep(1)
-            
+            data = self.db.fetchData()
+            if not data:
+                print ('Database is empty')
+                time.sleep(1)
+            else:
+                self.gsm.sendPacket('backfill',data[1],data[2],'backfill')
+                time.sleep(1)
 
 class live(threading.Thread):
     def __init__(self,event):
@@ -182,8 +202,12 @@ class live(threading.Thread):
             self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
             
             print 's-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
-            packet='live;live;live'
-            self.gsm.gsmInit(packet,'live')
+            
+            device = 'live'
+            level = random.randint(1,100)
+            curTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+
+            self.gsm.gsmInit(device,level,curTime,'live')
             print 'e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
             
             self.event.set()  
