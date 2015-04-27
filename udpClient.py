@@ -34,7 +34,11 @@ class Sim900():
         Function to wait and respond for Replies from modem for each
         AT command sent to it 
         """
-        status = self.obj.read(100).strip()
+        try:
+            status = self.obj.read(100).strip()
+        except Exception as e:
+            status=error
+            print e
         
         
         cntr=1                      # Timeout in secs
@@ -45,7 +49,12 @@ class Sim900():
                 return 'connError'
             cntr=cntr+1
             
-            status = self.obj.read(100)
+            try:
+                status = self.obj.read(100).strip()
+            except Exception as e:
+                status=error
+                print e
+            
             time.sleep(1)
             if wait>1:         # If waitin for more than 5 sec display count
                 print '\n\t'+str(cntr)
@@ -72,8 +81,10 @@ class Sim900():
             print '{0:20} ==> {1:50}'.format('Other',string)
             return 'other'
 
-    def gsmInit(self,packet):
+    def gsmInit(self,packet,case='backfill'):
         while True:
+            self.sendAt('at')
+            self.sendAt('at+cipclose')
             self.sendAt('ate0')
             self.sendAt('at+cpin?')
             self.sendAt('at+csq')
@@ -84,22 +95,26 @@ class Sim900():
 
             flag = self.sendAt('at+ciicr','OK','ERROR',20)
             self.sendAt('at+cifsr','.','ERROR')
-            flag = self.sendAt('at+cipstart="UDP","52.74.157.254","50001"')
+            flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
             if 'Error' in flag:
                 print 'Error in gsmInit'
                 pass
             else:
                 self.sendAt('at+cipqsend=1')
-                raw_input()
-                self.sendPacket(packet)
+                self.sendPacket(packet,case)
+                break
+            if case != 'backfill':
+                break
 
-    def sendPacket(self,packet):
+    def sendPacket(self,packet,case='backfill'):
         flag='dummy value'              # Just to avoid error  
         while 'Error' not in flag:
             self.sendAt('at+cipsend','>','ERROR')
-            self.obj.write('packet;packet;packet'+'\x1A')
+            self.obj.write(packet+'\x1A')
             flag = self.checkStatus('DATA ACCEPT',';')
-        self.sendAt('at+cipclose')
+            if case != 'backfill':
+                break
+        
 
 class database():
 
@@ -141,26 +156,23 @@ class backFill(threading.Thread):
         threading.Thread.__init__(self)
         self.event = event
         self.db=database()
-        
+        self.gsm = Sim900()
 
     def run(self):
         i=1
         while True:
             self.event.wait()
-            print 'In backfill,i = ',i
-            i=i+1            
+            packet='backfill;backfill;backfill'
+            self.gsm.sendPacket(packet)            
             time.sleep(1)
+            
 
 class live(threading.Thread):
     def __init__(self,event):
         
         
         threading.Thread.__init__(self)
-        self.db=database()
         self.event = event
-        self.level='0'
-        self.device = 'live'
-        
         self.gsm = Sim900()
     
     def run(self):
@@ -170,8 +182,8 @@ class live(threading.Thread):
             self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
             
             print 's-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
-            packet='live;2;3'
-            self.gsm.gsmInit(packet)
+            packet='live;live;live'
+            self.gsm.gsmInit(packet,'live')
             print 'e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
             
             self.event.set()  
