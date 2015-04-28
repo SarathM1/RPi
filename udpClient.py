@@ -14,13 +14,6 @@ class Sim900():
         Function to send AT commands
         to GSM Module
         """
-        
-        """if event!=0:                                # To avoid at commands being send from thread when live() is active
-        while(event.is_set()==False):
-            print event.is_set(),event
-            time.sleep(1)"""
-                #pass
-        
         print '{0:20}'.format(command),
         code=command + '\r\n'
         self.obj.write(code)
