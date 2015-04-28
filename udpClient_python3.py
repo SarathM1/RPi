@@ -14,9 +14,8 @@ class Sim900():
         Function to send AT commands
         to GSM Module
         """
-        print '{0:20}'.format(command),
-        code=command + '\r\n'
-        self.obj.write(code)
+        print('{0:20}'.format(command), end=' ')
+        self.obj.write(bytes(command+'\r\n',encoding='ascii'))
         time.sleep(0.25)
         
         status=self.checkStatus(success,error,wait)
@@ -28,29 +27,29 @@ class Sim900():
         AT command sent to it 
         """
         try:
-            status = self.obj.read(100).strip()
+            status = self.obj.read(100).decode('ascii').strip()
         except Exception as e:
             status=error
-            print e
+            print(e)
         
         
         cntr=1                      # Timeout in secs
         while len(status)==0:           
             
             if cntr>wait:
-                print '\n\tError, Time out, cntr = '+str(cntr)+'\n'
+                print('\n\tError, Time out, cntr = '+str(cntr)+'\n')
                 return 'connError'
             cntr=cntr+1
             
             try:
-                status = self.obj.read(100).strip()
+                status = self.obj.read(100).decode('ascii').strip()
             except Exception as e:
                 status=error
-                print e
+                print(e)
             
             time.sleep(1)
             if wait>1:         # If waitin for more than 5 sec display count
-                print '\n\t'+str(cntr)
+                print('\n\t'+str(cntr))
 
         
         #print '\t((('+status+')))'
@@ -65,13 +64,13 @@ class Sim900():
         
         if success in status:
             #print '\t\t',
-            print '{0:20} ==> {1:50}'.format('success',string)
+            print('{0:20} ==> {1:50}'.format('success',string))
             return 'success'  # success => AT Command sent
         elif error in status:
-            print '{0:20} ==> {1:50}'.format('Error',string)
+            print('{0:20} ==> {1:50}'.format('Error',string))
             return 'sendError'
         else:
-            print '{0:20} ==> {1:50}'.format('Other',string)
+            print('{0:20} ==> {1:50}'.format('Other',string))
             return 'other'
 
     def gsmInit(self,device,level,time,case='backfill'):
@@ -91,7 +90,7 @@ class Sim900():
         flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
         if 'Error' in flag:
             self.db.insertDb(device,level,time)
-            print 'Error in gsmInit'
+            print('Error in gsmInit')
             pass
         else:
             self.sendAt('at+cipqsend=1')
@@ -106,23 +105,23 @@ class Sim900():
         #while 'Error' not in flag:
         packet=device+';'+str(level)+';'+str(time)
         self.sendAt('at+cipsend','>','ERROR')
-        self.obj.write(packet+'\x1A')
+        self.obj.write(bytes(packet+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         flag = self.checkStatus('DATA ACCEPT',';')
         
         if case != 'backfill':              # case!='backfill' => live
             if 'Error' in flag:             # Backup data if live sending fails
-                print '\tLive : Failed!!'
+                print('\tLive : Failed!!')
                 self.db.insertDb(device,level,time)
             else:
-                print '\tLive : Success . .'
+                print('\tLive : Success . .')
             #break
         elif case=='backfill':
             if flag=='success':    #Delete packet from database once backfill has send it to server succesfully
-                print 'backfill : Success . .'
+                print('backfill : Success . .')
                 self.db.deleteDb('live',time,level)
             else:
-                print 'device = ',device
-                print 'backfill : Failed!!'
+                print('device = ',device)
+                print('backfill : Failed!!')
 
         
 
@@ -135,7 +134,7 @@ class database():
             c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
             conn.close()
         except Exception as e:
-            print ('db_init ERROR:'+str(e))
+            print(('db_init ERROR:'+str(e)))
             pass
         finally:
             conn.close()
@@ -194,14 +193,14 @@ class live(threading.Thread):
             
             self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
             
-            print 's-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+            print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
             device = 'live'
             level = random.randint(1,100)
             curTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
 
             self.gsm.gsmInit(device,level,curTime,'live')
-            print 'e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+            print('e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
             self.event.set()  
             
