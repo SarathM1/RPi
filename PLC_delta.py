@@ -2,8 +2,8 @@
 
 import minimalmodbus
 import serial
-import time
-
+from time import sleep
+import datetime 
 
 
 class Sim900(object):
@@ -30,7 +30,7 @@ class Sim900(object):
 if __name__ == '__main__':
     while True:
         try:
-            instrument = minimalmodbus.Instrument('/dev/ttyUSB0',1)
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB1',1)
             instrument.serial.baudrate = 9600
             instrument.serial.bytesize = 7
             instrument.serial.parity = serial.PARITY_EVEN
@@ -40,14 +40,39 @@ if __name__ == '__main__':
 
 
             while True:
-                level = instrument.read_register(4096) #404097 is 4097-1 in python
-                if level==65535:
-                    level=0
-                time.sleep(0.5)
-                print (level)
+                #level = instrument.read_register(4096) #404097 is 4097-1 in python
+
+                dreadger_name       = 'dreadger_name'
+                time                = datetime.datetime.now()
+                storage_tank_level  = instrument.read_register(4096)
+                storage_tank_cap    = instrument.read_register(4104)
+                service_tank_level  = instrument.read_register(4097)
+                service_tank_cap    = instrument.read_register(4105)
+                flowmeter_1_in      = instrument.read_register(4098)
+                flowmeter_1_out     = instrument.read_register(4100)
+                engine_1_status     = instrument.read_register(4106)
+                flowmeter_2_in      = instrument.read_register(4103)
+                flowmeter_2_out     = instrument.read_register(4101)
+                engine_2_status     = instrument.read_register(4107)
+
+                print('############################################################')
+                print('{0:20} ==> {1:5}'.format('storage_tank_level',storage_tank_level))
+                print('{0:20} ==> {1:5}'.format('storage_tank_cap',storage_tank_cap))
+                print('{0:20} ==> {1:5}'.format('service_tank_level',service_tank_level))
+                print('{0:20} ==> {1:5}'.format('service_tank_cap',service_tank_cap))
+                print('{0:20} ==> {1:5}'.format('flowmeter_1_in',flowmeter_1_in))
+                print('{0:20} ==> {1:5}'.format('flowmeter_1_out',flowmeter_1_out))
+                print('{0:20} ==> {1:5}'.format('engine_1_status',engine_1_status))
+                print('{0:20} ==> {1:5}'.format('flowmeter_2_in',flowmeter_2_in))
+                print('{0:20} ==> {1:5}'.format('flowmeter_2_out',flowmeter_2_out))
+                print('{0:20} ==> {1:5}'.format('engine_2_status',engine_2_status))
+                print('############################################################')
+                
+                raw_input()
+                #print (level)
         except Exception as e:
             print(e)
-            time.sleep(1)
+            sleep(1)
     
    
         
