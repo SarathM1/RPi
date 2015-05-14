@@ -28,24 +28,26 @@ class Sim900(object):
                 
 
 if __name__ == '__main__':
-    try:
-        instrument = minimalmodbus.Instrument('/dev/ttyUSB0',1)
-        instrument.serial.baudrate = 9600
-        instrument.serial.bytesize = 7
-        instrument.serial.parity = serial.PARITY_EVEN
-        instrument.serial.stopbits = 1
-        instrument.serial.timeout = 0.1
-        instrument.mode = minimalmodbus.MODE_ASCII
+    while True:
+        try:
+            instrument = minimalmodbus.Instrument('/dev/ttyUSB0',1)
+            instrument.serial.baudrate = 9600
+            instrument.serial.bytesize = 7
+            instrument.serial.parity = serial.PARITY_EVEN
+            instrument.serial.stopbits = 1
+            instrument.serial.timeout = 0.1
+            instrument.mode = minimalmodbus.MODE_ASCII
 
 
-        while True:
-            level = instrument.read_register(4096) #404097 is 4097-1 in python
-            if level==65535:
-                level=0
-            time.sleep(0.5)
-            print (level)
-    except serial.SerialException as e:
-        print(e)
+            while True:
+                level = instrument.read_register(4096) #404097 is 4097-1 in python
+                if level==65535:
+                    level=0
+                time.sleep(0.5)
+                print (level)
+        except Exception as e:
+            print(e)
+            time.sleep(1)
     
    
         
