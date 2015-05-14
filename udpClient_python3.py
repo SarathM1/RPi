@@ -1,13 +1,29 @@
+
+#!/usr/bin/python3
 import serial
 import time
 import threading
+import minimalmodbus
 import sqlite3
 import random
 
-
+class plc():
+    def __init__(self):
+        self.instrument = minimalmodbus.Instrument('/dev/ttyUSB1',1)
+        self.instrument.serial.baudrate = 9600
+        self.instrument.serial.bytesize = 7
+        self.instrument.serial.parity = serial.PARITY_EVEN
+        self.instrument.serial.stopbits = 1
+        self.instrument.serial.timeout = 0.1
+        self.instrument.mode = minimalmodbus.MODE_ASCII
+    def readLevel(self):
+        data = self.instrument.read_register(4096) #404097 is 4097-1 in python
+        if data==65535:
+            data=0
+        return data
 class Sim900():
     def __init__ (self):
-        self.obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+        self.obj = serial.Serial('/dev/ttyUSB0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
         self.db=database()
     def sendAt(self,command,success='OK',error='ERROR',wait=1):
         """
@@ -87,7 +103,9 @@ class Sim900():
 
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
-        flag = self.sendAt('at+cipstart="UDP","52.74.18.53","50001"')
+
+        flag = self.sendAt('at+cipstart="UDP","52.74.111.135","50001"')
+
         if 'Error' in flag:
             self.db.insertDb(device,level,time)
             print('Error in gsmInit')
@@ -128,7 +146,9 @@ class Sim900():
 class database():
 
     def db_init(self):
-        conn = sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+
+        #conn = sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        conn = sqlite3.connect("/home/pi/Desktop/RPi/backup.db")
         c=conn.cursor()
         try:
             c.execute("CREATE TABLE table1(device TEXT,level INT,time TEXT)")
@@ -139,20 +159,24 @@ class database():
         finally:
             conn.close()
     def fetchData(self):
-        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        #conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        conn=sqlite3.connect("/home/pi/Desktop/RPi/backup.db")
         c=conn.cursor()
         c.execute("SELECT * FROM table1 ORDER BY ROWID LIMIT 1")
         data=c.fetchone()
         conn.close()
         return data
     def insertDb(self,device,level,currentTime):
-        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+
+        #conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        conn=sqlite3.connect("/home/pi/Desktop/RPi/backup.db")
         c=conn.cursor()
         c.execute("INSERT INTO table1 values(?,?,?)",( device,str(level),str(currentTime) ))
         conn.commit()
         conn.close()
     def deleteDb(self,device,time,level):
-        conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        #conn=sqlite3.connect("/home/wa/Documents/RPi/backup.db")
+        conn=sqlite3.connect("/home/pi/Desktop/RPi/backup.db")
         c=conn.cursor()
         sql = "DELETE FROM table1 WHERE device=? and time=? and level=?"
         c.execute(sql,[device,time,level])
@@ -181,8 +205,7 @@ class backFill(threading.Thread):
 
 class live(threading.Thread):
     def __init__(self,event):
-        
-        
+		self.delta=plc()
         threading.Thread.__init__(self)
         self.event = event
         self.gsm = Sim900()
@@ -197,6 +220,12 @@ class live(threading.Thread):
             
             device = 'live'
             level = random.randint(1,100)
+            """try:
+                level = self.delta.readLevel()
+            except Exception as e:
+                level=0
+                print(e)"""
+            #level=10
             curTime = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
 
             self.gsm.gsmInit(device,level,curTime,'live')
