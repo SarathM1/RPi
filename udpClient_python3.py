@@ -124,7 +124,7 @@ class plc():
     def readData(self):
         arg={}
         arg['dreadger_name']        = 'dreadger_name'
-        arg['time']                 = str(time.localtime())
+        arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
         arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
         arg['storage_tank_cap']     = self.instrument.read_register(4104)
         arg['service_tank_level']   = self.instrument.read_register(4097)
