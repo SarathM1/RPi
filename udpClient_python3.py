@@ -6,19 +6,24 @@ import threading
 import minimalmodbus
 import sqlite3
 import random
+import os
 
-from flask import Flask, flash
+from flask import Flask, flash, request, jsonify, url_for, render_template, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 
-app = Flask (__name__)
+
+app = Flask (__name__)                  
 db = SQLAlchemy(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:aaggss@localhost/dreadger'
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'backfill.db')
 
 class dreadger(db.Model):
     __tablename__ = 'backfill'
     id                  = db.Column(db.Integer, primary_key=True)
     dreadger_name       = db.Column(db.String(25))
-    time                = db.Column(db.DateTime,unique=True)  # If not unique then there will be logical errors
+    #time                = db.Column(db.DateTime,unique=True)  # If not unique then there will be logical errors
+    time                = db.Column(db.String(20),unique=True) #Sqlite supports only string as date
     storage_tank_level  = db.Column(db.Integer)
     storage_tank_cap    = db.Column(db.String(25))
     service_tank_level  = db.Column(db.Integer)
@@ -70,7 +75,7 @@ class database_backup():
             db.session.commit()
         except Exception as e:
             #flash('insertDb: '+str(e))
-            print 'insertDb: '+str(e)
+            print ('insertDb: '+str(e))
 
     def deleteDb(self,arg):
         try:
@@ -78,7 +83,7 @@ class database_backup():
             db.session.commit()
         except Exception as e:
             #flash('insertDb: '+str(e))
-            print 'deleteDb: '+str(e)
+            print ('deleteDb: '+str(e))
     def fetchData(self):
         try:
             results = dreadger.query.order_by(dreadger.time.desc()).first()
@@ -101,23 +106,37 @@ class database_backup():
                 return dictRow
         except Exception as e:
             #flash('insertDb: '+str(e))
-            print 'fetchData: '+str(e)
+            print ('fetchData: '+str(e))
 
 
 class plc():
     def __init__(self):
-        self.instrument = minimalmodbus.Instrument('/dev/ttyUSB1',1)
-        self.instrument.serial.baudrate = 9600
-        self.instrument.serial.bytesize = 7
-        self.instrument.serial.parity = serial.PARITY_EVEN
-        self.instrument.serial.stopbits = 1
-        self.instrument.serial.timeout = 0.1
-        self.instrument.mode = minimalmodbus.MODE_ASCII
+        try:
+            self.instrument = minimalmodbus.Instrument('/dev/ttyUSB1',1)
+            self.instrument.serial.baudrate = 9600
+            self.instrument.serial.bytesize = 7
+            self.instrument.serial.parity = serial.PARITY_EVEN
+            self.instrument.serial.stopbits = 1
+            self.instrument.serial.timeout = 0.1
+            self.instrument.mode = minimalmodbus.MODE_ASCII
+        except Exception as e:
+            print('plc_init: '+str(e))
     def readData(self):
-        data = self.instrument.read_register(4096) #404097 is 4097-1 in python
-        if data==65535:         # To fix bug - negative numbers plc
-            data=0
-        return data
+        arg={}
+        arg['dreadger_name']        = 'dreadger_name'
+        arg['time']                 = str(time.localtime())
+        arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
+        arg['storage_tank_cap']     = self.instrument.read_register(4104)
+        arg['service_tank_level']   = self.instrument.read_register(4097)
+        arg['service_tank_cap']     = self.instrument.read_register(4105)
+        arg['flowmeter_1_in']       = self.instrument.read_register(4098) 
+        arg['flowmeter_1_out']      = self.instrument.read_register(4100)
+        arg['engine_1_status']      = self.instrument.read_register(4106)
+        arg['flowmeter_2_in']       = self.instrument.read_register(4103)
+        arg['flowmeter_2_out']      = self.instrument.read_register(4101)
+        arg['engine_2_status']      = self.instrument.read_register(4107)
+
+        return arg
 class Sim900():
     def __init__ (self):
         self.obj = serial.Serial('/dev/ttyUSB0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
@@ -237,7 +256,7 @@ class Sim900():
 
         packet=''
         for key in arg:
-            packet = packet + ';' + arg[key]    # Iterate through dictionary
+            packet = packet + ';' + str(arg[key])    # Iterate through dictionary
         packet = packet.replace(';','',1)       # Remove the 1st occurance of ';'
 
         
@@ -258,7 +277,7 @@ class Sim900():
                 print('backfill : Success . .')
                 self.db.deleteDb(arg)
             else:
-                print('device = ',device)
+                #print('device = ',case)
                 print('backfill : Failed!!')
 
         
@@ -301,34 +320,10 @@ class live(threading.Thread):
             print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
             try:
-                try:
-                    arg={}
-                    arg['dreadger_name']        = 'dreadger_name'
-                    arg['time']                 = time.localtime()
-                    arg['storage_tank_level']   = instrument.read_register(4096)
-                    arg['storage_tank_cap']     = instrument.read_register(4104)
-                    arg['service_tank_level']   = instrument.read_register(4097)
-                    arg['service_tank_cap']     = instrument.read_register(4105)
-                    arg['flowmeter_1_in']       = instrument.read_register(4098) 
-                    arg['flowmeter_1_out']      = instrument.read_register(4100)
-                    arg['engine_1_status']      = instrument.read_register(4106)
-                    arg['flowmeter_2_in']       = instrument.read_register(4103)
-                    arg['flowmeter_2_out']      = instrument.read_register(4101)
-                    arg['engine_2_status']      = instrument.read_register(4107)
-                except Exception as e:
-                    print(e)
-
-                curTime = time.strftime('%d/%m/%Y %H:%M:%S',arg['time'])
+                arg=self.delta.readData()
                 self.gsm.gsmInit(arg,'live')
             except Exception as e:
-                print(e) 
-
-            """try:
-                level = self.delta.readData()
-            except Exception as e:
-                level=0
-                print(e)"""
-            #level=10
+                print('live_run: '+str(e))
             
 
             
