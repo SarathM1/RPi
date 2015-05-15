@@ -255,7 +255,7 @@ class Sim900():
         """
 
         packet=''
-        for key in arg:
+        for key in arg.keys():
             packet = packet + ';' + str(arg[key])    # Iterate through dictionary
         packet = packet.replace(';','',1)       # Remove the 1st occurance of ';'
 
