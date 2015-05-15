@@ -6,29 +6,11 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, create_eng
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy.orm import sessionmaker 
 from datetime import datetime
-import logging
-import logging.handlers
 
 
 Base = declarative_base()
 
-#Setting up logging defaults
-#LOG_FILENAME = "/tmp/udpserver.log"
-#LOG_LEVEL = logging.DEBUG
 
-#logger = logging.getLogger(__name__)
-
-#Giving the logger a unique name
-#logger.setLevel(LOG_LEVEL)
-
-#Make a handler that writes to a file at midnight and keeping 3 days backup
-#andler = logging.handlers.TimedRotatingFileHandler(LOG_FILENAME, when="midnight", backupCount=3)
-#Formatting each message
-#formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')
-#Attaching format to handler
-#handler.setFormatter(formatter)
-#Attach the handler to the logger
-#logger.addHandler(handler)
 
 """
 Declaring the tables in the database
@@ -50,7 +32,7 @@ class DieselLevel(Base):
 		self.mTime = mTime
 		self.ip = ip
 
-##Logging in as admin 
+
 ##creating a mysql database object object 
 engine = create_engine('mysql://root:aaggss@localhost/dreadger')
 
@@ -79,11 +61,10 @@ if __name__ == '__main__':
 		sock.bind((HOST,PORT))	# Getting the socket ready for communication at the port 50002
 		print 'bind done'
 	except socket.error, msg: 	#	failure code. If the socket is not created, it will exit.
-		#logger.error( 'Bind failed. Error code: ' + str(msg))
 		print msg
 		sys.exit()
 
-	#logger.info('Socket binding complete') # Will log if socket is created sucessfully.
+	
 
 	session = sessionmaker() 
 	session.configure(bind=engine)
@@ -95,17 +76,12 @@ if __name__ == '__main__':
 			s = session()
 			s.add(DieselLevel(device, level, time, ip))
 			print 'data: '+device,level,time,ip
-			"""
-			logger.debug ('Data packet recieved')
-			logger.debug('From : %s' %str(addr))
-			logger.debug('Device : ' + device)
-			logger.debug('Level : %d' %level)
-			logger.debug('Time : %s' %(str(time)))"""
+			
 
 			s.commit()
 		except Exception as e:
 			print e
-			#logger.error('Unable to parse the packet')
+			
 
 	s.close() 	
 		
