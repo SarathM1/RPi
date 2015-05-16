@@ -220,7 +220,7 @@ class Sim900():
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="UDP","52.74.111.135","50001"')
+        flag = self.sendAt('at+cipstart="UDP","52.74.65.110","50001"')
 
         if 'Error' in flag:
             self.db.insertDb(arg)
