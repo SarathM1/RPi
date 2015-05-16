@@ -91,7 +91,7 @@ def parsedata(data):
 ## Here the code for opening the port is written.
 if __name__ == '__main__':  
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # Creating a udp socket object 
-    HOST = '127.0.0.1'      # It is not reqiured for udp server. for udp client specify the host address 
+    HOST = ''      # It is not reqiured for udp server. for udp client specify the host address 
     PORT = 50001    # It is port number on which communications occur 
     try :
         sock.bind((HOST,PORT))  # Getting the socket ready for communication at the port 50002
@@ -111,7 +111,11 @@ if __name__ == '__main__':
             #ip,port = addr
             #s = session()
             #s.add(dreadger(device, level, time, ip))
-            print 'data: '+ data.strip.split(';')
+            data=data.strip()
+            data=data.split(';')
+            for elem in data:
+                print elem,
+            print '\n'
             
 
             s.commit()
