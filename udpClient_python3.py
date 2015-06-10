@@ -18,10 +18,10 @@ db = SQLAlchemy(app)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'backfill.db')
 
-class dreadger(db.Model):
+class dredger(db.Model):
     __tablename__ = 'backfill'
     id                  = db.Column(db.Integer, primary_key=True)
-    dreadger_name       = db.Column(db.String(25))
+    dredger_name       = db.Column(db.String(25))
     #time                = db.Column(db.DateTime,unique=True)  # If not unique then there will be logical errors
     time                = db.Column(db.String(20),unique=True) #Sqlite supports only string as date
     storage_tank_level  = db.Column(db.Integer)
@@ -36,14 +36,14 @@ class dreadger(db.Model):
     engine_2_status     = db.Column(db.String(25))
 
     def __repr__(self):
-        return self.dreadger_name+ ',' +str(self.time)+ ',' +str(self.storage_tank_level)+ ',' +\
+        return self.dredger_name+ ',' +str(self.time)+ ',' +str(self.storage_tank_level)+ ',' +\
                 self.storage_tank_cap+ ',' +str(self.service_tank_level)+ ',' +self.service_tank_cap+ ',' +\
                 str(self.flowmeter_1_in)+ ',' +str(self.flowmeter_1_out)+ ',' +self.engine_1_status+ ',' +str(self.flowmeter_2_in)+ ',' +\
                 str(self.flowmeter_2_out)+ ',' +str(self.engine_2_status)+'\n'
 
     def __init__(self, arg):
         
-        self.dreadger_name       = arg['dreadger_name']
+        self.dredger_name       = arg['dredger_name']
         self.time                = arg['time']
         self.storage_tank_level  = arg['storage_tank_level']
         self.storage_tank_cap    = arg['storage_tank_cap']
@@ -70,7 +70,7 @@ class database_backup():
 
     def insertDb(self,arg):
         try:
-            data=dreadger(arg)
+            data=dredger(arg)
             db.session.add(data)
             db.session.commit()
         except Exception as e:
@@ -79,19 +79,19 @@ class database_backup():
 
     def deleteDb(self,arg):
         try:
-            dreadger.query.filter(dreadger.time == arg['time']).delete()
+            dredger.query.filter(dredger.time == arg['time']).delete()
             db.session.commit()
         except Exception as e:
             #flash('insertDb: '+str(e))
             print ('deleteDb: '+str(e))
     def fetchData(self):
         try:
-            results = dreadger.query.order_by(dreadger.time.desc()).first()
+            results = dredger.query.order_by(dredger.time.desc()).first()
             if not results:
                 return None  # If database is empty
             else:
                 dictRow={}
-                dictRow['dreadger_name']        = results.dreadger_name
+                dictRow['dredger_name']        = results.dredger_name
                 dictRow['time']                 = results.time
                 dictRow['storage_tank_level']   = results.storage_tank_level
                 dictRow['storage_tank_cap']     = results.storage_tank_cap
@@ -112,7 +112,7 @@ class database_backup():
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/ttyUSB1',1)
+            self.instrument = minimalmodbus.Instrument('/dev/ttyUSB2',1)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
@@ -122,24 +122,32 @@ class plc():
         except Exception as e:
             print('plc_init: '+str(e))
     def readData(self):
+        cap=['Close','Open']
+        status=['Off','On']
         arg={}
-        arg['dreadger_name']        = 'dreadger_name'
+        arg['dredger_name']         = 'dredger1'
         arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
         arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
-        arg['storage_tank_cap']     = self.instrument.read_register(4104)
+        arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
         arg['service_tank_level']   = self.instrument.read_register(4097)
-        arg['service_tank_cap']     = self.instrument.read_register(4105)
+        arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
         arg['flowmeter_1_in']       = self.instrument.read_register(4098) 
         arg['flowmeter_1_out']      = self.instrument.read_register(4100)
-        arg['engine_1_status']      = self.instrument.read_register(4106)
+        arg['engine_1_status']      = status[self.instrument.read_register(4106)]
         arg['flowmeter_2_in']       = self.instrument.read_register(4103)
         arg['flowmeter_2_out']      = self.instrument.read_register(4101)
-        arg['engine_2_status']      = self.instrument.read_register(4107)
+        arg['engine_2_status']      = status[self.instrument.read_register(4107)]
 
         return arg
+
 class Sim900():
     def __init__ (self):
-        self.obj = serial.Serial('/dev/ttyUSB0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+        try:
+            self.obj = serial.Serial('/dev/ttyUSB0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+            
+        except Exception as e:
+
+            print('Sim900, __init__:- '+str(e))
         self.db=database_backup()
     def sendAt(self,command,success='OK',error='ERROR',wait=1):
         """
@@ -215,12 +223,12 @@ class Sim900():
         self.sendAt('at+creg?')
         self.sendAt('at+cgatt?')
         self.sendAt('at+cipshut')
-        status=self.sendAt('at+cstt="bsnlnet"')
+        status=self.sendAt('at+cstt="airtelgprs.com"')
 
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="UDP","52.74.65.110","50001"')
+        flag = self.sendAt('at+cipstart="UDP","52.74.236.155","50001"')
 
         if 'Error' in flag:
             self.db.insertDb(arg)
@@ -238,47 +246,40 @@ class Sim900():
 
         #while 'Error' not in flag:
         #packet=device+';'+str(level)+';'+str(time)
-
         
-        """arg['dreadger_name']        = 'dreadger_name'
-        arg['time']                 = time.localtime()
-        arg['storage_tank_level']   = instrument.read_register(4096)
-        arg['storage_tank_cap']     = instrument.read_register(4104)
-        arg['service_tank_level']   = instrument.read_register(4097)
-        arg['service_tank_cap']     = instrument.read_register(4105)
-        arg['flowmeter_1_in']       = instrument.read_register(4098) 
-        arg['flowmeter_1_out']      = instrument.read_register(4100)
-        arg['engine_1_status']      = instrument.read_register(4106)
-        arg['flowmeter_2_in']       = instrument.read_register(4103)
-        arg['flowmeter_2_out']      = instrument.read_register(4101)
-        arg['engine_2_status']      = instrument.read_register(4107)
-        """
-
-        packet=''
-        for key in arg.keys():
-            packet = packet + ';' + str(arg[key])    # Iterate through dictionary
-        packet = packet.replace(';','',1)       # Remove the 1st occurance of ';'
-
-        
+        packet = str(arg['dredger_name'])\
+                +';'+str(arg['time'])\
+                  +';'+str(arg['storage_tank_level'])\
+                +';'+str(arg['storage_tank_cap'])\
+                +';'+str(arg['service_tank_level'])\
+                +';'+str(arg['service_tank_cap'])\
+                +';'+str(arg['flowmeter_1_in'])\
+                +';'+str(arg['flowmeter_1_out'])\
+                +';'+str(arg['engine_1_status'])\
+                +';'+str(arg['flowmeter_2_in'])\
+                +';'+str(arg['flowmeter_2_out'])\
+                +';'+str(arg['engine_2_status'])\
 
         self.sendAt('at+cipsend','>','ERROR')
         self.obj.write(bytes(packet+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         flag = self.checkStatus('DATA ACCEPT',';')
+
+        print("\n\nPacket: \t"+packet+"\n\n")
         
         if case != 'backfill':              # case!='backfill' => live
             if 'Error' in flag:             # Backup data if live sending fails
-                print('\tLive : Failed!!')
+                print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
                 self.db.insertDb(arg)
             else:
-                print('\tLive : Success . .')
+                print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
             #break
         elif case=='backfill':
             if flag=='success':    #Delete packet from database once backfill has send it to server succesfully
-                print('backfill : Success . .')
+                print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
                 self.db.deleteDb(arg)
             else:
                 #print('device = ',case)
-                print('backfill : Failed!!')
+                print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 
         
 
@@ -321,9 +322,10 @@ class live(threading.Thread):
             
             try:
                 arg=self.delta.readData()
+                print("\n\n\tDATA READ FROM PLC!!\n\n")
                 self.gsm.gsmInit(arg,'live')
             except Exception as e:
-                print('live_run: '+str(e))
+                print('Error, live_run: '+str(e))
             
 
             
