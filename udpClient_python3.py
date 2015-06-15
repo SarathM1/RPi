@@ -143,7 +143,7 @@ class plc():
 class Sim900():
     def __init__ (self):
         try:
-            self.obj = serial.Serial('/dev/ttyUSB0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+            self.obj = serial.Serial('/dev/hackaday2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
             
         except Exception as e:
 

@@ -30,7 +30,7 @@ class Sim900(object):
 if __name__ == '__main__':
     while True:
         try:
-            instrument = minimalmodbus.Instrument('/dev/hackaday2',1)
+            instrument = minimalmodbus.Instrument('/dev/hackaday1',1)
             instrument.serial.baudrate = 9600
             instrument.serial.bytesize = 7
             instrument.serial.parity = serial.PARITY_EVEN
