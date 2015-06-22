@@ -3,6 +3,9 @@ from PySide.QtGui import *
 import sys
 
 import pyFile
+import serial
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
 
 class app(QMainWindow,pyFile.Ui_MainWindow):
 	def __init__(self,parent=None):
