@@ -4,6 +4,15 @@ import serial
 import time
 import threading
 import minimalmodbus
+"""
+Install Library Minimalmodbus 0.6, 
+there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
+
+Source: http://sourceforge.net/projects/minimalmodbus/?source=typ_redirect
+Commands:       
+                cd /home/wa/Music/MinimalModbus-0.6
+                sudo python3 setup.py install
+"""
 import sqlite3
 import random
 import os
@@ -112,7 +121,7 @@ class database_backup():
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/ttyUSB2',1)
+            self.instrument = minimalmodbus.Instrument('/dev/port1',2)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
@@ -143,7 +152,7 @@ class plc():
 class Sim900():
     def __init__ (self):
         try:
-            self.obj = serial.Serial('/dev/hackaday2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+            self.obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
             
         except Exception as e:
 
@@ -223,12 +232,12 @@ class Sim900():
         self.sendAt('at+creg?')
         self.sendAt('at+cgatt?')
         self.sendAt('at+cipshut')
-        status=self.sendAt('at+cstt="airtelgprs.com"')
+        status=self.sendAt('at+cstt="internet"')
 
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="UDP","52.74.236.155","50001"')
+        flag = self.sendAt('at+cipstart="UDP","54.169.36.127","50001"')
 
         if 'Error' in flag:
             self.db.insertDb(arg)
