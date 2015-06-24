@@ -121,7 +121,7 @@ class database_backup():
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/port1',2)
+            self.instrument = minimalmodbus.Instrument('/dev/port4',2)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
@@ -152,7 +152,7 @@ class plc():
 class Sim900():
     def __init__ (self):
         try:
-            self.obj = serial.Serial('/dev/ttyS0',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+            self.obj = serial.Serial('/dev/port1',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
             
         except Exception as e:
 
@@ -168,6 +168,7 @@ class Sim900():
         time.sleep(0.25)
         
         status=self.checkStatus(success,error,wait)
+        #time.sleep(1)
         return status
 
     def checkStatus(self,success='OK',error='ERROR',wait=1):
@@ -237,7 +238,7 @@ class Sim900():
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="UDP","54.169.36.127","50001"')
+        flag = self.sendAt('at+cipstart="UDP","52.74.187.97","50001"')
 
         if 'Error' in flag:
             self.db.insertDb(arg)
@@ -270,7 +271,7 @@ class Sim900():
                 +';'+str(arg['engine_2_status'])\
 
         self.sendAt('at+cipsend','>','ERROR')
-        self.obj.write(bytes(packet+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
+        self.obj.write(bytes(packet+'\n\r'+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         flag = self.checkStatus('DATA ACCEPT',';')
 
         print("\n\nPacket: \t"+packet+"\n\n")
