@@ -17,7 +17,7 @@ import sqlite3
 import random
 import os
 
-from flask import Flask, flash, , , url_for, render_template, redirect
+from flask import Flask, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -121,7 +121,7 @@ class database_backup():
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/port4',2)
+            self.instrument = minimalmodbus.Instrument('/dev/port1',2)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
@@ -152,7 +152,7 @@ class plc():
 class Sim900():
     def __init__ (self):
         try:
-            self.obj = serial.Serial('/dev/port1',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+            self.obj = serial.Serial('/dev/port2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
             
         except Exception as e:
 
@@ -171,16 +171,18 @@ class Sim900():
         #time.sleep(1)
         return status
 
-    def checkStatus(self,success='OK',error='ERROR',wait=1):
+    def checkStatus(self,success='OK',error='ERROR',wait=3):
         """
         Function to wait and respond for Replies from modem for each
         AT command sent to it 
         """
+        
         try:
+
             status = self.obj.read(100).decode('ascii').strip()
         except Exception as e:
             status=error
-            print(e)
+            print('checkStatus: ' + str(e))
         
         
         cntr=1                      # Timeout in secs
@@ -225,6 +227,7 @@ class Sim900():
 
     def gsmInit(self,arg,case='backfill'):
         #while True:
+        
         self.sendAt('at')
         self.sendAt('at+cipclose')
         self.sendAt('ate0')
@@ -238,8 +241,7 @@ class Sim900():
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="TCP","52.74.78.20","50001"')
-
+        flag = self.sendAt('at+cipstart="TCP","52.74.78.20","5000"','CONNECT OK','FAIL')
         if 'Error' in flag:
             self.db.insertDb(arg)
             print('Error in gsmInit')
@@ -248,15 +250,13 @@ class Sim900():
             #self.sendAt('at+cipqsend=1')
             self.sendPacket(arg,case)
             #break
-        """if case != 'backfill':
-            break"""
-
+        
     def sendPacket(self,arg,case ='backfill'):
         #flag='dummy value'              # Just to avoid error
 
         #while 'Error' not in flag:
         #packet=device+';'+str(level)+';'+str(time)
-        
+
         packet = str(arg['dredger_name'])\
                 +';'+str(arg['time'])\
                   +';'+str(arg['storage_tank_level'])\
@@ -270,10 +270,11 @@ class Sim900():
                 +';'+str(arg['flowmeter_2_out'])\
                 +';'+str(arg['engine_2_status'])\
 
-        self.sendAt('at+cipsend','>','ERROR')
+        self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+        self.sendAt('at+cipsend','>','ERROR',5)
         #self.obj.write(bytes(packet+'\n\r'+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
-        flag = self.checkStatus('SEND OK',';')
+        flag = self.checkStatus('SEND OK','ERROR',3)
 
         print("\n\nPacket: \t"+packet+"\n\n")
         
@@ -300,35 +301,38 @@ class backFill(threading.Thread):
     
     def __init__(self,event):
         threading.Thread.__init__(self)
-        self.event = event
+        #self.event = event
         self.db=database_backup()
         self.gsm = Sim900()
 
     def run(self):
         i=1
         while True:
-            self.event.wait()
+            event.wait()
+            backfillEvent.clear()
             arg = self.db.fetchData()
             if not arg:
                 print ('Database is empty')
                 time.sleep(1)
             else:
+                #self.gsm.sendPacket(arg,'backfill',self.event)
                 self.gsm.sendPacket(arg,'backfill')
                 time.sleep(1)
-
+            backfillEvent.set()
 class live(threading.Thread):
     def __init__(self,event):
         self.delta=plc()
         threading.Thread.__init__(self)
-        self.event = event
+        #self.event = event
         self.gsm = Sim900()
     
     def run(self):
         
         while True:
             
-            self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
-            
+            #self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
+            event.clear()
+            backfillEvent.wait()
             print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
             try:
@@ -342,14 +346,15 @@ class live(threading.Thread):
             
             print('e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
-            self.event.set()  
+            #self.event.set()  
+            event.set()
             
-            time.sleep(10)                   #backfill runs for 10 sec's
+            time.sleep(20)                   #backfill runs for 10 sec's
             
 def main():
     db=database_backup()
     db.db_init()
-    event = threading.Event()
+    #event = threading.Event()
 
     t1 = backFill(event)
     t2 = live(event)
@@ -359,6 +364,9 @@ def main():
     
 
 if __name__ == '__main__':
+    event = threading.Event()
+    backfillEvent = threading.Event()
+    backfillEvent.set()
     main()
             
 
