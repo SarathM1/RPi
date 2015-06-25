@@ -4,6 +4,7 @@ import serial
 import time
 import threading
 import minimalmodbus
+from errorFile import errorHandler      # Import from local file errorFile 
 """
 Install Library Minimalmodbus 0.6, 
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
@@ -64,7 +65,8 @@ class dredger(db.Model):
         self.flowmeter_2_in      = arg['flowmeter_2_in']
         self.flowmeter_2_out     = arg['flowmeter_2_out']
         self.engine_2_status     = arg['engine_2_status']
-    
+
+
 
 class database_backup():
     def db_init(self):
@@ -118,6 +120,9 @@ class database_backup():
             print ('fetchData: '+str(e))
 
 
+
+
+
 class plc():
     def __init__(self):
         try:
@@ -130,22 +135,47 @@ class plc():
             self.instrument.mode = minimalmodbus.MODE_ASCII
         except Exception as e:
             print('plc_init: '+str(e))
+            err.setBit('plc')
+            print ('Error in PLC ? : ',err.checkBit('plc'))
     def readData(self):
         cap=['Close','Open']
         status=['Off','On']
         arg={}
-        arg['dredger_name']         = 'dredger1'
-        arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
-        arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
-        arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
-        arg['service_tank_level']   = self.instrument.read_register(4097)
-        arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
-        arg['flowmeter_1_in']       = self.instrument.read_register(4098) 
-        arg['flowmeter_1_out']      = self.instrument.read_register(4100)
-        arg['engine_1_status']      = status[self.instrument.read_register(4106)]
-        arg['flowmeter_2_in']       = self.instrument.read_register(4103)
-        arg['flowmeter_2_out']      = self.instrument.read_register(4101)
-        arg['engine_2_status']      = status[self.instrument.read_register(4107)]
+
+        try:
+            
+            if err.checkBit('plc'):       # If PLC is disconnected
+
+                arg['dredger_name']         = 'dredger1'
+                arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                arg['storage_tank_level']   = 0
+                arg['storage_tank_cap']     = cap[0]
+                arg['service_tank_level']   = 0
+                arg['service_tank_cap']     = cap[0]
+                arg['flowmeter_1_in']       = 0
+                arg['flowmeter_1_out']      = 0
+                arg['engine_1_status']      = status[0]
+                arg['flowmeter_2_in']       = 0
+                arg['flowmeter_2_out']      = 0
+                arg['engine_2_status']      = status[0]
+
+            else:
+
+                arg['dredger_name']         = 'dredger1'
+                arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
+                arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
+                arg['service_tank_level']   = self.instrument.read_register(4097)
+                arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
+                arg['flowmeter_1_in']       = self.instrument.read_register(4098) 
+                arg['flowmeter_1_out']      = self.instrument.read_register(4100)
+                arg['engine_1_status']      = status[self.instrument.read_register(4106)]
+                arg['flowmeter_2_in']       = self.instrument.read_register(4103)
+                arg['flowmeter_2_out']      = self.instrument.read_register(4101)
+                arg['engine_2_status']      = status[self.instrument.read_register(4107)]
+
+        except Exception as e:
+                print('PLC_read_data: ',str(e))
 
         return arg
 
@@ -241,7 +271,8 @@ class Sim900():
         flag = self.sendAt('at+ciicr','OK','ERROR',20)
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="TCP","52.74.78.20","5000"','CONNECT OK','FAIL')
+        flag = self.sendAt('at+cipstart="TCP","54.169.57.106","5000"','CONNECT OK','FAIL')
+        self.checkStatus('ACK_FROM_SERVER','ERROR',3)
         if 'Error' in flag:
             self.db.insertDb(arg)
             print('Error in gsmInit')
@@ -270,7 +301,7 @@ class Sim900():
                 +';'+str(arg['flowmeter_2_out'])\
                 +';'+str(arg['engine_2_status'])\
 
-        self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+        
         self.sendAt('at+cipsend','>','ERROR',5)
         #self.obj.write(bytes(packet+'\n\r'+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
@@ -367,6 +398,7 @@ if __name__ == '__main__':
     event = threading.Event()
     backfillEvent = threading.Event()
     backfillEvent.set()
+    err = errorHandler()           # import from file errorFile.py
     main()
             
 
