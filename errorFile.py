@@ -1,15 +1,17 @@
 class errorHandler():
     def __init__(self):
-        self.code = 8
+        self.code = 0
     def lookup(self,errType):
         return {
         'boot':1,
         'plc': 2,
         'gsmUsb': 3,
-        'gsmCpin':4,
-        'gsmCsq':5,
-        'gsmCreg':6,
-        'gsmCgatt':7,
+        'gsmConn':4,
+        'gsmCpin':5,
+        'gsmCsq':6,
+        'gsmCreg':7,
+        'gsmCgatt':8,
+        'gsmCiicr':9,
         }.get(errType)
 
     def checkBit(self,errType):
