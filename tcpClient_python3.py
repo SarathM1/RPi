@@ -3,8 +3,9 @@
 import serial
 import time
 import threading
-import minimalmodbus
+from backfill import database_backup
 from errorFile import errorHandler      # Import from local file errorFile 
+import minimalmodbus
 """
 Install Library Minimalmodbus 0.6, 
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
@@ -14,113 +15,6 @@ Commands:
                 cd /home/wa/Music/MinimalModbus-0.6
                 sudo python3 setup.py install
 """
-import sqlite3
-import random
-import os
-
-from flask import Flask, flash
-from flask.ext.sqlalchemy import SQLAlchemy
-
-
-app = Flask (__name__)                  
-db = SQLAlchemy(app)
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'backfill.db')
-
-class dredger(db.Model):
-    __tablename__ = 'backfill'
-    id                  = db.Column(db.Integer, primary_key=True)
-    dredger_name       = db.Column(db.String(25))
-    #time                = db.Column(db.DateTime,unique=True)  # If not unique then there will be logical errors
-    time                = db.Column(db.String(20),unique=True) #Sqlite supports only string as date
-    storage_tank_level  = db.Column(db.Integer)
-    storage_tank_cap    = db.Column(db.String(25))
-    service_tank_level  = db.Column(db.Integer)
-    service_tank_cap    = db.Column(db.String(25))
-    flowmeter_1_in      = db.Column(db.Integer)
-    flowmeter_1_out     = db.Column(db.Integer)
-    engine_1_status     = db.Column(db.String(25))
-    flowmeter_2_in      = db.Column(db.Integer)
-    flowmeter_2_out     = db.Column(db.Integer)
-    engine_2_status     = db.Column(db.String(25))
-
-    def __repr__(self):
-        return self.dredger_name+ ',' +str(self.time)+ ',' +str(self.storage_tank_level)+ ',' +\
-                self.storage_tank_cap+ ',' +str(self.service_tank_level)+ ',' +self.service_tank_cap+ ',' +\
-                str(self.flowmeter_1_in)+ ',' +str(self.flowmeter_1_out)+ ',' +self.engine_1_status+ ',' +str(self.flowmeter_2_in)+ ',' +\
-                str(self.flowmeter_2_out)+ ',' +str(self.engine_2_status)+'\n'
-
-    def __init__(self, arg):
-        
-        self.dredger_name       = arg['dredger_name']
-        self.time                = arg['time']
-        self.storage_tank_level  = arg['storage_tank_level']
-        self.storage_tank_cap    = arg['storage_tank_cap']
-        self.service_tank_level  = arg['service_tank_level']
-        self.service_tank_cap    = arg['service_tank_cap']
-        self.flowmeter_1_in      = arg['flowmeter_1_in']
-        self.flowmeter_1_out     = arg['flowmeter_1_out']
-        self.engine_1_status     = arg['engine_1_status']
-        self.flowmeter_2_in      = arg['flowmeter_2_in']
-        self.flowmeter_2_out     = arg['flowmeter_2_out']
-        self.engine_2_status     = arg['engine_2_status']
-
-
-
-class database_backup():
-    def db_init(self):
-        try:
-            db.create_all()
-        except Exception as e:
-            print(('db_init ERROR:'+str(e)))
-            pass
-        
-    def drop_all(self):
-        db.drop_all()
-
-    def insertDb(self,arg):
-        try:
-            data=dredger(arg)
-            db.session.add(data)
-            db.session.commit()
-        except Exception as e:
-            #flash('insertDb: '+str(e))
-            print ('insertDb: '+str(e))
-
-    def deleteDb(self,arg):
-        try:
-            dredger.query.filter(dredger.time == arg['time']).delete()
-            db.session.commit()
-        except Exception as e:
-            #flash('insertDb: '+str(e))
-            print ('deleteDb: '+str(e))
-    def fetchData(self):
-        try:
-            results = dredger.query.order_by(dredger.time.desc()).first()
-            if not results:
-                return None  # If database is empty
-            else:
-                dictRow={}
-                dictRow['dredger_name']        = results.dredger_name
-                dictRow['time']                 = results.time
-                dictRow['storage_tank_level']   = results.storage_tank_level
-                dictRow['storage_tank_cap']     = results.storage_tank_cap
-                dictRow['service_tank_level']   = results.service_tank_level
-                dictRow['service_tank_cap']     = results.service_tank_cap
-                dictRow['flowmeter_1_in']       = results.flowmeter_1_in
-                dictRow['flowmeter_1_out']      = results.flowmeter_1_out
-                dictRow['engine_1_status']      = results.engine_1_status
-                dictRow['flowmeter_2_in']       = results.flowmeter_2_in
-                dictRow['flowmeter_2_out']      = results.flowmeter_2_out
-                dictRow['engine_2_status']      = results.engine_2_status
-                return dictRow
-        except Exception as e:
-            #flash('insertDb: '+str(e))
-            print ('fetchData: '+str(e))
-
-
-
 
 
 class plc():
@@ -147,7 +41,7 @@ class plc():
             if err.checkBit('plc'):       # If PLC is disconnected
 
                 arg['dredger_name']         = 'dredger1'
-                arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
                 arg['storage_tank_level']   = 0
                 arg['storage_tank_cap']     = cap[0]
                 arg['service_tank_level']   = 0
@@ -162,7 +56,7 @@ class plc():
             else:
 
                 arg['dredger_name']         = 'dredger1'
-                arg['time']                 = time.strftime('%d/%m/%Y %H:%M:%S',time.localtime())
+                arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
                 arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
                 arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
                 arg['service_tank_level']   = self.instrument.read_register(4097)
@@ -348,7 +242,7 @@ class backFill(threading.Thread):
             else:
                 #self.gsm.sendPacket(arg,'backfill',self.event)
                 self.gsm.sendPacket(arg,'backfill')
-                time.sleep(1)
+                time.sleep(0.5)
             backfillEvent.set()
 class live(threading.Thread):
     def __init__(self,event):
@@ -380,13 +274,9 @@ class live(threading.Thread):
             #self.event.set()  
             event.set()
             
-            time.sleep(20)                   #backfill runs for 10 sec's
+            time.sleep(10)                   #backfill runs for 10 sec's
             
 def main():
-    db=database_backup()
-    db.db_init()
-    #event = threading.Event()
-
     t1 = backFill(event)
     t2 = live(event)
     t1.start()
