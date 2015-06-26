@@ -6,6 +6,7 @@ import threading
 from backfill import database_backup
 from errorFile import errorHandler      # Import from local file errorFile 
 import minimalmodbus
+import os
 """
 Install Library Minimalmodbus 0.6, 
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
@@ -17,10 +18,28 @@ Commands:
 """
 
 
+def dummyPacket():
+    arg['dredger_name']         = 'dredger1'
+    arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+    arg['storage_tank_level']   = 0
+    arg['storage_tank_cap']     = cap[0]
+    arg['service_tank_level']   = 0
+    arg['service_tank_cap']     = cap[0]
+    arg['flowmeter_1_in']       = 0
+    arg['flowmeter_1_out']      = 0
+    arg['engine_1_status']      = status[0]
+    arg['flowmeter_2_in']       = 0
+    arg['flowmeter_2_out']      = 0
+    arg['engine_2_status']      = status[0]
+    arg['error_code']           = err.code
+
+    return arg
+
+
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/port1',2)
+            self.instrument = minimalmodbus.Instrument('/dev/port1',1)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
@@ -28,9 +47,9 @@ class plc():
             self.instrument.serial.timeout = 0.1
             self.instrument.mode = minimalmodbus.MODE_ASCII
         except Exception as e:
-            print('plc_init: '+str(e))
-            err.setBit('plc')
-            print ('Error in PLC ? : ',err.checkBit('plc'))
+            print('\nplc_init: '+str(e)+'\n')
+            err.setBit('plc')                               # Error code for logging
+            
     def readData(self):
         cap=['Close','Open']
         status=['Off','On']
@@ -40,18 +59,7 @@ class plc():
             
             if err.checkBit('plc'):       # If PLC is disconnected
 
-                arg['dredger_name']         = 'dredger1'
-                arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
-                arg['storage_tank_level']   = 0
-                arg['storage_tank_cap']     = cap[0]
-                arg['service_tank_level']   = 0
-                arg['service_tank_cap']     = cap[0]
-                arg['flowmeter_1_in']       = 0
-                arg['flowmeter_1_out']      = 0
-                arg['engine_1_status']      = status[0]
-                arg['flowmeter_2_in']       = 0
-                arg['flowmeter_2_out']      = 0
-                arg['engine_2_status']      = status[0]
+                arg = dummyPacket()
 
             else:
 
@@ -67,6 +75,8 @@ class plc():
                 arg['flowmeter_2_in']       = self.instrument.read_register(4103)
                 arg['flowmeter_2_out']      = self.instrument.read_register(4101)
                 arg['engine_2_status']      = status[self.instrument.read_register(4107)]
+                arg['error_code']           = err.code
+
 
         except Exception as e:
                 print('PLC_read_data: ',str(e))
@@ -79,7 +89,7 @@ class Sim900():
             self.obj = serial.Serial('/dev/port2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
             
         except Exception as e:
-
+            err.setBit('gsmUsb')
             print('Sim900, __init__:- '+str(e))
         self.db=database_backup()
     def sendAt(self,command,success='OK',error='ERROR',wait=1):
@@ -150,38 +160,51 @@ class Sim900():
             return 'other'
 
     def gsmInit(self,arg,case='backfill'):
-        #while True:
         
         self.sendAt('at')
         self.sendAt('at+cipclose')
         self.sendAt('ate0')
-        self.sendAt('at+cpin?')
-        self.sendAt('at+csq')
-        self.sendAt('at+creg?')
-        self.sendAt('at+cgatt?')
+        
+        flagCpin = self.sendAt('at+cpin?')
+        if 'Error' in flagCpin:
+            err.setBit('gsmCpin')
+        
+        flasgCsq = self.sendAt('at+csq')
+        if 'Error' in flasgCsq:
+            err.setBit('gsmCsq')
+
+        flagCreg = self.sendAt('at+creg?')
+        if 'Error' in flagCreg:
+            err.setBit('gsmCreg')
+        
+        flagCgatt = self.sendAt('at+cgatt?')
+        if 'Error' in flagCgatt:
+            err.setBit('gsmCgatt')
+
+        
         self.sendAt('at+cipshut')
         status=self.sendAt('at+cstt="internet"')
 
-        flag = self.sendAt('at+ciicr','OK','ERROR',20)
+        flagCiicr = self.sendAt('at+ciicr','OK','ERROR',20)
+        if 'Error' in flagCiicr:
+            err.setBit('gsmCiicr')
+
         self.sendAt('at+cifsr','.','ERROR')
 
-        flag = self.sendAt('at+cipstart="TCP","54.169.57.106","5000"','CONNECT OK','FAIL')
+        flagConn = self.sendAt('at+cipstart="TCP","54.169.57.106","5000"','CONNECT OK','FAIL')
         self.checkStatus('ACK_FROM_SERVER','ERROR',3)
-        if 'Error' in flag:
+        
+        if 'Error' in flagConn:
+            self.setBit('gsmConn')
             self.db.insertDb(arg)
             print('Error in gsmInit')
             pass
         else:
-            #self.sendAt('at+cipqsend=1')
             self.sendPacket(arg,case)
-            #break
-        
+
+            
     def sendPacket(self,arg,case ='backfill'):
-        #flag='dummy value'              # Just to avoid error
-
-        #while 'Error' not in flag:
-        #packet=device+';'+str(level)+';'+str(time)
-
+        
         packet = str(arg['dredger_name'])\
                 +';'+str(arg['time'])\
                   +';'+str(arg['storage_tank_level'])\
@@ -194,10 +217,10 @@ class Sim900():
                 +';'+str(arg['flowmeter_2_in'])\
                 +';'+str(arg['flowmeter_2_out'])\
                 +';'+str(arg['engine_2_status'])\
+                +';'+str(arg['error_code'])
 
         
         self.sendAt('at+cipsend','>','ERROR',5)
-        #self.obj.write(bytes(packet+'\n\r'+'\x1A',encoding='ascii'))           # bytes(command+'\r\n',encoding='ascii')
         self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
         flag = self.checkStatus('SEND OK','ERROR',3)
 
@@ -209,13 +232,12 @@ class Sim900():
                 self.db.insertDb(arg)
             else:
                 print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
-            #break
+            
         elif case=='backfill':
             if flag=='success':    #Delete packet from database once backfill has send it to server succesfully
                 print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
                 self.db.deleteDb(arg)
             else:
-                #print('device = ',case)
                 print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 
         
@@ -226,52 +248,79 @@ class backFill(threading.Thread):
     
     def __init__(self,event):
         threading.Thread.__init__(self)
-        #self.event = event
         self.db=database_backup()
         self.gsm = Sim900()
 
     def run(self):
+        
         i=1
         while True:
             event.wait()
             backfillEvent.clear()
-            arg = self.db.fetchData()
-            if not arg:
-                print ('Database is empty')
-                time.sleep(1)
+            if err.checkBit('gsmUsb'):
+                if err.checkBit('plc'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
+                        print ("\n\t\tERROR: PLC & GSM disconnected !!\n\n")
+                else:
+                    print ('\n\n\tERROR: GSM DISCONNECTED !!\
+                    PLEASE REBOOT\n\n')
+
+                time.sleep(5)
             else:
-                #self.gsm.sendPacket(arg,'backfill',self.event)
-                self.gsm.sendPacket(arg,'backfill')
-                time.sleep(0.5)
+                arg = self.db.fetchData()
+                if not arg:
+                    print ('Database is empty')
+                    time.sleep(1)
+                else:
+                    self.gsm.sendPacket(arg,'backfill')
+                    time.sleep(0.5)
             backfillEvent.set()
+
+
 class live(threading.Thread):
     def __init__(self,event):
         self.delta=plc()
+        self.db=database_backup()
         threading.Thread.__init__(self)
-        #self.event = event
         self.gsm = Sim900()
     
     def run(self):
         
         while True:
             
-            #self.event.clear()             #One event occurs in live thread btw event.clear() and event.wait
             event.clear()
             backfillEvent.wait()
-            print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
-            try:
-                arg=self.delta.readData()
-                print("\n\n\tDATA READ FROM PLC!!\n\n")
-                self.gsm.gsmInit(arg,'live')
-            except Exception as e:
-                print('Error, live_run: '+str(e))
+            
+            if err.checkBit('plc'):
+                if err.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
+                        print ("\n\t\tERROR: PLC & GSM disconnected !!\n\n")
+                else:
+                    print ('\n\n\tERROR: PLC DISCONNECTED !!\
+                    PLEASE REBOOT\n\n')
+
+                time.sleep(5)
+            else:
+                print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
+
+                try:
+                    arg=self.delta.readData()
+                    print("\n\n\tDATA READ FROM PLC!!\n\n")
+                    
+                    if err.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
+                        self.db.insertDb(arg)
+                        print ("\n\t\tERROR: GSM disconnected !!\
+                        \n\t\tPACKET PUSHED TO BACKUP db\n\n")
+
+                        time.sleep(1)
+                    else:
+                        self.gsm.gsmInit(arg,'live')
+                except Exception as e:
+                    print('Error, live_run: '+str(e))
             
 
             
-            print('e-------------Live: ',time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
             
-            #self.event.set()  
+            
             event.set()
             
             time.sleep(10)                   #backfill runs for 10 sec's
@@ -285,6 +334,10 @@ def main():
     
 
 if __name__ == '__main__':
+    try:
+        os.system("clear")
+    except :
+        pass
     event = threading.Event()
     backfillEvent = threading.Event()
     backfillEvent.set()
