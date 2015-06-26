@@ -282,7 +282,7 @@ class live(threading.Thread):
         self.db=database_backup()
         threading.Thread.__init__(self)
         self.gsm = Sim900()
-    
+        err.setBit('boot')          # Bit 'boot' is set for only the first Live packet
     def run(self):
         
         while True:
@@ -320,7 +320,7 @@ class live(threading.Thread):
 
             
             
-            
+            err.clearBit('boot')            #Bit boot is cleared for all packets except the 1st Live
             event.set()
             
             time.sleep(10)                   #backfill runs for 10 sec's
