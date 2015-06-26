@@ -28,6 +28,7 @@ class backfill_manage():
         Column('flowmeter_2_in',Integer),
         Column('flowmeter_2_out',Integer),
         Column('engine_2_status',String(25)),
+        Column('error_code',String(25))
         )
 
         backfill.create()

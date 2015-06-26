@@ -30,6 +30,8 @@ class database_backup():
 			flowmeter_2_in      = arg['flowmeter_2_in'],
 			flowmeter_2_out     = arg['flowmeter_2_out'],
 			engine_2_status     = arg['engine_2_status'],
+			error_code 			= arg['error_code'],
+
 			)
 		except Exception as e:
 			print ('insertDb: '+str(e))
@@ -61,6 +63,7 @@ class database_backup():
 				dictRow['flowmeter_2_in']       = row.flowmeter_2_in
 				dictRow['flowmeter_2_out']      = row.flowmeter_2_out
 				dictRow['engine_2_status']      = row.engine_2_status
+				dictRow['error_code']			= row.error_code
 				return dictRow
 		except Exception as e:
 			#flash('insertDb: '+str(e))
