@@ -52,6 +52,12 @@ class plc():
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			print("\n\t\t\tclearBit('plc')")
 			err.clearBit('plc')
+		
+		except serial.SerialException:
+			print("\n\t\t\tsetBit('plc')")
+			err.setBit('plc')
+			print ('\n\t\tPLC: CANNOT OPEN PORT!!')
+		
 		except Exception as e:
 			print('\nplc_init: '+str(e)+'\n')
 			print("\n\t\t\tsetBit('plc')")
@@ -98,7 +104,10 @@ class Sim900():
 			self.obj = serial.Serial('/dev/port2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
 			print("\n\t\t\tclearBit('gsmUsb')")
 			err.clearBit('gsmUsb')
-			
+		except serial.SerialException:
+			print("\n\t\t\tsetBit('gsmUsb')")
+			err.setBit('gsmUsb')
+			print ('\n\t\tGSM: CANNOT OPEN PORT!!')	
 		except Exception as e:
 			print("\n\t\t\tsetBit('gsmUsb')")
 			err.setBit('gsmUsb')
@@ -109,13 +118,16 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		print('{0:20}'.format(command), end=' ')
-		self.obj.write(bytes(command+'\r\n',encoding='ascii'))
-		time.sleep(0.25)
-		
-		status=self.checkStatus(success,error,wait)
-		#time.sleep(1)
-		return status
+		if not err.checkBit('gsmUsb'):
+			print('{0:20}'.format(command), end=' ')
+			self.obj.write(bytes(command+'\r\n',encoding='ascii'))
+			time.sleep(0.25)
+			
+			status=self.checkStatus(success,error,wait)
+			#time.sleep(1)
+			return status
+		else:
+			print('\n\t\t sendAT: GSM DISCONNECTED')
 
 	def checkStatus(self,success='OK',error='ERROR',wait=3):
 		"""
@@ -246,7 +258,7 @@ class Sim900():
 	def sendPacket(self,arg,case ='backfill'):
 		if err.checkBit('gsmUsb'):
 
-			print ('\n\n\tERROR: GSM DISCONNECTED !!\n\n')
+			print ('\n\n\tERROR: GSM DISCONNECTED !!')
 
 			return 'Error'
 		else:
@@ -300,6 +312,7 @@ class backFill(threading.Thread):
 					self.db.deleteDb(arg)
 				else:
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
+					time.sleep(5)
 
 				time.sleep(0.5)
 
