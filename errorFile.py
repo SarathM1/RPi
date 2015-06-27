@@ -3,15 +3,15 @@ class errorHandler():
         self.code = 0
     def lookup(self,errType):
         return {
-        'boot':1,
-        'plc': 2,
-        'gsmUsb': 3,
-        'gsmConn':4,
-        'gsmCpin':5,
-        'gsmCsq':6,
-        'gsmCreg':7,
-        'gsmCgatt':8,
-        'gsmCiicr':9,
+        'boot':0,
+        'plc': 1,
+        'gsmUsb': 2,
+        'gsmConn':3,
+        'gsmCpin':4,
+        'gsmCsq':5,
+        'gsmCreg':6,
+        'gsmCgatt':7,
+        'gsmCiicr':8,
         }.get(errType)
 
     def checkBit(self,errType):

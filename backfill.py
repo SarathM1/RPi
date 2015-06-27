@@ -15,7 +15,7 @@ backfill = Table('backfill', metadata, autoload=True)
 
 
 class database_backup():
-	def insertDb(self,arg):
+	def insertDb(self,arg,error_code):
 		try:
 			i = backfill.insert()
 			i.execute(dredger_name = arg['dredger_name'],
@@ -30,7 +30,7 @@ class database_backup():
 			flowmeter_2_in      = arg['flowmeter_2_in'],
 			flowmeter_2_out     = arg['flowmeter_2_out'],
 			engine_2_status     = arg['engine_2_status'],
-			error_code 			= arg['error_code'],
+			error_code 			= error_code,			#To get the latest error code
 
 			)
 		except Exception as e:
@@ -66,6 +66,5 @@ class database_backup():
 				dictRow['error_code']			= row.error_code
 				return dictRow
 		except Exception as e:
-			#flash('insertDb: '+str(e))
 			print ('fetchData: '+str(e))
 
