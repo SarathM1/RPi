@@ -241,17 +241,19 @@ class Sim900():
 
 			self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","54.169.81.50","5000"','CONNECT OK','FAIL')
-			self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
+			self.checkStatus('ACK_FROM_SERVER','ERROR',5)
 			
-			if 'Error' or 'other' in flagConn:
-				print("\n\t\t\tsetBit('gsmConn')")
-				err.setBit('gsmConn')
-				return 'Error'
-			else:
+			
+			if flagConn=='Success':
 				print("\n\t\t\tclearBit('gsmConn')")
 				err.clearBit('gsmConn')
 				return 'Success'
+			else:
+				print("\n\t\t\tsetBit('gsmConn')")
+				err.setBit('gsmConn')
+				return 'Error'
+			
 				
 
 			
@@ -343,7 +345,7 @@ class live(threading.Thread):
 				
 				if flagInit == 'Success':          # Else part is in gsmInit()
 					
-					flagSend = self.sendPacket(arg,'live')
+					flagSend = self.gsm.sendPacket(arg,'live')
 					
 					if flagSend == 'Error':
 						
