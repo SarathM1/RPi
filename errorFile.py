@@ -4,7 +4,7 @@ class errorHandler():
     def lookup(self,errType):
         return {
         'boot':0,
-        'plc': 1,
+        'plcUsb': 1,
         'gsmUsb': 2,
         'gsmConn':3,
         'gsmCpin':4,
@@ -12,13 +12,14 @@ class errorHandler():
         'gsmCreg':6,
         'gsmCgatt':7,
         'gsmCiicr':8,
+        'plcComm':9,
         }.get(errType)
 
     def checkBit(self,errType):
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print(e)
+            print('checkBit: ',e,errType)
             return None
         else:
             return (True if ( self.code &  mask) else False)
@@ -26,14 +27,14 @@ class errorHandler():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print(e)
+            print('setBit: ',e,errType)
         else:
             self.code |= mask
     def clearBit(self,errType):
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print (e)
+            print ('clearBit',e,errType)
         else:
             self.code &= (~mask)
 
