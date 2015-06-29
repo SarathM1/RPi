@@ -179,14 +179,25 @@ class Sim900():
 		string = string.replace('\r',' ').replace(',,','; ')
 
 
-
 		if success in status:
 			#print '\t\t',
 			print('{0:20} ==> {1:50}'.format('Success',string))
-			return 'Success'  # success => AT Command sent
+			
+			if success == 'CONNECT OK':
+				
+				if 'ACK_FROM_SERVER' in status:
+					return 'Success + Skip'
+				
+				else:
+					return 'Success'
+			
+			else:
+				return 'Success'  # success => AT Command sent
+
 		elif error in status:
 			print('{0:20} ==> {1:50}'.format('Error',string))
 			return 'Error'
+		
 		else:
 			print('{0:20} ==> {1:50}'.format('Other',string))
 			return 'other'
@@ -250,13 +261,19 @@ class Sim900():
 			self.sendAt('at+cifsr','.','ERROR')
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
-			self.checkStatus('ACK_FROM_SERVER','ERROR',5)
+			
 
 
 			if flagConn=='Success':
 				print("\n\t\t\tclearBit('gsmConn')")
 				err.clearBit('gsmConn')
 				return 'Success'
+			elif flagConn == 'Success + Skip':
+				print("\n\t\t\tclearBit('gsmConn')")
+				err.clearBit('gsmConn')
+				self.checkStatus('ACK_FROM_SERVER','ERROR',5)
+				return 'Success'
+
 			else:
 				print("\n\t\t\tsetBit('gsmConn')")
 				err.setBit('gsmConn')
