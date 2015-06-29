@@ -182,17 +182,7 @@ class Sim900():
 		if success in status:
 			#print '\t\t',
 			print('{0:20} ==> {1:50}'.format('Success',string))
-			
-			if success == 'CONNECT OK':
-				
-				if 'ACK_FROM_SERVER' in status:
-					return 'Success + Skip'
-				
-				else:
-					return 'Success'
-			
-			else:
-				return 'Success'  # success => AT Command sent
+			return 'Success'  # success => AT Command sent
 
 		elif error in status:
 			print('{0:20} ==> {1:50}'.format('Error',string))
@@ -262,18 +252,25 @@ class Sim900():
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
 			
+			flagAck = self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+
+			if flagAck == 'Success':
+				print("\n\t\t\tclearBit('serverAck')")
+				err.clearBit('serverAck')
+			
+			else:
+				if 'ACK_FROM_SERVER' in flagConn:
+					print("\n\t\t\tclearBit('serverAck')")
+					err.clearBit('serverAck')
+				else:
+					print("\n\t\t\tsetBit('serverAck')")
+					err.setBit('serverAck')
 
 
 			if flagConn=='Success':
 				print("\n\t\t\tclearBit('gsmConn')")
 				err.clearBit('gsmConn')
 				return 'Success'
-			elif flagConn == 'Success + Skip':
-				print("\n\t\t\tclearBit('gsmConn')")
-				err.clearBit('gsmConn')
-				self.checkStatus('ACK_FROM_SERVER','ERROR',5)
-				return 'Success'
-
 			else:
 				print("\n\t\t\tsetBit('gsmConn')")
 				err.setBit('gsmConn')
