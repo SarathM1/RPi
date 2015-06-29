@@ -50,18 +50,18 @@ class plc():
 			self.instrument.serial.stopbits = 1
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
-			print("\n\t\t\tclearBit('plc')")
-			err.clearBit('plc')
+			print("\n\t\t\tclearBit('plcUsb')")
+			err.clearBit('plcUsb')
 
 		except serial.SerialException:
-			print("\n\t\t\tsetBit('plc')")
-			err.setBit('plc')
+			print("\n\t\t\tsetBit('plcUsb')")
+			err.setBit('plcUsb')
 			print ('\n\t\tPLC: CANNOT OPEN PORT!!')
 
 		except Exception as e:
 			print('\nplc_init: '+str(e)+'\n')
-			print("\n\t\t\tsetBit('plc')")
-			err.setBit('plc')                               # Error code for logging
+			print("\n\t\t\tsetBit('plcUsb')")
+			err.setBit('plcUsb')                               # Error code for logging
 
 	def readData(self):
 		cap=['Close','Open']
@@ -70,7 +70,7 @@ class plc():
 
 		try:
 
-			if err.checkBit('plc'):       # If PLC is disconnected
+			if err.checkBit('plcUsb'):       # If PLC is disconnected
 				print ('\n\t\tERROR: PLC DISCONNECTED !!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n')
 				arg = dummyPacket()
@@ -90,11 +90,16 @@ class plc():
 				arg['flowmeter_2_out']      = self.instrument.read_register(4101)
 				arg['engine_2_status']      = status[self.instrument.read_register(4107)]
 				print("\n\t\tDATA READ FROM PLC!!\n\n")
-
+				print("\n\t\t\tclearBit('plcUsb')")
+				err.clearBit('plcComm')
 
 
 		except Exception as e:
 				print('PLC_read_data: ',str(e))
+				print("\n\t\t\tsetBit('plcUsb')")
+				err.setBit('plcComm')
+
+				arg = dummyPacket()
 
 		return arg
 
