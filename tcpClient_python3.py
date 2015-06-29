@@ -4,15 +4,15 @@ import serial
 import time
 import threading
 from backfill import database_backup
-from errorFile import errorHandler      # Import from local file errorFile 
+from errorFile import errorHandler      # Import from local file errorFile
 import minimalmodbus
 import os
 """
-Install Library Minimalmodbus 0.6, 
+Install Library Minimalmodbus 0.6,
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
 
 Source: http://sourceforge.net/projects/minimalmodbus/?source=typ_redirect
-Commands:       
+Commands:
 				cd /home/wa/Music/MinimalModbus-0.6
 				sudo python3 setup.py install
 """
@@ -52,24 +52,24 @@ class plc():
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			print("\n\t\t\tclearBit('plc')")
 			err.clearBit('plc')
-		
+
 		except serial.SerialException:
 			print("\n\t\t\tsetBit('plc')")
 			err.setBit('plc')
 			print ('\n\t\tPLC: CANNOT OPEN PORT!!')
-		
+
 		except Exception as e:
 			print('\nplc_init: '+str(e)+'\n')
 			print("\n\t\t\tsetBit('plc')")
 			err.setBit('plc')                               # Error code for logging
-			
+
 	def readData(self):
 		cap=['Close','Open']
 		status=['Off','On']
 		arg={}
 
 		try:
-			
+
 			if err.checkBit('plc'):       # If PLC is disconnected
 				print ('\n\t\tERROR: PLC DISCONNECTED !!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n')
@@ -83,14 +83,14 @@ class plc():
 				arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
 				arg['service_tank_level']   = self.instrument.read_register(4097)
 				arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
-				arg['flowmeter_1_in']       = self.instrument.read_register(4098) 
+				arg['flowmeter_1_in']       = self.instrument.read_register(4098)
 				arg['flowmeter_1_out']      = self.instrument.read_register(4100)
 				arg['engine_1_status']      = status[self.instrument.read_register(4106)]
 				arg['flowmeter_2_in']       = self.instrument.read_register(4103)
 				arg['flowmeter_2_out']      = self.instrument.read_register(4101)
 				arg['engine_2_status']      = status[self.instrument.read_register(4107)]
 				print("\n\t\tDATA READ FROM PLC!!\n\n")
-				
+
 
 
 		except Exception as e:
@@ -107,7 +107,7 @@ class Sim900():
 		except serial.SerialException:
 			print("\n\t\t\tsetBit('gsmUsb')")
 			err.setBit('gsmUsb')
-			print ('\n\t\tGSM: CANNOT OPEN PORT!!')	
+			print ('\n\t\tGSM: CANNOT OPEN PORT!!')
 		except Exception as e:
 			print("\n\t\t\tsetBit('gsmUsb')")
 			err.setBit('gsmUsb')
@@ -122,7 +122,7 @@ class Sim900():
 			print('{0:20}'.format(command), end=' ')
 			self.obj.write(bytes(command+'\r\n',encoding='ascii'))
 			time.sleep(0.25)
-			
+
 			status=self.checkStatus(success,error,wait)
 			#time.sleep(1)
 			return status
@@ -132,46 +132,46 @@ class Sim900():
 	def checkStatus(self,success='OK',error='ERROR',wait=3):
 		"""
 		Function to wait and respond for Replies from modem for each
-		AT command sent to it 
+		AT command sent to it
 		"""
-		
+
 		try:
 
 			status = self.obj.read(100).decode('ascii').strip()
 		except Exception as e:
 			status=error
 			print('checkStatus: ' + str(e))
-		
-		
+
+
 		cntr=1                      # Timeout in secs
-		while len(status)==0:           
-			
+		while len(status)==0:
+
 			if cntr>wait:
 				print('\n\tError, Time out, cntr = '+str(cntr)+'\n')
 				return 'connError'
 			cntr=cntr+1
-			
+
 			try:
 				status = self.obj.read(100).decode('ascii').strip()
 			except Exception as e:
 				status=error
 				print(e)
-			
+
 			time.sleep(1)
 			if wait>1:         # If waitin for more than 5 sec display count
 				print('\n\t'+str(cntr))
 
-		
+
 		#print '\t((('+status+')))'
-		
-		
+
+
 
 		string=status.split('\n')
 		string = ''.join(string)
 		string = string.replace('\r',' ').replace(',,','; ')
 
 
-		
+
 		if success in status:
 			#print '\t\t',
 			print('{0:20} ==> {1:50}'.format('Success',string))
@@ -189,11 +189,11 @@ class Sim900():
 			time.sleep(1)
 			return  'Error'
 		else:
-		
+
 			self.sendAt('at')
 			self.sendAt('at+cipclose')
 			self.sendAt('ate0')
-			
+
 			flagCpin = self.sendAt('at+cpin?')
 			if 'Error' in flagCpin:
 				print("\n\t\t\tsetBit('gsmCpin')")
@@ -202,7 +202,7 @@ class Sim900():
 				print("\n\t\t\tclearBit('gsmCpin')")
 				err.clearBit('gsmCpin')
 
-			
+
 			flasgCsq = self.sendAt('at+csq')
 			if 'Error' in flasgCsq:
 				print("\n\t\t\tsetBit('gsmCsq')")
@@ -218,7 +218,7 @@ class Sim900():
 			else:
 				print("\n\t\t\tclearBit('gsmCreg')")
 				err.clearBit('gsmCreg')
-			
+
 			flagCgatt = self.sendAt('at+cgatt?')
 			if 'Error' in flagCgatt:
 				print("\n\t\t\tsetBit('gsmCgatt')")
@@ -227,7 +227,7 @@ class Sim900():
 				print("\n\t\t\tclearBit('gsmCgatt')")
 				err.clearBit('gsmCgatt')
 
-			
+
 			self.sendAt('at+cipshut')
 			status=self.sendAt('at+cstt="internet"')
 
@@ -243,8 +243,8 @@ class Sim900():
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
 			self.checkStatus('ACK_FROM_SERVER','ERROR',5)
-			
-			
+
+
 			if flagConn=='Success':
 				print("\n\t\t\tclearBit('gsmConn')")
 				err.clearBit('gsmConn')
@@ -253,10 +253,10 @@ class Sim900():
 				print("\n\t\t\tsetBit('gsmConn')")
 				err.setBit('gsmConn')
 				return 'Error'
-			
-				
 
-			
+
+
+
 	def sendPacket(self,arg,case ='backfill'):
 		if err.checkBit('gsmUsb'):
 
@@ -279,18 +279,18 @@ class Sim900():
 					+';'+str(arg['engine_2_status'])\
 					+';'+str(err.code)
 
-			
+
 			self.sendAt('at+cipsend','>','ERROR',5)
 			self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
 			flagStatus = self.checkStatus('SEND OK','ERROR',3)
 
 
 			print("\n\nPacket: \t"+packet+"\n\n")
-			
+
 			return flagStatus
 
 class backFill(threading.Thread):
-	
+
 	def __init__(self,event):
 		threading.Thread.__init__(self)
 		self.db=database_backup()
@@ -301,14 +301,14 @@ class backFill(threading.Thread):
 		while True:
 			event.wait()
 			backfillEvent.clear()
-			
+
 			arg = self.db.fetchData()
 			if not arg:
 				print ('Database is empty')
 				time.sleep(1)
 			else:
 				flagSend=self.gsm.sendPacket(arg,'backfill')
-				
+
 				if flagSend == 'Success':
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
@@ -322,7 +322,7 @@ class backFill(threading.Thread):
 
 
 class live(threading.Thread):
-	
+
 	def __init__(self,event):
 		self.delta=plc()
 		self.db=database_backup()
@@ -330,57 +330,57 @@ class live(threading.Thread):
 		self.gsm = Sim900()
 		print("\n\t\t\tsetBit('boot')")
 		err.setBit('boot')          # Bit 'boot' is set for only the first Live packet
-	
+
 	def run(self):
 		while True:
-			
+
 			event.clear()
 			backfillEvent.wait()
-			
+
 			print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			try:
 				arg=self.delta.readData()
 				flagInit = self.gsm.gsmInit(arg)
-				
+
 				if flagInit == 'Success':          # Else part is in gsmInit()
-					
+
 					flagSend = self.gsm.sendPacket(arg,'live')
-					
+
 					if flagSend == 'Error':
-						
+
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
 						self.db.insertDb(arg,err.code)
 
 					else:
-						
+
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
 
 				else:
-					
+
 					self.db.insertDb(arg,err.code)
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
-					
+
 
 			except Exception as e:
 				print('Error, live_run: '+str(e))
-			
+
 			print("\n\t\t\tclearBit('boot')")
 			err.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
-         
+
 			event.set()
-			
+
 			time.sleep(10)                   #backfill runs for 10 sec's
-			
+
 def main():
 	t1 = backFill(event)
 	t2 = live(event)
 	t1.start()
 	t2.start()
 
-	
+
 
 if __name__ == '__main__':
 	try:
@@ -392,5 +392,3 @@ if __name__ == '__main__':
 	backfillEvent.set()
 	err = errorHandler()           # import from file errorFile.py
 	main()
-			
-
