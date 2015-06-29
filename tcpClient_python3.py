@@ -106,7 +106,10 @@ class plc():
 class Sim900():
 	def __init__ (self):
 		try:
-			self.obj = serial.Serial('/dev/port2',9600,serial.EIGHTBITS,serial.PARITY_NONE,serial.STOPBITS_ONE,1)
+			self.obj = serial.Serial(port='/dev/port2', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
+			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
+
 			print("\n\t\t\tclearBit('gsmUsb')")
 			err.clearBit('gsmUsb')
 		except serial.SerialException:
@@ -153,7 +156,7 @@ class Sim900():
 
 			if cntr>wait:
 				print('\n\tError, Time out, cntr = '+str(cntr)+'\n')
-				return 'connError'
+				return 'Error'
 			cntr=cntr+1
 
 			try:
@@ -315,11 +318,18 @@ class backFill(threading.Thread):
 				flagSend=self.gsm.sendPacket(arg,'backfill')
 
 				if flagSend == 'Success':
+					
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
-				else:
+
+				elif flagSend == 'Error':
+					
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 					time.sleep(5)
+
+				else:
+					print('\n\n\tBACKFILL : returned "Other" status!!\n\n')
+					
 
 				time.sleep(0.5)
 
@@ -357,9 +367,14 @@ class live(threading.Thread):
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
 						self.db.insertDb(arg,err.code)
 
-					else:
+					elif flagSend == 'Success':
 
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
+
+					else:
+
+						print('\n\n\tLIVE :returned "Other" status!!\n\n')
+						self.db.insertDb(arg,err.code)
 
 				else:
 
