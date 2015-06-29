@@ -13,6 +13,7 @@ class errorHandler():
         'gsmCgatt':7,
         'gsmCiicr':8,
         'plcComm':9,
+        'serverAck':10,
         }.get(errType)
 
     def checkBit(self,errType):
