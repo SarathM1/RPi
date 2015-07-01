@@ -33,3 +33,5 @@ class backfill_manage():
 
         backfill.create()
 
+obj = backfill_manage()
+obj.table_create()
