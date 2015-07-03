@@ -1,37 +1,26 @@
-from sqlalchemy import *
-from sqlalchemy.orm import mapper
-
-db = create_engine('mysql+mysqlconnector://admin:aaggss@localhost/dredger')
- #FUll- PAth : sqlite:////tmp/tutorial/joindemo.db
- # sudo apt-get install python3-mysql.connector
-
-db.echo = True  					# Print SQL for each SQLAlchemy instruction
-metadata = MetaData(db)
+import pymysql
+conn = pymysql.connect(host='127.0.0.1', user='root', passwd='aaggss',db='dredger')
+cur = conn.cursor()
 
 
+def table_create():
+    cur.execute('CREATE TABLE backfill (id INTEGER NOT NULL AUTO_INCREMENT,\
+     dredger_name VARCHAR(25),\
+     time DATETIME,\
+     storage_tank_level INTEGER,\
+     storage_tank_cap VARCHAR(25),\
+     service_tank_level INTEGER,\
+     service_tank_cap VARCHAR(25),\
+     flowmeter_1_in INTEGER,\
+     flowmeter_1_out INTEGER,\
+     engine_1_status VARCHAR(25),\
+     flowmeter_2_in INTEGER,\
+     flowmeter_2_out INTEGER,\
+     engine_2_status VARCHAR(25),\
+     error_other VARCHAR(25),\
+     error_gsm VARCHAR(25),\
+     error_gsm_timeout VARCHAR(25),\
+     PRIMARY KEY (id),\
+     UNIQUE (time))')
 
-
-
-class backfill_manage():
-    def table_create(self):
-        backfill = Table('backfill', metadata,
-        Column('id',Integer, primary_key=True),
-        Column('dredger_name',String(25)),
-        Column('time',DateTime,unique=True),  # If not unique then there will be logical errors
-        Column('storage_tank_level',Integer),
-        Column('storage_tank_cap',String(25)),
-        Column('service_tank_level',Integer),
-        Column('service_tank_cap',String(25)),
-        Column('flowmeter_1_in',Integer),
-        Column('flowmeter_1_out',Integer),
-        Column('engine_1_status',String(25)),
-        Column('flowmeter_2_in',Integer),
-        Column('flowmeter_2_out',Integer),
-        Column('engine_2_status',String(25)),
-        Column('error_code',String(25))
-        )
-
-        backfill.create()
-
-obj = backfill_manage()
-obj.table_create()
+table_create()

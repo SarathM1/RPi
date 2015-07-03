@@ -4,7 +4,11 @@ import serial
 import time
 import threading
 from backfill import database_backup
-from errorFile import errorHandler      # Import from local file errorFile
+from errorFile import errorHandlerMain      # Import from local file errorFile
+from errorFile import errorHandlerGsm      # Import from local file errorFile
+from errorFile import errorHandlerTimeout      # Import from local file errorFile
+from errorFile import errorHandlerUnknown      # Import from local file errorFile
+
 import minimalmodbus
 import os
 """
@@ -50,18 +54,15 @@ class plc():
 			self.instrument.serial.stopbits = 1
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
-			print("\n\t\t\tclearBit('plcUsb')")
-			err.clearBit('plcUsb')
+			errMain.clearBit('plcUsb')
 
 		except serial.SerialException:
-			print("\n\t\t\tsetBit('plcUsb')")
-			err.setBit('plcUsb')
+			errMain.setBit('plcUsb')
 			print ('\n\t\tPLC: CANNOT OPEN PORT!!')
 
 		except Exception as e:
 			print('\nplc_init: '+str(e)+'\n')
-			print("\n\t\t\tsetBit('plcUsb')")
-			err.setBit('plcUsb')                               # Error code for logging
+			errMain.setBit('plcUsb')                               # Error code for logging
 
 	def readData(self):
 		cap=['Close','Open']
@@ -70,7 +71,7 @@ class plc():
 
 		try:
 
-			if err.checkBit('plcUsb'):       # If PLC is disconnected
+			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
 				print ('\n\t\tERROR: PLC DISCONNECTED !!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n')
 				arg = dummyPacket()
@@ -90,14 +91,12 @@ class plc():
 				arg['flowmeter_2_out']      = self.instrument.read_register(4101)
 				arg['engine_2_status']      = status[self.instrument.read_register(4107)]
 				print("\n\t\tDATA READ FROM PLC!!\n\n")
-				print("\n\t\t\tclearBit('plcUsb')")
-				err.clearBit('plcComm')
+				errMain.clearBit('plcComm')
 
 
 		except Exception as e:
 				print('PLC_read_data: ',str(e))
-				print("\n\t\t\tsetBit('plcUsb')")
-				err.setBit('plcComm')
+				errMain.setBit('plcComm')
 
 				arg = dummyPacket()
 
@@ -110,15 +109,12 @@ class Sim900():
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 
-			print("\n\t\t\tclearBit('gsmUsb')")
-			err.clearBit('gsmUsb')
+			errMain.clearBit('gsmUsb')
 		except serial.SerialException:
-			print("\n\t\t\tsetBit('gsmUsb')")
-			err.setBit('gsmUsb')
+			errMain.setBit('gsmUsb')
 			print ('\n\t\tGSM: CANNOT OPEN PORT!!')
 		except Exception as e:
-			print("\n\t\t\tsetBit('gsmUsb')")
-			err.setBit('gsmUsb')
+			errMain.setBit('gsmUsb')
 			print('Sim900, __init__:- '+str(e))
 		self.db=database_backup()
 	def sendAt(self,command,success='OK',error='ERROR',wait=1):
@@ -126,12 +122,33 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		if not err.checkBit('gsmUsb'):
+		if not errMain.checkBit('gsmUsb'):
 			print('{0:20}'.format(command), end=' ')
 			self.obj.write(bytes(command+'\r\n',encoding='ascii'))
 			time.sleep(0.25)
 
 			status=self.checkStatus(success,error,wait)
+
+			if 'Success' in status:
+				errGsm.clearBit(command)
+				errTime.clearBit(command)
+				errUnknown.clearBit(command)
+			
+			elif 'Timeout' in status:
+				errGsm.setBit(command)
+				errTime.setBit(command)
+				errUnknown.clearBit(command)
+			
+			elif 'Error' in status:
+				errGsm.setBit(command)
+				errTime.clearBit(command)
+				errUnknown.clearBit(command)
+			else:
+				errGsm.clearBit(command)
+				errTime.clearBit(command)
+				errUnknown.setBit(command)
+				
+			
 			#time.sleep(1)
 			return status
 		else:
@@ -156,7 +173,7 @@ class Sim900():
 
 			if cntr>wait:
 				print('\n\tError, Time out, cntr = '+str(cntr)+'\n')
-				return 'Error'
+				return 'ErrorTimeout'
 			cntr=cntr+1
 
 			try:
@@ -193,7 +210,7 @@ class Sim900():
 			return 'other'
 
 	def gsmInit(self,arg):
-		if err.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
+		if errMain.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
 			print ("\n\t\tERROR: GSM disconnected !!\n\n")
 			time.sleep(1)
 			return  'Error'
@@ -204,83 +221,37 @@ class Sim900():
 			self.sendAt('ate0')
 
 			flagCpin = self.sendAt('at+cpin?')
-			if 'Error' in flagCpin:
-				print("\n\t\t\tsetBit('gsmCpin')")
-				err.setBit('gsmCpin')
-			else:
-				print("\n\t\t\tclearBit('gsmCpin')")
-				err.clearBit('gsmCpin')
-
-
+			
 			flasgCsq = self.sendAt('at+csq')
-			if 'Error' in flasgCsq:
-				print("\n\t\t\tsetBit('gsmCsq')")
-				err.setBit('gsmCsq')
-			else:
-				print("\n\t\t\tclearBit('gsmCsq')")
-				err.clearBit('gsmCsq')
-
+			
 			flagCreg = self.sendAt('at+creg?')
-			if 'Error' in flagCreg:
-				print("\n\t\t\tsetBit('gsmCreg')")
-				err.setBit('gsmCreg')
-			else:
-				print("\n\t\t\tclearBit('gsmCreg')")
-				err.clearBit('gsmCreg')
-
+			
 			flagCgatt = self.sendAt('at+cgatt?')
-			if 'Error' in flagCgatt:
-				print("\n\t\t\tsetBit('gsmCgatt')")
-				err.setBit('gsmCgatt')
-			else:
-				print("\n\t\t\tclearBit('gsmCgatt')")
-				err.clearBit('gsmCgatt')
-
-
+			
 			self.sendAt('at+cipshut')
 			status=self.sendAt('at+cstt="internet"')
 
 			flagCiicr = self.sendAt('at+ciicr','OK','ERROR',20)
-			if 'Error' in flagCiicr:
-				print("\n\t\t\tsetBit('gsmCiicr')")
-				err.setBit('gsmCiicr')
-			else:
-				print("\n\t\t\tclearBit('gsmCiicr')")
-				err.clearBit('gsmCiicr')
-
+			
 			self.sendAt('at+cifsr','.','ERROR')
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
 			
 			flagAck = self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
-			if flagAck == 'Success':
-				print("\n\t\t\tclearBit('serverAck')")
-				err.clearBit('serverAck')
 			
-			else:
-				if 'ACK_FROM_SERVER' in flagConn:
-					print("\n\t\t\tclearBit('serverAck')")
-					err.clearBit('serverAck')
-				else:
-					print("\n\t\t\tsetBit('serverAck')")
-					err.setBit('serverAck')
 
 
 			if flagConn=='Success':
-				print("\n\t\t\tclearBit('gsmConn')")
-				err.clearBit('gsmConn')
 				return 'Success'
 			else:
-				print("\n\t\t\tsetBit('gsmConn')")
-				err.setBit('gsmConn')
 				return 'Error'
 
 
 
 
 	def sendPacket(self,arg,case ='backfill'):
-		if err.checkBit('gsmUsb'):
+		if errMain.checkBit('gsmUsb'):
 
 			print ('\n\n\tERROR: GSM DISCONNECTED !!')
 
@@ -299,7 +270,7 @@ class Sim900():
 					+';'+str(arg['flowmeter_2_in'])\
 					+';'+str(arg['flowmeter_2_out'])\
 					+';'+str(arg['engine_2_status'])\
-					+';'+str(err.code)
+					+';'+str(errMain.code)
 
 
 			self.sendAt('at+cipsend','>','ERROR',5)
@@ -336,7 +307,7 @@ class backFill(threading.Thread):
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
 
-				elif flagSend == 'Error':
+				elif 'Error' in  flagSend:
 					
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 					time.sleep(5)
@@ -357,8 +328,7 @@ class live(threading.Thread):
 		self.db=database_backup()
 		threading.Thread.__init__(self)
 		self.gsm = Sim900()
-		print("\n\t\t\tsetBit('boot')")
-		err.setBit('boot')          # Bit 'boot' is set for only the first Live packet
+		errMain.setBit('boot')          # Bit 'boot' is set for only the first Live packet
 
 	def run(self):
 		while True:
@@ -373,26 +343,26 @@ class live(threading.Thread):
 				flagInit = self.gsm.gsmInit(arg)
 
 				if flagInit == 'Success':          # Else part is in gsmInit()
-
+					errMain.clearBit('gsmInit')
 					flagSend = self.gsm.sendPacket(arg,'live')
 
-					if flagSend == 'Error':
-
+					if 'Error' in flagSend:
+						errMain.setBit('gsmSend')
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
-						self.db.insertDb(arg,err.code)
+						self.db.insertDb(arg,errMain.code)
 
 					elif flagSend == 'Success':
-
+						errMain.clearBit('gsmSend')
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
 
 					else:
-
+						errUnknown.setBit('live')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
-						self.db.insertDb(arg,err.code)
+						self.db.insertDb(arg,errMain.code)
 
 				else:
-
-					self.db.insertDb(arg,err.code)
+					errMain.setBit('gsmInit')
+					self.db.insertDb(arg,errMain.code)
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
 
@@ -400,8 +370,7 @@ class live(threading.Thread):
 			except Exception as e:
 				print('Error, live_run: '+str(e))
 
-			print("\n\t\t\tclearBit('boot')")
-			err.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
+			errMain.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			event.set()
@@ -424,5 +393,8 @@ if __name__ == '__main__':
 	event = threading.Event()
 	backfillEvent = threading.Event()
 	backfillEvent.set()
-	err = errorHandler()           # import from file errorFile.py
+	errMain = errorHandlerMain()           # import from file errorFile.py
+	errGsm = errorHandlerGsm()           # import from file errorFile.py
+	errTime = errorHandlerTimeout()           # import from file errorFile.py
+	errUnknown = errorHandlerUnknown()		 # import from file errorFile.py
 	main()

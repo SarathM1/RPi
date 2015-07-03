@@ -8,7 +8,7 @@ cur = conn.cursor()
 
 
 class database_backup():
-	def insertDb(self,arg,error_code):
+	def insertDb(self,arg,error_other,error_gsm,error_gsm_timeout):
 		try:
 			cur.execute("INSERT INTO backfill (dredger_name,\
 				time,\
@@ -22,8 +22,9 @@ class database_backup():
 				flowmeter_2_in ,\
 				flowmeter_2_out,\
 				engine_2_status,\
-				error_code)\
-			 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",
+				error_other,\
+				error_gsm)\
+			 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",
 			 	[arg['dredger_name'],
 			 	arg['time'],
 			 	arg['storage_tank_level'],
@@ -36,7 +37,9 @@ class database_backup():
 			 	arg['flowmeter_2_in'],
 			 	arg['flowmeter_2_out'],
 			 	arg['engine_2_status'],
-			 	error_code])
+			 	error_other,
+			 	error_gsm,
+			 	error_gsm_timeout])
 			conn.commit()
 
 		except Exception as e:
@@ -69,7 +72,9 @@ class database_backup():
 				dictRow['flowmeter_2_in']       = row[10]
 				dictRow['flowmeter_2_out']      = row[11]
 				dictRow['engine_2_status']      = row[12]
-				dictRow['error_code']			= row[13]
+				dictRow['error_other']			= row[13]
+				dictRow['error_gsm']			= row[13]
+				dictRow['error_gsm_timeout']	= row[14]
 				return dictRow
 		except Exception as e:
 			print ('fetchData: '+str(e))
