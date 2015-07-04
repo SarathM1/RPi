@@ -250,13 +250,17 @@ class Sim900():
 
 
 
-	def sendPacket(self,arg,case ='backfill'):
+	def sendPacket(self,arg,gsmErr,mainErr,timeoutErr,
+		unknownErr,case ='backfill'):
 		if errMain.checkBit('gsmUsb'):
 
 			print ('\n\n\tERROR: GSM DISCONNECTED !!')
 
 			return 'Error'
 		else:
+			
+			errMain.clearBit('liveSend')				# IF error this bit 
+														 #is set in Live class
 
 			packet = str(arg['dredger_name'])\
 					+';'+str(arg['time'])\
@@ -270,7 +274,10 @@ class Sim900():
 					+';'+str(arg['flowmeter_2_in'])\
 					+';'+str(arg['flowmeter_2_out'])\
 					+';'+str(arg['engine_2_status'])\
-					+';'+str(errMain.code)
+					+';'+str(hex(gsmErr))\
+					+';'+str(hex(mainErr))\
+					+';'+str(hex(timeoutErr))\
+					+';'+str(hex(unknownErr))\
 
 
 			self.sendAt('at+cipsend','>','ERROR',5)
@@ -300,22 +307,21 @@ class backFill(threading.Thread):
 				print ('Database is empty')
 				time.sleep(1)
 			else:
-				flagSend=self.gsm.sendPacket(arg,'backfill')
+				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
+					arg['errMain'],arg['errTimeout'],arg['errUnknown'],'backfill')
 
 				if flagSend == 'Success':
-					
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
-					
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 					time.sleep(5)
 
 				else:
 					print('\n\n\tBACKFILL : returned "Other" status!!\n\n')
 					
-
+				print ('\n\nERROR CODE:',hex(arg['errGsm']),hex(arg['errMain']),hex(arg['errTimeout']),hex(arg['errUnknown']),'\n\n')
 				time.sleep(0.5)
 
 			backfillEvent.set()
@@ -335,6 +341,10 @@ class live(threading.Thread):
 
 			event.clear()
 			backfillEvent.wait()
+			errMain.Code 	=0  #Resetting All error codes for new data
+			errGsm.code 	=0
+			errTime.code 	=0
+			errUnknown.code =0
 
 			print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
@@ -344,25 +354,26 @@ class live(threading.Thread):
 
 				if flagInit == 'Success':          # Else part is in gsmInit()
 					errMain.clearBit('gsmInit')
-					flagSend = self.gsm.sendPacket(arg,'live')
+					flagSend = self.gsm.sendPacket(arg,errGsm.code,errMain.code,
+						errTime.code,errUnknown.code,'live')
 
 					if 'Error' in flagSend:
-						errMain.setBit('gsmSend')
+						errMain.setBit('liveSend')
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
-						self.db.insertDb(arg,errMain.code)
+						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					elif flagSend == 'Success':
-						errMain.clearBit('gsmSend')
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
 
 					else:
-						errUnknown.setBit('live')
+						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
-						self.db.insertDb(arg,errMain.code)
+						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 				else:
 					errMain.setBit('gsmInit')
-					self.db.insertDb(arg,errMain.code)
+					errMain.setBit('liveSend')
+					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
 
@@ -371,6 +382,8 @@ class live(threading.Thread):
 				print('Error, live_run: '+str(e))
 
 			errMain.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
+
+			print ('\n\nERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code),'\n\n')
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			event.set()

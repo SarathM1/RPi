@@ -8,7 +8,7 @@ cur = conn.cursor()
 
 
 class database_backup():
-	def insertDb(self,arg,error_other,error_gsm,error_gsm_timeout):
+	def insertDb(self,arg,errGsm,errMain,errTime,errUnknown):
 		try:
 			cur.execute("INSERT INTO backfill (dredger_name,\
 				time,\
@@ -22,9 +22,11 @@ class database_backup():
 				flowmeter_2_in ,\
 				flowmeter_2_out,\
 				engine_2_status,\
-				error_other,\
-				error_gsm)\
-			 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",
+				error_gsm,\
+				error_main,\
+				error_timeout,\
+				error_unknown)\
+			 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",
 			 	[arg['dredger_name'],
 			 	arg['time'],
 			 	arg['storage_tank_level'],
@@ -37,9 +39,10 @@ class database_backup():
 			 	arg['flowmeter_2_in'],
 			 	arg['flowmeter_2_out'],
 			 	arg['engine_2_status'],
-			 	error_other,
-			 	error_gsm,
-			 	error_gsm_timeout])
+			 	hex(errGsm),
+			 	hex(errMain),
+			 	hex(errTime),
+			 	hex(errUnknown)])
 			conn.commit()
 
 		except Exception as e:
@@ -60,7 +63,7 @@ class database_backup():
 				return None  # If database is empty
 			else:
 				dictRow={}
-				dictRow['dredger_name']        = row[1]
+				dictRow['dredger_name']        	= row[1]
 				dictRow['time']                 = row[2]
 				dictRow['storage_tank_level']   = row[3]
 				dictRow['storage_tank_cap']     = row[4]
@@ -72,9 +75,10 @@ class database_backup():
 				dictRow['flowmeter_2_in']       = row[10]
 				dictRow['flowmeter_2_out']      = row[11]
 				dictRow['engine_2_status']      = row[12]
-				dictRow['error_other']			= row[13]
-				dictRow['error_gsm']			= row[13]
-				dictRow['error_gsm_timeout']	= row[14]
+				dictRow['errGsm']				= int(row[13],16)
+				dictRow['errMain']				= int(row[14],16)
+				dictRow['errTimeout']			= int(row[15],16)
+				dictRow['errUnknown']			= int(row[16],16)
 				return dictRow
 		except Exception as e:
 			print ('fetchData: '+str(e))
