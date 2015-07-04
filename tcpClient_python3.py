@@ -133,24 +133,28 @@ class Sim900():
 				errGsm.clearBit(command)
 				errTime.clearBit(command)
 				errUnknown.clearBit(command)
+				return 'Success'
 			
 			elif 'Timeout' in status:
 				errGsm.setBit(command)
 				errTime.setBit(command)
 				errUnknown.clearBit(command)
+				return 'ErrorTimeout'
 			
 			elif 'Error' in status:
 				errGsm.setBit(command)
 				errTime.clearBit(command)
 				errUnknown.clearBit(command)
+				return 'Error'
 			else:
 				errGsm.clearBit(command)
 				errTime.clearBit(command)
 				errUnknown.setBit(command)
+				return 'Other'
 				
 			
 			#time.sleep(1)
-			return status
+			#return status
 		else:
 			print('\n\t\t sendAT: GSM DISCONNECTED')
 
@@ -207,7 +211,7 @@ class Sim900():
 		
 		else:
 			print('{0:20} ==> {1:50}'.format('Other',string))
-			return 'other'
+			return 'Other'
 
 	def gsmInit(self,arg):
 		if errMain.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
@@ -220,32 +224,34 @@ class Sim900():
 			self.sendAt('at+cipclose')
 			self.sendAt('ate0')
 
-			flagCpin = self.sendAt('at+cpin?')
+			self.sendAt('at+cpin?')
 			
-			flasgCsq = self.sendAt('at+csq')
+			self.sendAt('at+csq')
 			
-			flagCreg = self.sendAt('at+creg?')
+			self.sendAt('at+creg?')
 			
-			flagCgatt = self.sendAt('at+cgatt?')
+			self.sendAt('at+cgatt?')
 			
 			self.sendAt('at+cipshut')
-			status=self.sendAt('at+cstt="internet"')
+			self.sendAt('at+cstt="internet"')
 
-			flagCiicr = self.sendAt('at+ciicr','OK','ERROR',20)
+			self.sendAt('at+ciicr','OK','ERROR',20)
 			
 			self.sendAt('at+cifsr','.','ERROR')
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
 			
-			flagAck = self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+			self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
 
 
 			if flagConn=='Success':
 				return 'Success'
-			else:
+			elif 'Error' in flagConn:
 				return 'Error'
+			else:
+				return 'Other'
 
 
 
@@ -352,8 +358,13 @@ class live(threading.Thread):
 				arg=self.delta.readData()
 				flagInit = self.gsm.gsmInit(arg)
 
-				if flagInit == 'Success':          # Else part is in gsmInit()
-					errMain.clearBit('gsmInit')
+				if flagInit == 'Success' or flagInit == 'Other':          # Else part is in gsmInit()
+					
+					if flagInit=='Success':
+						errMain.clearBit('gsmInit')
+					else:
+						errMain.setBit('gsmInit')
+
 					flagSend = self.gsm.sendPacket(arg,errGsm.code,errMain.code,
 						errTime.code,errUnknown.code,'live')
 
@@ -369,13 +380,15 @@ class live(threading.Thread):
 						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
-
 				else:
 					errMain.setBit('gsmInit')
 					errMain.setBit('liveSend')
 					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
+
+
+					
 
 
 			except Exception as e:
