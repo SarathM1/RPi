@@ -1,7 +1,7 @@
 import pymysql
 from datetime import datetime as dt
 
-conn = pymysql.connect(host="localhost", user="root", passwd="aaggss", db="dredger")
+conn = pymysql.connect(host="127.0.0.1", user="root", passwd="aaggss", db="dredger")
 cur = conn.cursor()
 #FUll- PAth : sqlite:////tmp/tutorial/joindemo.db
 # sudo apt-get install python3-mysql.connector
