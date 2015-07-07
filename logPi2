@@ -1,0 +1,1657 @@
+'unknown': I need something more specific.
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+Sim900, __init__:- [Errno 2] No such file or directory: '/dev/port2'
+
+plc_init: [Errno 2] No such file or directory: '/dev/port1'
+
+Sim900, __init__:- [Errno 2] No such file or directory: '/dev/port2'
+s-------------Live: 07/07/2015 16:26:11
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:26:12
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:26:57
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:26:58
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:27:10
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:27:11
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:27:22
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:27:23
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:27:34
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:27:35
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:27:46
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:27:47
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:27:58
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:27:59
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:28:11
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:28:12
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:28:23
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:28:24
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:28:36
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:28:37
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:28:48
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:28:49
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:29:00
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:29:01
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:29:12
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:29:13
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:29:25
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:29:26
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:29:37
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:29:38
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:29:49
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:29:50
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:30:02
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:30:03
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:30:14
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:30:15
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:30:27
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:30:28
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:30:40
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:30:41
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:30:52
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:30:53
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:31:05
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:31:06
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:31:17
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:31:18
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:31:30
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:31:31
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:31:42
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:31:43
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:31:55
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:31:56
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:32:08
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:32:09
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:32:21
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:32:22
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:32:34
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:32:35
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:32:47
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:32:48
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:32:59
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:33:00
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:33:12
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:33:13
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:33:25
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:33:26
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:33:37
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:33:38
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live: 07/07/2015 16:33:50
+
+		ERROR: PLC DISCONNECTED !!					
+		RETURNING DUMMY PACKET
+
+
+
+		ERROR: GSM disconnected !!
+
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x0 0x1e 0x0 0x0 
+
+
+e-------------Live: 07/07/2015 16:33:51
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+
+
+	ERROR: GSM DISCONNECTED !!
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0x0 0xc 0x0 0x0 
+
+
+s-------------Live:
