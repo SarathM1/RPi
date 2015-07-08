@@ -139,17 +139,17 @@ while True:
 	for i in range(13):
 		if errGsm.checkBit(i,codeGsm):
 			print ('{0:20} ==> {1:50}'.format('GSM',errGsm.lookup(i)))
-
+	
 	for i in range(8):
-		if errGsm.checkBit(i,codeMain):
+		if errMain.checkBit(i,codeMain):
 			print ('{0:20} ==> {1:50}'.format('MAIN',errMain.lookup(i)))
 	
 	for i in range(13):
-		if errGsm.checkBit(i,codeTime):
+		if errTime.checkBit(i,codeTime):
 			print ('{0:20} ==> {1:50}'.format('TIMEOUT',errTime.lookup(i)))
 	
 	for i in range(15):
-		if errGsm.checkBit(i,codeUnknown):
+		if errUnknown.checkBit(i,codeUnknown):
 			print ('\n{0:20} ==> {1:50}'.format('UNKNOWN',errUnknown.lookup(i)))
 	
 
