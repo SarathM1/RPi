@@ -117,7 +117,7 @@ class Sim900():
 			errMain.setBit('gsmUsb')
 			print('Sim900, __init__:- '+str(e))
 		self.db=database_backup()
-	def sendAt(self,command,success='OK',error='ERROR',wait=1):
+	def sendAt(self,command,success='OK',error='ERROR',wait=10):
 		"""
 		Function to send AT commands
 		to GSM Module
@@ -322,7 +322,7 @@ class backFill(threading.Thread):
 
 				elif 'Error' in  flagSend:
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
-					time.sleep(5)
+					time.sleep(5)		# WhY???
 
 				else:
 					print('\n\n\tBACKFILL : returned "Other" status!!\n\n')
