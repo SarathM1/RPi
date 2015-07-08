@@ -1,15 +1,8 @@
-import time
 import pymysql
 from datetime import datetime as dt
 
-while True:
-        try:
-                conn = pymysql.connect(host="localhost", user="admin", passwd="aaggss", db="dredger")
-                cur = conn.cursor()
-                break
-        except Exception as e:
-                print (e)
-                time.sleep(1)
+conn = pymysql.connect(host="127.0.0.1", user="root", passwd="aaggss", db="dredger")
+cur = conn.cursor()
 #FUll- PAth : sqlite:////tmp/tutorial/joindemo.db
 # sudo apt-get install python3-mysql.connector
 
