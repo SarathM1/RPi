@@ -117,7 +117,7 @@ class Sim900():
 			errMain.setBit('gsmUsb')
 			print('Sim900, __init__:- '+str(e))
 		self.db=database_backup()
-	def sendAt(self,command,success='OK',error='ERROR',wait=10):
+	def sendAt(self,command,success='OK',error='ERROR',wait=2):
 		"""
 		Function to send AT commands
 		to GSM Module
@@ -221,7 +221,9 @@ class Sim900():
 		else:
 
 			self.sendAt('at')
-			self.sendAt('at+cipclose')
+			
+			self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
+			
 			self.sendAt('ate0')
 
 			self.sendAt('at+cpin?')
@@ -241,7 +243,7 @@ class Sim900():
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
 			
-			self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
 
@@ -313,6 +315,20 @@ class backFill(threading.Thread):
 				print ('Database is empty')
 				time.sleep(1)
 			else:
+				"""
+				self.gsm.sendAt('at+cipclose')
+				"""
+				
+				self.gsm.sendAt('at+cipshut')
+
+				self.gsm.sendAt('at+cstt="internet"')
+
+				self.gsm.sendAt('at+ciicr','OK','ERROR',20)
+				
+				self.gsm.sendAt('at+cifsr','.','ERROR')
+
+				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
+				
 				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
 					arg['errMain'],arg['errTimeout'],arg['errUnknown'],'backfill')
 
@@ -401,7 +417,7 @@ class live(threading.Thread):
 
 			event.set()
 
-			time.sleep(10)                   #backfill runs for 10 sec's
+			time.sleep(20)                   #backfill runs for 20 sec's
 
 def main():
 	t1 = backFill(event)
