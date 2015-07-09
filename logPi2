@@ -1,0 +1,2448 @@
+'unknown': I need something more specific.
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+(2003, "Can't connect to MySQL server on 'localhost' (111)")
+s-------------Live: 08/07/2015 18:18:22
+
+		DATA READ FROM PLC!!
+
+
+at                   Success              ==> at  OK                                            
+at+cipclose          Error                ==> at+cipclose  ERROR                                
+ate0                 Success              ==> ate0  OK                                          
+at+cpin?             Success              ==> +CPIN: READY  OK                                  
+at+csq               Success              ==> +CSQ: 31,0  OK                                    
+at+creg?             Success              ==> +CREG: 1,1  OK                                    
+at+cgatt?            Success              ==> +CGATT: 1  OK                                     
+at+cipshut           Success              ==> SHUT OK                                           
+at+cstt="internet"   Success              ==> OK                                                
+at+ciicr             
+	2
+Success              ==> OK                                                
+at+cifsr             Success              ==> 10.44.241.160                                     
+at+cipstart="TCP","52.74.229.218","5000" Success              ==> OK  CONNECT OK                                    
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+at+cipsend           Success              ==> >                                                 
+
+	2
+Success              ==> SEND OK                                           
+
+
+Packet: 	dredger1;2015-07-08 18:18:22;0;Open;0;Close;0;0;Off;0;0;On;0x8;0x1;0x0;0x0
+
+
+
+
+	LIVE : DATA SENDING SUCCESS . .
+
+
+
+
+ERROR CODE: 0x8 0x0 0x0 0x0 
+
+
+e-------------Live: 09/07/2015 09:10:11
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+Database is empty
+s-------------Live: 09/07/2015 09:10:21
+
+		DATA READ FROM PLC!!
+
+
+at                   Success              ==> OK                                                
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:14:44
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:10:21;5;Close;10;Open;3;13;On;28;22;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:15:08
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:19:51
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:10:21;5;Close;10;Open;3;13;On;28;22;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:20:15
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:24:58
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:10:21;5;Close;10;Open;3;13;On;28;22;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:25:21
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             Success              ==> +PDP: DEACT  CLOSE OK                             
+at+csq               Success              ==> +CSQ: 31,0  OK                                    
+at+creg?             Success              ==> +CREG: 1,1  OK                                    
+at+cgatt?            Success              ==> +CGATT: 1  OK                                     
+at+cipshut           Success              ==> SHUT OK                                           
+at+cstt="internet"   Success              ==> OK                                                
+at+ciicr             
+	2
+Success              ==> OK                                                
+at+cifsr             Success              ==> 100.122.16.153                                    
+at+cipstart="TCP","52.74.229.218","5000" Success              ==> OK  CONNECT OK                                    
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+at+cipsend           Success              ==> >                                                 
+Success              ==> SEND OK                                           
+
+
+Packet: 	dredger1;2015-07-09 09:25:21;55;Close;110;Open;33;143;On;308;242;Off;0x1808;0x0;0x1808;0x0
+
+
+
+
+	LIVE : DATA SENDING SUCCESS . .
+
+
+
+
+ERROR CODE: 0x1808 0x0 0x1808 0x0 
+
+
+e-------------Live: 09/07/2015 09:26:51
+at+cipsend           Success              ==> >                                                 
+
+	2
+Success              ==> SEND OK                                           
+
+
+Packet: 	dredger1;2015-07-09 09:10:21;5;Close;10;Open;3;13;On;28;22;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING SUCCESS . .
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+at+cipsend           Success              ==> >                                                 
+Success              ==> SEND OK                                           
+
+
+Packet: 	dredger1;2015-07-09 09:15:08;20;Close;40;Open;12;52;On;112;88;Off;0x1ffb;0x6;0x1ffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING SUCCESS . .
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+at+cipsend           Success              ==> >                                                 
+
+	2
+Success              ==> SEND OK                                           
+
+
+Packet: 	dredger1;2015-07-09 09:20:15;35;Open;70;Close;21;91;Off;196;154;On;0x1ffb;0x6;0x1ffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING SUCCESS . .
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:27:05
+
+		DATA READ FROM PLC!!
+
+
+at                   Success              ==> OK                                                
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:31:28
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:27:05;60;Close;120;Open;36;156;On;336;264;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:31:52
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:36:35
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:27:05;60;Close;120;Open;36;156;On;336;264;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:36:59
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+csq               
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+creg?             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cgatt?            
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipshut           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cstt="internet"   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+ciicr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	12
+
+	13
+
+	14
+
+	15
+
+	16
+
+	17
+
+	18
+
+	19
+
+	20
+
+	21
+
+	Error, Time out, cntr = 21
+
+at+cifsr             
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipstart="TCP","52.74.229.218","5000" 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+		Error in gsmInit						
+		PACKET PUSHED TO BACKUP db
+
+
+
+
+ERROR CODE: 0x1ffb 0x6 0x1ffb 0x0 
+
+
+e-------------Live: 09/07/2015 09:41:42
+at+cipsend           
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	Error, Time out, cntr = 6
+
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:27:05;60;Close;120;Open;36;156;On;336;264;Off;0xffb;0x6;0xffb;0x0
+
+
+
+
+	BACKFILL : DATA SENDING FAILED!!
+
+
+
+
+ERROR CODE: 0xffb 0x6 0xffb 0x0 
+
+
+s-------------Live: 09/07/2015 09:42:05
+
+		DATA READ FROM PLC!!
+
+
+at                   
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cipclose          
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+ate0                 
+	2
+
+	3
+
+	4
+
+	5
+
+	6
+
+	7
+
+	8
+
+	9
+
+	10
+
+	11
+
+	Error, Time out, cntr = 11
+
+at+cpin?             Success              ==> +PDP: DEACT  CLOSE OK                             
+at+csq               Success              ==> +CSQ: 31,0  OK                                    
+at+creg?             Success              ==> +CREG: 1,1  OK                                    
+at+cgatt?            Success              ==> +CGATT: 1  OK                                     
+at+cipshut           Success              ==> SHUT OK                                           
+at+cstt="internet"   Success              ==> OK                                                
+at+ciicr             
+	2
+Success              ==> OK                                                
+at+cifsr             Success              ==> 10.61.66.251                                      
+at+cipstart="TCP","52.74.229.218","5000" Success              ==> OK  CONNECT OK                                    
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+at+cipsend           Success              ==> >                                                 
+
+	2
+
+	3
+
+	4
+
+	Error, Time out, cntr = 4
+
+
+
+Packet: 	dredger1;2015-07-09 09:42:05;110;Close;220;Open;66;286;On;112;484;Off;0x1808;0x0;0x1808;0x0
+
+
+
+
+	LIVE : DATA SENDING FAILED!!
+
