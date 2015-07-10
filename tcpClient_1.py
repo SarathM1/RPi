@@ -105,7 +105,7 @@ class plc():
 class Sim900():
 	def __init__ (self):
 		try:
-			self.obj = serial.Serial(port='/dev/port2', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			self.obj = serial.Serial(port='/dev/ttyS0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 
@@ -242,7 +242,7 @@ class Sim900():
 			self.sendAt('at+cifsr','.','ERROR')
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
-			
+			self.checkStatus('CONNECT OK','ERROR',20)
 			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
