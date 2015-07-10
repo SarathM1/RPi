@@ -4,7 +4,7 @@ class errorHandlerGsm():
     def lookup(self,errType):
         return {
         'at+ciicr'      :0,
-        'at+cipstart="TCP","52.74.229.218","5000"'   :1,
+        'at+cipstart="TCP","52.74.229.218","5001"'   :1,
         'at+cipsend'    :2,
         'at+cipclose=1'   :3,
         'at+cgatt?'     :4,
