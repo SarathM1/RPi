@@ -26,7 +26,7 @@ def dummyPacket():
 	status=['Off','On']
 	arg={}
 
-	arg['dredger_name']         = 'dredger1'
+	arg['dredger_name']         = 'dredger2'
 	arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
 	arg['storage_tank_level']   = 0
 	arg['storage_tank_cap']     = cap[0]
@@ -77,7 +77,7 @@ class plc():
 
 			else:
 
-				arg['dredger_name']         = 'dredger1'
+				arg['dredger_name']         = 'dredger2'
 				arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
 				arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
 				arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
