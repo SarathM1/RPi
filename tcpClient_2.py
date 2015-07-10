@@ -3,10 +3,10 @@ import serial
 import time
 import threading
 from backfill import database_backup
-from errorFile import errorHandlerMain      # Import from local file errorFile
-from errorFile import errorHandlerGsm      # Import from local file errorFile
-from errorFile import errorHandlerTimeout      # Import from local file errorFile
-from errorFile import errorHandlerUnknown      # Import from local file errorFile
+from errorFile2 import errorHandlerMain      # Import from local file errorFile2
+from errorFile2 import errorHandlerGsm      # Import from local file errorFile2
+from errorFile2 import errorHandlerTimeout      # Import from local file errorFile2
+from errorFile2 import errorHandlerUnknown      # Import from local file errorFile2
 
 import minimalmodbus
 import os
@@ -418,8 +418,8 @@ if __name__ == '__main__':
 	event = threading.Event()
 	backfillEvent = threading.Event()
 	backfillEvent.set()
-	errMain = errorHandlerMain()           # import from file errorFile.py
-	errGsm = errorHandlerGsm()           # import from file errorFile.py
-	errTime = errorHandlerTimeout()           # import from file errorFile.py
-	errUnknown = errorHandlerUnknown()		 # import from file errorFile.py
+	errMain = errorHandlerMain()           # import from file errorFile2.py
+	errGsm = errorHandlerGsm()           # import from file errorFile2.py
+	errTime = errorHandlerTimeout()           # import from file errorFile2.py
+	errUnknown = errorHandlerUnknown()		 # import from file errorFile2.py
 	main()
