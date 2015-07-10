@@ -4,10 +4,10 @@ import serial
 import time
 import threading
 from backfill import database_backup
-from errorFile import errorHandlerMain      # Import from local file errorFile
-from errorFile import errorHandlerGsm      # Import from local file errorFile
-from errorFile import errorHandlerTimeout      # Import from local file errorFile
-from errorFile import errorHandlerUnknown      # Import from local file errorFile
+from errorFile1 import errorHandlerMain      # Import from local file errorFile1
+from errorFile1 import errorHandlerGsm      # Import from local file errorFile1
+from errorFile1 import errorHandlerTimeout      # Import from local file errorFile1
+from errorFile1 import errorHandlerUnknown      # Import from local file errorFile1
 
 import minimalmodbus
 import os
@@ -222,7 +222,7 @@ class Sim900():
 
 			self.sendAt('at')
 			
-			self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
+			self.sendAt('at+cipclose') # Ref page 27, Fast Closing when cipclose =0
 			
 			self.sendAt('ate0')
 
@@ -435,8 +435,8 @@ if __name__ == '__main__':
 	event = threading.Event()
 	backfillEvent = threading.Event()
 	backfillEvent.set()
-	errMain = errorHandlerMain()           # import from file errorFile.py
-	errGsm = errorHandlerGsm()           # import from file errorFile.py
-	errTime = errorHandlerTimeout()           # import from file errorFile.py
-	errUnknown = errorHandlerUnknown()		 # import from file errorFile.py
+	errMain = errorHandlerMain()           # import from file errorFile1.py
+	errGsm = errorHandlerGsm()           # import from file errorFile1.py
+	errTime = errorHandlerTimeout()           # import from file errorFile1.py
+	errUnknown = errorHandlerUnknown()		 # import from file errorFile1.py
 	main()
