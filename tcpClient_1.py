@@ -241,8 +241,8 @@ class Sim900():
 			
 			self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
-			self.checkStatus('CONNECT OK','ERROR',20)
+			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','OK','FAIL')
+			self.checkStatus('CONNECT OK','FAIL',10)
 			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
@@ -315,19 +315,12 @@ class backFill(threading.Thread):
 				print ('Database is empty')
 				time.sleep(1)
 			else:
-				"""
+				
 				self.gsm.sendAt('at+cipclose=1')
-				"""
 				
-				self.gsm.sendAt('at+cipshut')
 
-				self.gsm.sendAt('at+cstt="internet"')
-
-				self.gsm.sendAt('at+ciicr','OK','ERROR',20)
-				
-				self.gsm.sendAt('at+cifsr','.','ERROR')
-
-				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.229.218","5000"','CONNECT OK','FAIL')
+				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.229.218","5000"','OK','FAIL')
+				self.gsm.checkStatus('CONNECT OK','FAIL',10)
 				
 				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
 					arg['errMain'],arg['errTimeout'],arg['errUnknown'],'backfill')
