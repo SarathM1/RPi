@@ -222,7 +222,7 @@ class Sim900():
 
 			self.sendAt('at')
 			
-			self.sendAt('at+cipclose') # Ref page 27, Fast Closing when cipclose =0
+			self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
 			
 			self.sendAt('ate0')
 
@@ -316,7 +316,7 @@ class backFill(threading.Thread):
 				time.sleep(1)
 			else:
 				"""
-				self.gsm.sendAt('at+cipclose')
+				self.gsm.sendAt('at+cipclose=1')
 				"""
 				
 				self.gsm.sendAt('at+cipshut')
