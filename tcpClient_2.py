@@ -129,25 +129,24 @@ class Sim900():
 			status=self.checkStatus(success,error,wait)
 
 			if 'Success' in status:
-				errGsm.clearBit(command)
-				errTime.clearBit(command)
-				errUnknown.clearBit(command)
+				#errGsm.clearBit(command)
+				#errTime.clearBit(command)
+				#errUnknown.clearBit(command)
 				return 'Success'
 			
 			elif 'Timeout' in status:
-				errGsm.setBit(command)
 				errTime.setBit(command)
-				errUnknown.clearBit(command)
+				#errUnknown.clearBit(command)
 				return 'ErrorTimeout'
 			
 			elif 'Error' in status:
 				errGsm.setBit(command)
-				errTime.clearBit(command)
-				errUnknown.clearBit(command)
+				#errTime.clearBit(command)
+				#errUnknown.clearBit(command)
 				return 'Error'
 			else:
-				errGsm.clearBit(command)
-				errTime.clearBit(command)
+				#errGsm.clearBit(command)
+				#errTime.clearBit(command)
 				errUnknown.setBit(command)
 				return 'Other'
 				
@@ -264,7 +263,7 @@ class Sim900():
 			return 'Error'
 		else:
 			
-			errMain.clearBit('liveSend')				# IF error this bit 
+			#errMain.clearBit('liveSend')				# IF error this bit 
 														 #is set in Live class
 
 			packet = str(arg['dredger_name'])\
@@ -374,7 +373,11 @@ class live(threading.Thread):
 
 					elif flagSend == 'Success':
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
-
+					
+					elif flagSend=='ErrorTimeout':
+						errTime.setBit('at+cipsend')
+						print('\n\n\tLIVE : DATA SENDING FAILED!! (CIPSEND Timeout)\n\n')
+						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 					else:
 						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
