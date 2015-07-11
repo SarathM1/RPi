@@ -239,7 +239,8 @@ class Sim900():
 
 			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5001"','CONNECT OK','FAIL')
 			
-			self.checkStatus('ACK_FROM_SERVER','ERROR',3)
+			self.checkStatus('CONNECT OK','FAIL',10)
+			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
 
