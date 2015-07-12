@@ -1,0 +1,29 @@
+mysql> select error_gsm,error_main,error_timeout,error_unknown,COUNT(*) as 'num' from db group by error_gsm,error_main,error_timeout,error_unknown order by num;
++-----------+------------+---------------+---------------+-----+
+| error_gsm | error_main | error_timeout | error_unknown | num |
++-----------+------------+---------------+---------------+-----+
+| 0xc       | 0xf        | 0x0           | 0x2           |   1 |
+| 0x0       | 0xe        | 0x0           | 0x2002        |   1 |
+| 0x0       | 0xe        | 0x403         | 0x0           |   1 |
+| 0x0       | 0x8        | 0x0           | 0x0           |   1 |
+| 0x8       | 0xb        | 0x0           | 0x2           |   1 |
+| 0x8       | 0x9        | 0x0           | 0x0           |   1 |
+| 0xc       | 0xe        | 0x0           | 0x2           |   1 |
+| 0x8       | 0xf        | 0x403         | 0x0           |   1 |
+| 0x0       | 0xa        | 0x0           | 0x2           |   1 |
+| 0x4       | 0xe        | 0x401         | 0x2           |   1 |
+| 0xc       | 0xe        | 0x1           | 0x402         |   2 |
+| 0x0       | 0xc        | 0x0           | 0x0           |   2 |
+| 0x8       | 0xe        | 0x0           | 0x2002        |   2 |
+| 0x0       | 0x1f       | 0x0           | 0x0           |   3 |
+| 0x4       | 0xe        | 0x0           | 0x2002        |   3 |
+| 0x8       | 0x8        | 0x0           | 0x0           |   4 |
+| 0x4       | 0xe        | 0x1           | 0x402         |  43 |
+| 0x8       | 0xe        | 0x0           | 0x2           |  44 |
+| 0x4       | 0xe        | 0x0           | 0x2           | 172 |
+| 0x0       | 0xe        | 0x0           | 0x2           | 500 |
++-----------+------------+---------------+---------------+-----+
+20 rows in set (0.00 sec)
+
+			
+			

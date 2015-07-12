@@ -1,0 +1,295 @@
+		REFERENCE:
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x4
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipsend                                        
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x4
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x1
+Enter the UNKNOWN error code: 0x402
+GSM                  ==> at+cipsend                                        
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> at+cifsr                                          
+
+#########################################################
+
+Enter the GSM error code: 0x8 
+Enter the MAIN error code: 0x8
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x0
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> plcUsb                                            
+
+#########################################################
+
+Enter the GSM error code: 0x4
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2002
+GSM                  ==> at+cipsend                                        
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> liveSend                                          
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0x1f
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x0
+MAIN                 ==> boot                                              
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+MAIN                 ==> gsmUsb                                            
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2002
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> liveSend                                          
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0xc
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x0
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+#########################################################
+
+Enter the GSM error code: 0xc
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x1
+Enter the UNKNOWN error code: 0x402
+GSM                  ==> at+cipsend                                        
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> at+cifsr                                          
+
+#########################################################
+
+Enter the GSM error code: 0x4
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x401
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipsend                                        
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+TIMEOUT              ==> at+cifsr                                          
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0xa
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0xf
+Enter the TIME error code: 0x403
+Enter the UNKNOWN error code: 0x0
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> boot                                              
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+TIMEOUT              ==> at+cipstart="TCP","52.74.229.218","5000"          
+TIMEOUT              ==> at+cifsr                                          
+
+#########################################################
+
+Enter the GSM error code: 0xc
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipsend                                        
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0xf
+Enter the TIME error code: 0x403
+Enter the UNKNOWN error code: 0xa
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> boot                                              
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+TIMEOUT              ==> at+cipstart="TCP","52.74.229.218","5000"          
+TIMEOUT              ==> at+cifsr                                          
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> at+cipclose=1                                     
+
+#########################################################
+
+Enter the GSM error code: 0xc
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipsend                                        
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0x9
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x0
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> boot                                              
+MAIN                 ==> plcUsb                                            
+
+#########################################################
+
+Enter the GSM error code: 0x8
+Enter the MAIN error code: 0xb
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> boot                                              
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0x8
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x0
+MAIN                 ==> plcUsb                                            
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x403
+Enter the UNKNOWN error code: 0x0
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+TIMEOUT              ==> at+ciicr                                          
+TIMEOUT              ==> at+cipstart="TCP","52.74.229.218","5000"          
+TIMEOUT              ==> at+cifsr                                          
+
+#########################################################
+
+Enter the GSM error code: 0x0
+Enter the MAIN error code: 0xe
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2002
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+UNKNOWN              ==> liveSend                                          
+
+#########################################################
+
+Enter the GSM error code: 0xc
+Enter the MAIN error code: 0xf
+Enter the TIME error code: 0x0
+Enter the UNKNOWN error code: 0x2
+GSM                  ==> at+cipsend                                        
+GSM                  ==> at+cipclose=1                                     
+MAIN                 ==> boot                                              
+MAIN                 ==> gsmInit                                           
+MAIN                 ==> liveSend                                          
+MAIN                 ==> plcUsb                                            
+
+UNKNOWN              ==> at+cipstart="TCP","52.74.229.218","5000"          
+
+#########################################################
