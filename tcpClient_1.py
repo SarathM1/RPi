@@ -9,8 +9,9 @@ from errorFile1 import errorHandlerGsm      # Import from local file errorFile1
 from errorFile1 import errorHandlerTimeout      # Import from local file errorFile1
 from errorFile1 import errorHandlerUnknown      # Import from local file errorFile1
 
-import minimalmodbus
 import os
+import myLogger as log
+import minimalmodbus
 """
 Install Library Minimalmodbus 0.6,
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
@@ -58,9 +59,11 @@ class plc():
 
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
+			liveLog.error("PLC: CANNOT OPEN PORT")
 			print ('\n\t\tPLC: CANNOT OPEN PORT!!')
 
 		except Exception as e:
+			liveLog.error("PLC: CANNOT OPEN PORT")
 			print('\nplc_init: '+str(e)+'\n')
 			errMain.setBit('plcUsb')                               # Error code for logging
 
@@ -90,11 +93,14 @@ class plc():
 				arg['flowmeter_2_in']       = self.instrument.read_register(4103)
 				arg['flowmeter_2_out']      = self.instrument.read_register(4101)
 				arg['engine_2_status']      = status[self.instrument.read_register(4107)]
+
+				debugLog.info("Data read from PLC")
 				print("\n\t\tDATA READ FROM PLC!!\n\n")
 				errMain.clearBit('plcComm')
 
 
 		except Exception as e:
+				liveLog.error("PLC: Communication Error")
 				print('PLC_read_data: ',str(e))
 				errMain.setBit('plcComm')
 
@@ -110,11 +116,15 @@ class Sim900():
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 
 			errMain.clearBit('gsmUsb')
+		
 		except serial.SerialException:
 			errMain.setBit('gsmUsb')
+			liveLog.error("GSM: CANNOT OPEN PORT")
 			print ('\n\t\tGSM: CANNOT OPEN PORT!!')
+
 		except Exception as e:
 			errMain.setBit('gsmUsb')
+			liveLog.error("GSM: CANNOT OPEN PORT")
 			print('Sim900, __init__:- '+str(e))
 		self.db=database_backup()
 	def sendAt(self,command,success='OK',error='ERROR',wait=2):
@@ -137,18 +147,22 @@ class Sim900():
 			
 			elif 'Timeout' in status:
 				#errGsm.setBit(command)
+				debugLog.error(command + '=> Timeout')
 				errTime.setBit(command)
 				#errUnknown.clearBit(command)
 				return 'ErrorTimeout'
 			
 			elif 'Error' in status:
+				debugLog.error(command + '=> Error')
 				errGsm.setBit(command)
 				#errTime.clearBit(command)
 				#errUnknown.clearBit(command)
 				return 'Error'
+			
 			else:
 				#errGsm.clearBit(command)
 				#errTime.clearBit(command)
+				debugLog.error(command + '=> Other')
 				errUnknown.setBit(command)
 				return 'Other'
 				
@@ -169,6 +183,7 @@ class Sim900():
 			status = self.obj.read(100).decode('ascii').strip()
 		except Exception as e:
 			status=error
+			debugLog.error('checkStatus Exception: '+ str(e))
 			print('checkStatus: ' + str(e))
 
 
@@ -326,14 +341,17 @@ class backFill(threading.Thread):
 					arg['errMain'],arg['errTimeout'],arg['errUnknown'],'backfill')
 
 				if flagSend == 'Success':
+					backLog.info("BACKFILL : DATA SENDING SUCCESS . .")
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
+					backLog.error("BACKFILL : DATA SENDING FAILED. .")
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 					time.sleep(5)		# WhY???
 
 				else:
+					backLog.error('BACKFILL : returned "Other" status')
 					print('\n\n\tBACKFILL : returned "Other" status!!\n\n')
 					
 				print ('\n\nERROR CODE:',hex(arg['errGsm']),hex(arg['errMain']),hex(arg['errTimeout']),hex(arg['errUnknown']),'\n\n')
@@ -361,6 +379,7 @@ class live(threading.Thread):
 			errTime.code 	=0
 			errUnknown.code =0
 
+			liveLog.critical('s-------------Live:')
 			print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			try:
@@ -370,8 +389,10 @@ class live(threading.Thread):
 				if flagInit == 'Success' or flagInit == 'Other':          # Else part is in gsmInit()
 					
 					if flagInit=='Success':
+						liveLog.info("GsmInit SUCCESS")
 						errMain.clearBit('gsmInit')
 					else:
+						liveLog.info("GsmInit ERROR")
 						errMain.setBit('gsmInit')
 
 					flagSend = self.gsm.sendPacket(arg,errGsm.code,errMain.code,
@@ -379,22 +400,28 @@ class live(threading.Thread):
 
 					if 'Error' in flagSend:
 						errMain.setBit('liveSend')
+						liveLog.error('LIVE : DATA SENDING FAILED')
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					elif flagSend == 'Success':
+						liveLog.info('LIVE : DATA SENDING SUCCESS . .')
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
 
 					elif flagSend=='ErrorTimeout':
+						liveLog.error('LIVE : DATA SENDING FAILED!! (CIPSEND Timeout)')
 						errTime.setBit('at+cipsend')
 						print('\n\n\tLIVE : DATA SENDING FAILED!! (CIPSEND Timeout)\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					else:
+						liveLog.error('LIVE :returned "Other" status')
 						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 				else:
+					liveLog.error("GsmInit ERROR")
+					liveLog.error('LIVE : DATA SENDING FAILED')
 					errMain.setBit('gsmInit')
 					errMain.setBit('liveSend')
 					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
@@ -406,11 +433,15 @@ class live(threading.Thread):
 
 
 			except Exception as e:
+				liveLog.error('LIVE : EXCEPTION, '+str(e))
 				print('Error, live_run: '+str(e))
 
 			errMain.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
 
+			liveLog.info('ERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code))
 			print ('\n\nERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code),'\n\n')
+
+			liveLog.critical('e-------------Live:')
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			event.set()
@@ -430,6 +461,15 @@ if __name__ == '__main__':
 		os.system("clear")
 	except :
 		pass
+
+	debugLog 	= log.debugLog('./log/dredger1/debug')
+	liveLog 	= log.liveLog('./log/dredger1/live')
+	backLog 	= log.backfillLog('./log/dredger1/backfill')
+
+	debugLog.critical("STARTING####################")
+	liveLog.critical("STARTING####################")
+	backLog.critical("STARTING####################")
+
 	event = threading.Event()
 	backfillEvent = threading.Event()
 	backfillEvent.set()
@@ -437,4 +477,6 @@ if __name__ == '__main__':
 	errGsm = errorHandlerGsm()           # import from file errorFile1.py
 	errTime = errorHandlerTimeout()           # import from file errorFile1.py
 	errUnknown = errorHandlerUnknown()		 # import from file errorFile1.py
+
+
 	main()
