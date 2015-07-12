@@ -25,6 +25,8 @@ mysql> select error_gsm,error_main,error_timeout,error_unknown,COUNT(*) as 'num'
 +-----------+------------+---------------+---------------+-----+
 20 rows in set (0.00 sec)
 
+				TIME: 2015-07-12 11:26:00
+
 mysql> select error_gsm,error_main,error_timeout,error_unknown,COUNT( *) as 'num' from db group by error_gsm, error_main,error_timeout,error_unknown order by num;
 +-----------+------------+---------------+---------------+-----+
 | error_gsm | error_main | error_timeout | error_unknown | num |
