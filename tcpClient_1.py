@@ -111,7 +111,7 @@ class plc():
 class Sim900():
 	def __init__ (self):
 		try:
-			self.obj = serial.Serial(port='/dev/ttyS0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			self.obj = serial.Serial(port='/dev/port2', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 
@@ -147,13 +147,13 @@ class Sim900():
 			
 			elif 'Timeout' in status:
 				#errGsm.setBit(command)
-				debugLog.error(command + '=> Timeout')
+				debugLog.error('TIMEOUT=> '+command)
 				errTime.setBit(command)
 				#errUnknown.clearBit(command)
 				return 'ErrorTimeout'
 			
 			elif 'Error' in status:
-				debugLog.error(command + '=> Error')
+				debugLog.error('ERROR=> '+command)
 				errGsm.setBit(command)
 				#errTime.clearBit(command)
 				#errUnknown.clearBit(command)
@@ -162,7 +162,7 @@ class Sim900():
 			else:
 				#errGsm.clearBit(command)
 				#errTime.clearBit(command)
-				debugLog.error(command + '=> Other')
+				debugLog.error('OTHER=> '+command)
 				errUnknown.setBit(command)
 				return 'Other'
 				
@@ -221,6 +221,7 @@ class Sim900():
 			return 'Success'  # success => AT Command sent
 
 		elif error in status:
+			debugLog.error('\t\t\tReply: '+string)
 			print('{0:20} ==> {1:50}'.format('Error',string))
 			return 'Error'
 		
@@ -256,7 +257,7 @@ class Sim900():
 			
 			self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","52.74.229.218","5000"','OK','FAIL')
+			flagConn = self.sendAt('at+cipstart="TCP","52.74.77.168","5000"','OK','FAIL')
 			self.checkStatus('CONNECT OK','FAIL',10)
 			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
@@ -309,7 +310,7 @@ class Sim900():
 
 
 			print("\n\nPacket: \t"+packet+"\n\n")
-
+			
 			return flagStatus
 
 class backFill(threading.Thread):
@@ -325,6 +326,7 @@ class backFill(threading.Thread):
 			event.wait()
 			backfillEvent.clear()
 
+			debugLog.critical('s-------------Backfill:')
 			arg = self.db.fetchData()
 			if not arg:
 				print ('Database is empty')
@@ -334,29 +336,33 @@ class backFill(threading.Thread):
 				self.gsm.sendAt('at+cipclose=1')
 				
 
-				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.229.218","5000"','OK','FAIL')
+				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.77.168","5000"','OK','FAIL')
 				self.gsm.checkStatus('CONNECT OK','FAIL',10)
 				
 				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
 					arg['errMain'],arg['errTimeout'],arg['errUnknown'],'backfill')
 
 				if flagSend == 'Success':
-					backLog.info("BACKFILL : DATA SENDING SUCCESS . .")
+					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
+					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print('\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n')
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
-					backLog.error("BACKFILL : DATA SENDING FAILED. .")
+					backLog.error('FAILED=> Packet: '+str(arg['time']))
+					debugLog.critical('BACKFILL :FAILED=> Packet: '+str(arg['time']))
 					print('\n\n\tBACKFILL : DATA SENDING FAILED!!\n\n')
 					time.sleep(5)		# WhY???
 
 				else:
-					backLog.error('BACKFILL : returned "Other" status')
+					backLog.error('OTHER=> Packet: '+str(arg['time']))
+					debugLog.critical('BACKFILL :OTHER=> Packet: '+str(arg['time']))
 					print('\n\n\tBACKFILL : returned "Other" status!!\n\n')
 					
 				print ('\n\nERROR CODE:',hex(arg['errGsm']),hex(arg['errMain']),hex(arg['errTimeout']),hex(arg['errUnknown']),'\n\n')
 				time.sleep(0.5)
 
+			debugLog.critical('e-------------Backfill:')
 			backfillEvent.set()
 
 
@@ -380,6 +386,7 @@ class live(threading.Thread):
 			errUnknown.code =0
 
 			liveLog.critical('s-------------Live:')
+			debugLog.critical('s-------------Live:')
 			print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			try:
@@ -400,22 +407,26 @@ class live(threading.Thread):
 
 					if 'Error' in flagSend:
 						errMain.setBit('liveSend')
-						liveLog.error('LIVE : DATA SENDING FAILED')
+						debugLog.critical('LIVE :FAILED=> Packet: '+str(arg['time']))
+						liveLog.error('FAILED=> Packet: '+str(arg['time']))
 						print('\n\n\tLIVE : DATA SENDING FAILED!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					elif flagSend == 'Success':
-						liveLog.info('LIVE : DATA SENDING SUCCESS . .')
+						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
+						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print('\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n')
 
 					elif flagSend=='ErrorTimeout':
-						liveLog.error('LIVE : DATA SENDING FAILED!! (CIPSEND Timeout)')
+						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
+						debugLog.critical('LIVE : CIPSEND Timeout=> Packet: '+str(arg['time']))
 						errTime.setBit('at+cipsend')
 						print('\n\n\tLIVE : DATA SENDING FAILED!! (CIPSEND Timeout)\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					else:
-						liveLog.error('LIVE :returned "Other" status')
+						liveLog.error('Returned "Other" status')
+						debugLog.error('Returned "Other" status')
 						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
@@ -425,6 +436,8 @@ class live(threading.Thread):
 					errMain.setBit('gsmInit')
 					errMain.setBit('liveSend')
 					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
+					
+					debugLog.critical('Error in gsmInit,PACKET PUSHED TO BACKUP db')
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
 
@@ -438,10 +451,10 @@ class live(threading.Thread):
 
 			errMain.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
 
-			liveLog.info('ERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code))
+			liveLog.info('ERROR CODE: '+hex(errGsm.code)+' '+hex(errMain.code)+' '+hex(errTime.code)+' '+hex(errUnknown.code))
 			print ('\n\nERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code),'\n\n')
 
-			liveLog.critical('e-------------Live:')
+			debugLog.critical('e-------------Live:')
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			event.set()
@@ -466,9 +479,9 @@ if __name__ == '__main__':
 	liveLog 	= log.liveLog('./log/dredger1/live')
 	backLog 	= log.backfillLog('./log/dredger1/backfill')
 
-	debugLog.critical("STARTING####################")
-	liveLog.critical("STARTING####################")
-	backLog.critical("STARTING####################")
+	debugLog.critical("____________BOOT____________")
+	liveLog.critical("____________BOOT____________")
+	backLog.critical("____________BOOT____________")
 
 	event = threading.Event()
 	backfillEvent = threading.Event()
