@@ -2,14 +2,16 @@
 import serial
 import time
 import threading
+
 from backfill import database_backup
 from errorFile2 import errorHandlerMain      # Import from local file errorFile2
 from errorFile2 import errorHandlerGsm      # Import from local file errorFile2
 from errorFile2 import errorHandlerTimeout      # Import from local file errorFile2
 from errorFile2 import errorHandlerUnknown      # Import from local file errorFile2
 
-import minimalmodbus
 import os
+
+import minimalmodbus
 """
 Install Library Minimalmodbus 0.6,
 there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
