@@ -12,7 +12,7 @@ def debugLog(fName):
 	fh.setLevel(logging.DEBUG)
 
 	
-	frmt = logging.Formatter('%(asctime)s \t %(levelname)s \t\t %(message)s\n',"%Y-%m-%d %H:%M:%S")
+	frmt = logging.Formatter('%(asctime)s \t %(message)s\n',"%Y-%m-%d %H:%M:%S")
 	fh.setFormatter(frmt)
 	
 	lgr.addHandler(fh)
@@ -28,7 +28,7 @@ def liveLog(fName):
 	fh.setLevel(logging.DEBUG)
 
 	
-	frmt = logging.Formatter('%(asctime)s \t %(levelname)s \t\t %(message)s\n',"%Y-%m-%d %H:%M:%S")
+	frmt = logging.Formatter('%(asctime)s \t %(message)s\n',"%Y-%m-%d %H:%M:%S")
 	fh.setFormatter(frmt)
 	
 	lgr.addHandler(fh)
@@ -44,7 +44,7 @@ def backfillLog(fName):
 	fh.setLevel(logging.DEBUG)
 
 	
-	frmt = logging.Formatter('%(asctime)s \t %(levelname)s \t\t %(message)s\n',"%Y-%m-%d %H:%M:%S")
+	frmt = logging.Formatter('%(asctime)s \t %(message)s\n',"%Y-%m-%d %H:%M:%S")
 	fh.setFormatter(frmt)
 	
 	lgr.addHandler(fh)
