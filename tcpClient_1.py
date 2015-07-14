@@ -257,8 +257,9 @@ class Sim900():
 			
 			self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","52.74.77.168","5000"','OK','FAIL')
-			self.checkStatus('CONNECT OK','FAIL',10)
+			flagConn = self.sendAt('at+cipstart="TCP","52.74.77.168","5000"','CONNECT OK','FAIL')
+
+			#self.checkStatus('CONNECT OK','FAIL',10)
 			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
 
 			
@@ -269,6 +270,16 @@ class Sim900():
 			elif 'Error' in flagConn:
 				return 'Error'
 			else:
+				
+				flagCheck = self.checkStatus('CONNECT OK','FAIL',10)
+				
+				if flagCheck == 'ErrorTimeout':
+					errTime.setBit('at+cipstart="TCP","52.74.77.168","5000"')
+				elif flagCheck == 'Error':
+					errGsm.setBit('at+cipstart="TCP","52.74.77.168","5000"')
+				else:
+					errGsm.clearBit('at+cipstart="TCP","52.74.77.168","5000"')
+				
 				return 'Other'
 
 
@@ -308,6 +319,12 @@ class Sim900():
 			self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
 			flagStatus = self.checkStatus('SEND OK','ERROR',3)
 
+			if flagStatus == 'ErrorTimeout':
+				errTime.setBit('at+cipsend')
+			elif flagStatus=='Error':
+				errGsm.setBit('at+cipsend')
+			else:
+				errGsm.clearBit('at+cipsend')
 
 			print("\n\nPacket: \t"+packet+"\n\n")
 			
