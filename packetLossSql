@@ -1,0 +1,10 @@
+
+mysql> CREATE TABLE timeTemp ( id int AUTO_INCREMENT PRIMARY KEY, time DATETIME );
+
+			OR
+mysql>DELETE FROM timeTemp;
+
+mysql> INSERT INTO timeTemp (time)  SELECT time FROM db where time > "2015-07-13 19:07:00" order by time ASC;
+
+mysql> SELECT A.id,A.time, TIMESTAMPDIFF(minute,B.time,A.time) AS timedifference FROM timeTemp A INNER JOIN timeTemp B ON B.id = (A.id + 1) where TIMESTAMPDIFF(minute,B.time,A.time)>=2 or TIMESTAMPDIFF(minute,B.time,A.time)<=-2 ORDER BY TIMESTAMPDIFF(minute,B.time,A.time) asc ;
+
