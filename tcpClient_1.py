@@ -109,6 +109,7 @@ class plc():
 		return arg
 
 class Sim900():
+	self.status=0
 	def __init__ (self):
 		try:
 			self.obj = serial.Serial(port='/dev/port2', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
@@ -137,22 +138,22 @@ class Sim900():
 			self.obj.write(bytes(command+'\r\n',encoding='ascii'))
 			time.sleep(0.25)
 
-			status=self.checkStatus(success,error,wait)
+			self.status=self.checkStatus(success,error,wait)
 
-			if 'Success' in status:
+			if 'Success' in self.status:
 				#errGsm.clearBit(command)
 				#errTime.clearBit(command)
 				#errUnknown.clearBit(command)
 				return 'Success'
 			
-			elif 'Timeout' in status:
+			elif 'Timeout' in self.status:
 				#errGsm.setBit(command)
 				debugLog.error('TIMEOUT=> '+command)
 				errTime.setBit(command)
 				#errUnknown.clearBit(command)
 				return 'ErrorTimeout'
 			
-			elif 'Error' in status:
+			elif 'Error' in self.status:
 				debugLog.error('ERROR=> '+command)
 				errGsm.setBit(command)
 				#errTime.clearBit(command)
@@ -168,7 +169,7 @@ class Sim900():
 				
 			
 			#time.sleep(1)
-			#return status
+			#return self.status
 		else:
 			print('\n\t\t sendAT: GSM DISCONNECTED')
 
@@ -238,7 +239,8 @@ class Sim900():
 
 			self.sendAt('at')
 			
-			self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
+			if 'CLOSED' not in self.status:
+				self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
 			
 			self.sendAt('ate0')
 
@@ -279,6 +281,7 @@ class Sim900():
 					errGsm.setBit('at+cipstart="TCP","52.74.77.168","5000"')
 				else:
 					errGsm.clearBit('at+cipstart="TCP","52.74.77.168","5000"')
+					errUnknown.clearBit('at+cipstart="TCP","52.74.77.168","5000"')
 				
 				return 'Other'
 
@@ -317,7 +320,7 @@ class Sim900():
 
 			self.sendAt('at+cipsend','>','ERROR',5)
 			self.obj.write(bytes(packet+'\x0A\x0D\x0A\x0D\x1A',encoding='ascii'))
-			flagStatus = self.checkStatus('SEND OK','ERROR',3)
+			flagStatus = self.checkStatus('SEND OK','FAIL',3)
 
 			if flagStatus == 'ErrorTimeout':
 				errTime.setBit('at+cipsend')
@@ -343,7 +346,6 @@ class backFill(threading.Thread):
 			event.wait()
 			backfillEvent.clear()
 
-			debugLog.critical('s-------------Backfill:')
 			arg = self.db.fetchData()
 			if not arg:
 				print ('Database is empty')
@@ -379,7 +381,6 @@ class backFill(threading.Thread):
 				print ('\n\nERROR CODE:',hex(arg['errGsm']),hex(arg['errMain']),hex(arg['errTimeout']),hex(arg['errUnknown']),'\n\n')
 				time.sleep(0.5)
 
-			debugLog.critical('e-------------Backfill:')
 			backfillEvent.set()
 
 
@@ -402,8 +403,7 @@ class live(threading.Thread):
 			errTime.code 	=0
 			errUnknown.code =0
 
-			liveLog.critical('s-------------Live:')
-			debugLog.critical('s-------------Live:')
+			#debugLog.critical('s-------------Live:')
 			print('s-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			try:
@@ -413,10 +413,10 @@ class live(threading.Thread):
 				if flagInit == 'Success' or flagInit == 'Other':          # Else part is in gsmInit()
 					
 					if flagInit=='Success':
-						liveLog.info("GsmInit SUCCESS")
+						#liveLog.info("GsmInit SUCCESS")
 						errMain.clearBit('gsmInit')
 					else:
-						liveLog.info("GsmInit ERROR")
+						#liveLog.info("GsmInit ERROR")
 						errMain.setBit('gsmInit')
 
 					flagSend = self.gsm.sendPacket(arg,errGsm.code,errMain.code,
@@ -442,19 +442,19 @@ class live(threading.Thread):
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 
 					else:
-						liveLog.error('Returned "Other" status')
+						liveLog.error('Returned "Other" status,packet: '+str(arg['time']))
 						debugLog.error('Returned "Other" status')
 						errUnknown.setBit('liveSend')
 						print('\n\n\tLIVE :returned "Other" status!!\n\n')
 						self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 				else:
-					liveLog.error("GsmInit ERROR")
-					liveLog.error('LIVE : DATA SENDING FAILED')
+					#liveLog.error("GsmInit ERROR")
+					liveLog.error('FAILED=> DATA SENDING FAILED,packet: '+str(arg['time']))
 					errMain.setBit('gsmInit')
 					errMain.setBit('liveSend')
 					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 					
-					debugLog.critical('Error in gsmInit,PACKET PUSHED TO BACKUP db')
+					debugLog.critical('Error in gsmInit,PACKET PUSHED TO BACKUP db,packet: '+str(arg['time']))
 					print("\n\t\tError in gsmInit\
 						\n\t\tPACKET PUSHED TO BACKUP db\n\n")
 
@@ -468,10 +468,9 @@ class live(threading.Thread):
 
 			errMain.clearBit('boot')		#Bit boot is cleared for all packets except the 1st Live
 
-			liveLog.info('ERROR CODE: '+hex(errGsm.code)+' '+hex(errMain.code)+' '+hex(errTime.code)+' '+hex(errUnknown.code))
 			print ('\n\nERROR CODE:',hex(errGsm.code),hex(errMain.code),hex(errTime.code),hex(errUnknown.code),'\n\n')
 
-			debugLog.critical('e-------------Live:')
+			#debugLog.critical('e-------------Live:')
 			print('e-------------Live:' ,time.strftime('%d/%m/%Y %H:%M:%S',time.localtime()))
 
 			event.set()
