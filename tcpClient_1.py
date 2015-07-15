@@ -109,8 +109,8 @@ class plc():
 		return arg
 
 class Sim900():
-	self.status=0
 	def __init__ (self):
+		self.status=0
 		try:
 			self.obj = serial.Serial(port='/dev/port2', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
