@@ -126,10 +126,11 @@ while True:
 	errTime     = errorHandlerTimeout()
 	errUnknown  = errorHandlerUnknown()
 
-	codeGsm     = raw_input("Enter the GSM error code: 0x")
-	codeMain    = raw_input("Enter the MAIN error code: 0x")
-	codeTime    = raw_input("Enter the TIME error code: 0x")
-	codeUnknown = raw_input("Enter the UNKNOWN error code: 0x")
+	codeGsm     = raw_input("GSM error code: 0x")
+	codeMain    = raw_input("MAIN error code: 0x")
+	codeTime    = raw_input("TIME error code: 0x")
+	codeUnknown = raw_input("error code: 0x")
+	print('\n')
 	
 	codeGsm     = int(codeGsm,16)
 	codeMain    = int(codeMain,16)
