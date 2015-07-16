@@ -8,3 +8,4 @@ mysql> INSERT INTO timeTemp (time)  SELECT time FROM db where time > "2015-07-13
 
 mysql> SELECT A.id,A.time, TIMESTAMPDIFF(minute,B.time,A.time) AS timedifference FROM timeTemp A INNER JOIN timeTemp B ON B.id = (A.id + 1) where TIMESTAMPDIFF(minute,B.time,A.time)>=2 or TIMESTAMPDIFF(minute,B.time,A.time)<=-2 ORDER BY TIMESTAMPDIFF(minute,B.time,A.time) asc ;
 
+mysql> SELECT A.id,A.time, TIMESTAMPDIFF(minute,B.time,A.time) AS min, TIMESTAMPDIFF(second,B.time,A.time) as sec,count(*) FROM timeTemp A INNER JOIN timeTemp B ON B.id = (A.id + 1)  group by TIMESTAMPDIFF(minute,B.time,A.time) asc;
