@@ -33,11 +33,13 @@ if __name__ == '__main__':
             instrument = minimalmodbus.Instrument('/dev/port1',2)
             #instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1, minimalmodbus.MODE_ASCII)
             instrument.serial.baudrate = 9600
-            instrument.serial.bytesize = 7
+            instrument.serial.bytesize = 8
             instrument.serial.parity = serial.PARITY_EVEN
             instrument.serial.stopbits = 1
-            instrument.serial.timeout = 0.1
-            instrument.mode = minimalmodbus.MODE_ASCII
+            instrument.serial.timeout = 1
+            instrument.debug='true'
+            print instrument
+            instrument.mode = minimalmodbus.MODE_RTU
 
 
             while True:
@@ -45,7 +47,9 @@ if __name__ == '__main__':
 
                 dreadger_name       = 'dreadger_name'
                 time                = datetime.datetime.now()
-                storage_tank_level  = instrument.read_register(4096)
+                storage_tank_level  = instrument.read_float(0)
+                #storage_tank_level=0
+                """
                 storage_tank_cap    = instrument.read_register(4104)
                 service_tank_level  = instrument.read_register(4097)
                 service_tank_cap    = instrument.read_register(4105)
@@ -55,9 +59,10 @@ if __name__ == '__main__':
                 flowmeter_2_in      = instrument.read_register(4103)
                 flowmeter_2_out     = instrument.read_register(4101)
                 engine_2_status     = instrument.read_register(4107)
-
+                """
                 print('############################################################')
                 print('{0:20} ==> {1:5}'.format('storage_tank_level',storage_tank_level))
+                """
                 print('{0:20} ==> {1:5}'.format('storage_tank_cap',storage_tank_cap))
                 print('{0:20} ==> {1:5}'.format('service_tank_level',service_tank_level))
                 print('{0:20} ==> {1:5}'.format('service_tank_cap',service_tank_cap))
@@ -67,6 +72,7 @@ if __name__ == '__main__':
                 print('{0:20} ==> {1:5}'.format('flowmeter_2_in',flowmeter_2_in))
                 print('{0:20} ==> {1:5}'.format('flowmeter_2_out',flowmeter_2_out))
                 print('{0:20} ==> {1:5}'.format('engine_2_status',engine_2_status))
+                """
                 print('############################################################')
                 
                 raw_input()
