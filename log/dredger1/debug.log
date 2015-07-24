@@ -68,3 +68,21 @@
 
 2015-07-13 19:07:04 	 ERROR=> at+cipsend
 
+2015-07-22 15:14:03 	 ____________BOOT____________
+
+2015-07-22 15:14:05 	 			Reply: at+cipclose=1  ERROR
+
+2015-07-22 15:14:05 	 ERROR=> at+cipclose=1
+
+2015-07-22 15:14:30 	 LIVE :SUCCESS=> Packet: 2015-07-22 15:14:03
+
+2015-07-22 15:14:39 	 BACKFILL :SUCCESS=> Packet: 2015-07-13 10:50:14
+
+2015-07-22 15:14:50 	 BACKFILL :SUCCESS=> Packet: 2015-07-13 10:53:10
+
+2015-07-22 15:14:53 	 			Reply: CLOSED  ERROR
+
+2015-07-22 15:14:53 	 ERROR=> at+cipclose=1
+
+2015-07-22 15:15:14 	 LIVE :SUCCESS=> Packet: 2015-07-22 15:14:51
+
