@@ -1,2 +1,6 @@
+/backfill.pyc
+/errorFile1.pyc
+/logSys
+/myLogger.pyc
 /__pycache__/*
 *.db

@@ -22,7 +22,7 @@ class errorHandlerGsm():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('GSM: checkBit: ',e,errType)
+            print 'GSM: checkBit: ',e,errType
             return None
         else:
             return (True if ( self.code &  mask) else False)
@@ -31,7 +31,7 @@ class errorHandlerGsm():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('GSM: setBit: ',e,errType)
+            print 'GSM: setBit: ',e,errType
         else:
             self.code |= mask
             #print("\n\t\t\tGSM: setBit('",errType,"')\n\n")
@@ -40,7 +40,7 @@ class errorHandlerGsm():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print ('GSM: clearBit',e,errType)
+            print 'GSM: clearBit',e,errType
         else:
             self.code &= (~mask)
             #print("\n\t\t\tGSM: clearBit('",errType,"')\n\n") 
@@ -63,7 +63,7 @@ class errorHandlerMain():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('MAIN: checkBit: ',e,errType)
+            print 'MAIN: checkBit: ',e,errType
             return None
         else:
             return (True if ( self.code &  mask) else False)
@@ -72,7 +72,7 @@ class errorHandlerMain():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('MAIN: setBit: ',e,errType)
+            print 'MAIN: setBit: ',e,errType
         else:
             self.code |= mask
             #print("\n\t\t\tMAIN: setBit('",errType,"')\n\n")
@@ -81,7 +81,7 @@ class errorHandlerMain():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print ('MAIN: clearBit',e,errType)
+            print 'MAIN: clearBit',e,errType
         else:
             self.code &= (~mask)
             #print("\n\t\t\tMAIN: clearBit('",errType,"')\n\n") 
@@ -110,7 +110,7 @@ class errorHandlerTimeout():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('TIMEOUT: checkBit: ',e,errType)
+            print 'TIMEOUT: checkBit: ',e,errType
             return None
         else:
             return (True if ( self.code &  mask) else False)
@@ -119,7 +119,7 @@ class errorHandlerTimeout():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('TIMEOUT: setBit: ',e,errType)
+            print 'TIMEOUT: setBit: ',e,errType
         else:
             self.code |= mask
             #print("\n\t\t\tTIMEOUT: setBit('",errType,"')\n\n")
@@ -128,7 +128,7 @@ class errorHandlerTimeout():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print ('TIMEOUT: clearBit',e,errType)
+            print 'TIMEOUT: clearBit',e,errType
         else:
             self.code &= (~mask)
             #print("\n\t\t\tTIMEOUT: clearBit('",errType,"')\n\n") 
@@ -158,7 +158,7 @@ class errorHandlerUnknown():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('UNKNOWN: checkBit: ',e,errType)
+            print 'UNKNOWN: checkBit: ',e,errType
             return None
         else:
             return (True if ( self.code &  mask) else False)
@@ -167,7 +167,7 @@ class errorHandlerUnknown():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print('UNKNOWN: setBit: ',e,errType)
+            print 'UNKNOWN: setBit: ',e,errType
         else:
             self.code |= mask
             #print("\n\t\t\tUNKNOWN: setBit('",errType,"')\n\n")
@@ -176,7 +176,7 @@ class errorHandlerUnknown():
         try:
             mask = 1 << self.lookup(errType)
         except Exception as e:
-            print ('UNKNOWN: clearBit',e,errType)
+            print 'UNKNOWN: clearBit',e,errType
         else:
             self.code &= (~mask)
             #print("\n\t\t\tUNKNOWN: clearBit('",errType,"')\n\n") 
