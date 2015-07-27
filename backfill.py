@@ -4,7 +4,7 @@ from datetime import datetime as dt
 
 while True:
         try:
-                conn = pymysql.connect(host="localhost", user="admin", passwd="aaggss", db="dredger")
+                conn = pymysql.connect(host="localhost", user="root", passwd="aaggss", db="dredger")
                 cur = conn.cursor()
                 break
         except Exception as e:
