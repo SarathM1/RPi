@@ -276,12 +276,12 @@ class Sim900():
 				flagCheck = self.checkStatus('CONNECT OK','FAIL',10)
 				
 				if flagCheck == 'ErrorTimeout':
-					errTime.setBit('at+cipstart="TCP","52.74.172.225","5000"')
+					errTime.setBit('at+cipstart="TCP","54.169.181.88","5000"')
 				elif flagCheck == 'Error':
-					errGsm.setBit('at+cipstart="TCP","52.74.172.225","5000"')
+					errGsm.setBit('at+cipstart="TCP","54.169.181.88","5000"')
 				else:
-					errGsm.clearBit('at+cipstart="TCP","52.74.172.225","5000"')
-					errUnknown.clearBit('at+cipstart="TCP","52.74.172.225","5000"')
+					errGsm.clearBit('at+cipstart="TCP","54.169.181.88","5000"')
+					errUnknown.clearBit('at+cipstart="TCP","54.169.181.88","5000"')
 				
 				return 'Other'
 
@@ -355,7 +355,7 @@ class backFill(threading.Thread):
 				self.gsm.sendAt('at+cipclose=1')
 				
 
-				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.172.225","5000"','OK','FAIL')
+				flagConn = self.gsm.sendAt('at+cipstart="TCP","54.169.181.88","5000"','OK','FAIL')
 				self.gsm.checkStatus('CONNECT OK','FAIL',10)
 				
 				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
