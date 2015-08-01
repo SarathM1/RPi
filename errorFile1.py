@@ -4,7 +4,7 @@ class errorHandlerGsm():
     def lookup(self,errType):
         return {
         'at+ciicr'      :0,
-        'at+cipstart="TCP","54.169.181.88","5000"'   :1,
+        'at+cipstart="TCP","52.76.2.138","5000"'   :1,
         'at+cipsend'    :2,
         'at+cipclose=1'   :3,
         'at+cgatt?'     :4,
@@ -92,7 +92,7 @@ class errorHandlerTimeout():
     def lookup(self,errType):
         return {
         'at+ciicr'      :0,
-        'at+cipstart="TCP","54.169.181.88","5000"':1,
+        'at+cipstart="TCP","52.76.2.138","5000"':1,
         'at+cipsend'    :2,
         'at+cipclose=1'   :3,
         'at+cgatt?'     :4,
@@ -139,7 +139,7 @@ class errorHandlerUnknown():
     def lookup(self,errType):
         return {
         'at+ciicr'                                  :0,
-        'at+cipstart="TCP","54.169.181.88","5000"'  :1,
+        'at+cipstart="TCP","52.76.2.138","5000"'  :1,
         'at+cipsend'                                :2,
         'at+cipclose=1'                               :3,
         'at+cgatt?'                                 :4,
