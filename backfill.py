@@ -10,8 +10,7 @@ while True:
         except Exception as e:
                 print (e)
                 time.sleep(1)
-#FUll- PAth : sqlite:////tmp/tutorial/joindemo.db
-# sudo apt-get install python3-mysql.connector
+
 
 
 class database_backup():
