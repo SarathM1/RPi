@@ -135,7 +135,17 @@ class Sim900():
 		"""
 		if not errMain.checkBit('gsmUsb'):
 			print '{0:20}'.format(command) ,
-			self.obj.write(command+'\r\n')
+			
+			try:
+				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
+			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
+				self.obj.write(command+'\r\n')
+			except Exception as e:
+				print 'Error in sendAt(): '+str(e)
+				liveLog.error('Error in sendAt(): '+str(e))
+				debugLog.error('Error in sendAt(): '+str(e))
+
 			time.sleep(0.25)
 
 			self.status=self.checkStatus(success,error,wait)
@@ -180,7 +190,9 @@ class Sim900():
 		"""
 
 		try:
-
+			self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
+			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 			status = self.obj.read(100).decode('ascii').strip()
 		except Exception as e:
 			status=error
@@ -197,10 +209,14 @@ class Sim900():
 			cntr=cntr+1
 
 			try:
+				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
+			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 				status = self.obj.read(100).decode('ascii').strip()
 			except Exception as e:
 				status=error
-				print e
+				print 'checkStatus(): '+str(e)
+				debugLog.error('checkStatus(): '+str(e))
 
 			time.sleep(1)
 			if wait>1:         # If waitin for more than 5 sec display count
@@ -319,7 +335,15 @@ class Sim900():
 
 
 			self.sendAt('at+cipsend','>','ERROR',5)
-			self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
+
+			try:
+				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+				 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
+				  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
+				self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
+			except Exception as e:
+
+
 			flagStatus = self.checkStatus('SEND OK','FAIL',3)
 
 			if flagStatus == 'ErrorTimeout':
