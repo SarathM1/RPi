@@ -112,7 +112,7 @@ class Sim900():
 	def __init__ (self):
 		self.status=0
 		try:
-			self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			self.obj = serial.Serial(port='/dev/gsmModem', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 
