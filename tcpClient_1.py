@@ -511,14 +511,6 @@ def main():
 
 
 if __name__ == '__main__':
-	try:
-		os.system("clear")
-	except :
-		pass
-	
-	print "Sleeping for 20 seconds"
-	time.sleep(20)
-
 	debugLog 	= log.debugLog('/root/RPi/log/dredger1/debug')
 	liveLog 	= log.liveLog('/root/RPi/log/dredger1/live')
 	backLog 	= log.backfillLog('/root/RPi/log/dredger1/backfill')
