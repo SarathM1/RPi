@@ -137,7 +137,7 @@ class Sim900():
 			print '{0:20}'.format(command) ,
 			
 			try:
-				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+				self.obj = serial.Serial(port='/dev/gsmModem', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 				self.obj.write(command+'\r\n')
@@ -190,7 +190,7 @@ class Sim900():
 		"""
 
 		try:
-			self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+			self.obj = serial.Serial(port='/dev/gsmModem', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 			status = self.obj.read(100).decode('ascii').strip()
@@ -209,7 +209,7 @@ class Sim900():
 			cntr=cntr+1
 
 			try:
-				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+				self.obj = serial.Serial(port='/dev/gsmModem', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 			 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 			  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 				status = self.obj.read(100).decode('ascii').strip()
@@ -275,7 +275,7 @@ class Sim900():
 			
 			self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","52.76.2.138","5000"','CONNECT OK','FAIL')
+			flagConn = self.sendAt('at+cipstart="TCP","52.74.14.46","5000"','CONNECT OK','FAIL')
 
 			#self.checkStatus('CONNECT OK','FAIL',10)
 			#self.checkStatus('ACK_FROM_SERVER','ERROR',3)
@@ -292,12 +292,12 @@ class Sim900():
 				flagCheck = self.checkStatus('CONNECT OK','FAIL',10)
 				
 				if flagCheck == 'ErrorTimeout':
-					errTime.setBit('at+cipstart="TCP","52.76.2.138","5000"')
+					errTime.setBit('at+cipstart="TCP","52.74.14.46","5000"')
 				elif flagCheck == 'Error':
-					errGsm.setBit('at+cipstart="TCP","52.76.2.138","5000"')
+					errGsm.setBit('at+cipstart="TCP","52.74.14.46","5000"')
 				else:
-					errGsm.clearBit('at+cipstart="TCP","52.76.2.138","5000"')
-					errUnknown.clearBit('at+cipstart="TCP","52.76.2.138","5000"')
+					errGsm.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
+					errUnknown.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
 				
 				return 'Other'
 
@@ -337,7 +337,7 @@ class Sim900():
 			self.sendAt('at+cipsend','>','ERROR',5)
 
 			try:
-				self.obj = serial.Serial(port='/dev/ttyUSB0', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
+				self.obj = serial.Serial(port='/dev/gsmModem', baudrate=9600, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,\
 				 stopbits=serial.STOPBITS_ONE, timeout=1.0, xonxoff=False, rtscts=False,\
 				  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 				self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
@@ -380,7 +380,7 @@ class backFill(threading.Thread):
 				self.gsm.sendAt('at+cipclose=1')
 				
 
-				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.76.2.138","5000"','OK','FAIL')
+				flagConn = self.gsm.sendAt('at+cipstart="TCP","52.74.14.46","5000"','OK','FAIL')
 				self.gsm.checkStatus('CONNECT OK','FAIL',10)
 				
 				flagSend=self.gsm.sendPacket(arg,arg['errGsm'],
