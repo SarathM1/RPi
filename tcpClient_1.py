@@ -342,7 +342,8 @@ class Sim900():
 				  writeTimeout=1.0, dsrdtr=False, interCharTimeout=None)
 				self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
 			except Exception as e:
-
+				print 'sendPacket(): '+str(e)
+				debugLog.error('sendPacket(): '+str(e))
 
 			flagStatus = self.checkStatus('SEND OK','FAIL',3)
 
