@@ -8,8 +8,8 @@ while True:
                 cur = conn.cursor()
                 break
         except Exception as e:
-                print (e)
-                time.sleep(1)
+                print 'backfill.py: ',e
+                time.sleep(1) #Wait 1 secs before retrying
 
 
 
