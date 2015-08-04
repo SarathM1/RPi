@@ -1,5 +1,6 @@
 
 #!/usr/bin/python3
+from random import randint as r
 import serial
 import time
 import threading
@@ -30,16 +31,16 @@ def dummyPacket():
 
 	arg['dredger_name']         = 'dredger1'
 	arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
-	arg['storage_tank_level']   = 0
-	arg['storage_tank_cap']     = cap[0]
-	arg['service_tank_level']   = 0
-	arg['service_tank_cap']     = cap[0]
-	arg['flowmeter_1_in']       = 0
-	arg['flowmeter_1_out']      = 0
-	arg['engine_1_status']      = status[0]
-	arg['flowmeter_2_in']       = 0
-	arg['flowmeter_2_out']      = 0
-	arg['engine_2_status']      = status[0]
+	arg['storage_tank_level']   = r(20,100)
+	arg['storage_tank_cap']     = cap[r(0,1)]
+	arg['service_tank_level']   = r(20,100)
+	arg['service_tank_cap']     = cap[r(0,1)]
+	arg['flowmeter_1_in']       = r(20,100)
+	arg['flowmeter_1_out']      = r(20,100)
+	arg['engine_1_status']      = status[r(0,1)]
+	arg['flowmeter_2_in']       = r(20,100)
+	arg['flowmeter_2_out']      = r(20,100)
+	arg['engine_2_status']      = status[r(0,1)]
 
 
 	return arg
