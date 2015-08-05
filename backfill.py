@@ -5,8 +5,8 @@ from datetime import datetime as dt
 
 while True:
         try:
-                #conn = sqlite3.connect('/media/sd_card/backfill.db',check_same_thread=False)
-                conn = sqlite3.connect('./backfill.db',check_same_thread=False)
+                conn = sqlite3.connect('/media/sd_card/backfill.db',check_same_thread=False)
+                #conn = sqlite3.connect('./backfill.db',check_same_thread=False)
                 cur = conn.cursor()
                 break
         except Exception as e:
@@ -16,44 +16,44 @@ while True:
 
 class database_backup():
 	def insertDb(self,arg,errGsm,errMain,errTime,errUnknown):
-		#try:
-		cur.execute('''INSERT INTO backfill (dredger_name,\
-			time,\
-			storage_tank_level,\
-			storage_tank_cap,\
-			service_tank_level,\
-			service_tank_cap,\
-			flowmeter_1_in,\
-			flowmeter_1_out,\
-			engine_1_status,\
-			flowmeter_2_in ,\
-			flowmeter_2_out,\
-			engine_2_status,\
-			error_gsm,\
-			error_main,\
-			error_timeout,\
-			error_unknown)\
-		 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''',
-		 	(arg['dredger_name'],
-		 	arg['time'],
-		 	arg['storage_tank_level'],
-		 	arg['storage_tank_cap'],
-		 	arg['service_tank_level'],
-		 	arg['service_tank_cap'],
-		 	arg['flowmeter_1_in'],
-		 	arg['flowmeter_1_out'],
-		 	arg['engine_1_status'],
-		 	arg['flowmeter_2_in'],
-		 	arg['flowmeter_2_out'],
-		 	arg['engine_2_status'],
-		 	hex(errGsm),
-		 	hex(errMain),
-		 	hex(errTime),
-		 	hex(errUnknown)))
-		conn.commit()
+		try:
+			cur.execute('''INSERT INTO backfill (dredger_name,\
+				time,\
+				storage_tank_level,\
+				storage_tank_cap,\
+				service_tank_level,\
+				service_tank_cap,\
+				flowmeter_1_in,\
+				flowmeter_1_out,\
+				engine_1_status,\
+				flowmeter_2_in ,\
+				flowmeter_2_out,\
+				engine_2_status,\
+				error_gsm,\
+				error_main,\
+				error_timeout,\
+				error_unknown)\
+			 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);''',
+			 	(arg['dredger_name'],
+			 	arg['time'],
+			 	arg['storage_tank_level'],
+			 	arg['storage_tank_cap'],
+			 	arg['service_tank_level'],
+			 	arg['service_tank_cap'],
+			 	arg['flowmeter_1_in'],
+			 	arg['flowmeter_1_out'],
+			 	arg['engine_1_status'],
+			 	arg['flowmeter_2_in'],
+			 	arg['flowmeter_2_out'],
+			 	arg['engine_2_status'],
+			 	hex(errGsm),
+			 	hex(errMain),
+			 	hex(errTime),
+			 	hex(errUnknown)))
+			conn.commit()
 
-		#except Exception as e:
-		#	print ('insertDb: '+str(e))
+		except Exception as e:
+			print ('insertDb: '+str(e))
 			
 	def deleteDb(self,arg):
 		try:
