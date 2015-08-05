@@ -45,6 +45,7 @@ def dummyPacket():
 	return arg
 
 
+
 class plc():
 	def __init__(self):
 		try:
@@ -112,8 +113,8 @@ class Sim900():
 	def __init__ (self):
 		self.status=0
 		try:
-			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
-
+			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+            self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
 		
 		except serial.SerialException:
@@ -130,7 +131,8 @@ class Sim900():
 	def hotPlug(self,loggerMsg="USB disconnected"):
 		print loggerMsg
 		try:
-			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
+			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+            self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 		except Exception as e:
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
