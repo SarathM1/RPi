@@ -112,7 +112,7 @@ class Sim900():
 	def __init__ (self):
 		self.status=0
 		try:
-			self.obj = serial.Serial('/dev/port4', 9600, timeout=1)
+			self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 
 			errMain.clearBit('gsmUsb')
 		
@@ -130,7 +130,7 @@ class Sim900():
 	def hotPlug(self,loggerMsg="USB disconnected"):
 		print loggerMsg
 		try:
-			self.obj = serial.Serial('/dev/port4', 9600, timeout=1)
+			self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 		except Exception as e:
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
