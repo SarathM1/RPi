@@ -112,7 +112,7 @@ class Sim900():
 	def __init__ (self):
 		self.status=0
 		try:
-			self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 
 			errMain.clearBit('gsmUsb')
 		
@@ -130,7 +130,7 @@ class Sim900():
 	def hotPlug(self,loggerMsg="USB disconnected"):
 		print loggerMsg
 		try:
-			self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
+			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 		except Exception as e:
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
@@ -140,50 +140,47 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		if not errMain.checkBit('gsmUsb'):
-			print '{0:20}'.format(command) ,
-			
-			try:
-				self.obj.write(command+'\r\n')
-			except Exception as e:
-				self.hotPlug('sendAt(): '+str(e))
+		#if not errMain.checkBit('gsmUsb'):
+		print '{0:20}'.format(command) ,
+		
+		try:
+			self.obj.write(command+'\r\n')
+		except Exception as e:
+			self.hotPlug('sendAt(): '+str(e))
 
-			time.sleep(0.25)
+		time.sleep(0.25)
 
-			self.status=self.checkStatus(success,error,wait)
+		self.status=self.checkStatus(success,error,wait)
 
-			if 'Success' in self.status:
-				#errGsm.clearBit(command)
-				#errTime.clearBit(command)
-				#errUnknown.clearBit(command)
-				return 'Success'
-			
-			elif 'Timeout' in self.status:
-				#errGsm.setBit(command)
-				debugLog.error('TIMEOUT=> '+command)
-				errTime.setBit(command)
-				#errUnknown.clearBit(command)
-				return 'ErrorTimeout'
-			
-			elif 'Error' in self.status:
-				debugLog.error('ERROR=> '+command)
-				errGsm.setBit(command)
-				#errTime.clearBit(command)
-				#errUnknown.clearBit(command)
-				return 'Error'
-			
-			else:
-				#errGsm.clearBit(command)
-				#errTime.clearBit(command)
-				debugLog.error('OTHER=> '+command)
-				errUnknown.setBit(command)
-				return 'Other'
-				
-			
-			#time.sleep(1)
-			#return self.status
+		if 'Success' in self.status:
+			#errGsm.clearBit(command)
+			#errTime.clearBit(command)
+			#errUnknown.clearBit(command)
+			return 'Success'
+		
+		elif 'Timeout' in self.status:
+			#errGsm.setBit(command)
+			debugLog.error('TIMEOUT=> '+command)
+			errTime.setBit(command)
+			#errUnknown.clearBit(command)
+			return 'ErrorTimeout'
+		
+		elif 'Error' in self.status:
+			debugLog.error('ERROR=> '+command)
+			errGsm.setBit(command)
+			#errTime.clearBit(command)
+			#errUnknown.clearBit(command)
+			return 'Error'
+		
 		else:
-			print '\n\t\t sendAT: GSM DISCONNECTED'
+			#errGsm.clearBit(command)
+			#errTime.clearBit(command)
+			debugLog.error('OTHER=> '+command)
+			errUnknown.setBit(command)
+			return 'Other'
+
+		#else:
+		#	print '\n\t\t sendAT: GSM DISCONNECTED'
 
 	def checkStatus(self,success='OK',error='ERROR',wait=3):
 		"""
@@ -241,107 +238,110 @@ class Sim900():
 			return 'Other'
 
 	def gsmInit(self,arg):
+		"""
 		if errMain.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
 			print "\n\t\tERROR: GSM disconnected !!\n\n"
 			time.sleep(1)
 			return  'Error'
 		else:
+		"""
 
-			self.sendAt('at')
-			
-			if 'CLOSED' not in self.status:
-				self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
-			
-			self.sendAt('ate0')
+		self.sendAt('at')
+		
+		if 'CLOSED' not in self.status:
+			self.sendAt('at+cipclose=1') # Ref page 27, Fast Closing when cipclose =1
+		
+		self.sendAt('ate0')
 
-			self.sendAt('at+cpin?')
-			
-			self.sendAt('at+csq')
-			
-			self.sendAt('at+creg?')
-			
-			self.sendAt('at+cgatt?')
-			
-			self.sendAt('at+cipshut')
-			self.sendAt('at+cstt="internet"')
+		self.sendAt('at+cpin?')
+		
+		self.sendAt('at+csq')
+		
+		self.sendAt('at+creg?')
+		
+		self.sendAt('at+cgatt?')
+		
+		self.sendAt('at+cipshut')
+		self.sendAt('at+cstt="internet"')
 
-			self.sendAt('at+ciicr','OK','ERROR',20)
-			
-			self.sendAt('at+cifsr','.','ERROR')
+		self.sendAt('at+ciicr','OK','ERROR',20)
+		
+		self.sendAt('at+cifsr','.','ERROR')
 
-			flagConn = self.sendAt('at+cipstart="TCP","52.74.14.46","5000"','CONNECT OK','FAIL')
+		flagConn = self.sendAt('at+cipstart="TCP","52.74.14.46","5000"','CONNECT OK','FAIL')
 
+		
+		if flagConn=='Success':
+			return 'Success'
+		elif 'Error' in flagConn:
+			return 'Error'
+		else:
 			
-			if flagConn=='Success':
-				return 'Success'
-			elif 'Error' in flagConn:
-				return 'Error'
+			flagCheck = self.checkStatus('CONNECT OK','FAIL',10)
+			
+			if flagCheck == 'ErrorTimeout':
+				errTime.setBit('at+cipstart="TCP","52.74.14.46","5000"')
+			elif flagCheck == 'Error':
+				errGsm.setBit('at+cipstart="TCP","52.74.14.46","5000"')
 			else:
-				
-				flagCheck = self.checkStatus('CONNECT OK','FAIL',10)
-				
-				if flagCheck == 'ErrorTimeout':
-					errTime.setBit('at+cipstart="TCP","52.74.14.46","5000"')
-				elif flagCheck == 'Error':
-					errGsm.setBit('at+cipstart="TCP","52.74.14.46","5000"')
-				else:
-					errGsm.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
-					errUnknown.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
-				
-				return 'Other'
+				errGsm.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
+				errUnknown.clearBit('at+cipstart="TCP","52.74.14.46","5000"')
+			
+			return 'Other'
 
 
 
 
 	def sendPacket(self,arg,gsmErr,mainErr,timeoutErr,
 		unknownErr,case ='backfill'):
+		"""
 		if errMain.checkBit('gsmUsb'):
 
 			print '\n\n\tERROR: GSM DISCONNECTED !!'
 
 			return 'Error'
 		else:
-			
-			errMain.clearBit('liveSend')				# IF error this bit 
-														 #is set in Live class
+		"""	
+		errMain.clearBit('liveSend')				# IF error this bit 
+													 #is set in Live class
 
-			packet = str(arg['dredger_name'])\
-					+';'+str(arg['time'])\
-					  +';'+str(arg['storage_tank_level'])\
-					+';'+str(arg['storage_tank_cap'])\
-					+';'+str(arg['service_tank_level'])\
-					+';'+str(arg['service_tank_cap'])\
-					+';'+str(arg['flowmeter_1_in'])\
-					+';'+str(arg['flowmeter_1_out'])\
-					+';'+str(arg['engine_1_status'])\
-					+';'+str(arg['flowmeter_2_in'])\
-					+';'+str(arg['flowmeter_2_out'])\
-					+';'+str(arg['engine_2_status'])\
-					+';'+str(hex(gsmErr))\
-					+';'+str(hex(mainErr))\
-					+';'+str(hex(timeoutErr))\
-					+';'+str(hex(unknownErr))\
+		packet = str(arg['dredger_name'])\
+				+';'+str(arg['time'])\
+				  +';'+str(arg['storage_tank_level'])\
+				+';'+str(arg['storage_tank_cap'])\
+				+';'+str(arg['service_tank_level'])\
+				+';'+str(arg['service_tank_cap'])\
+				+';'+str(arg['flowmeter_1_in'])\
+				+';'+str(arg['flowmeter_1_out'])\
+				+';'+str(arg['engine_1_status'])\
+				+';'+str(arg['flowmeter_2_in'])\
+				+';'+str(arg['flowmeter_2_out'])\
+				+';'+str(arg['engine_2_status'])\
+				+';'+str(hex(gsmErr))\
+				+';'+str(hex(mainErr))\
+				+';'+str(hex(timeoutErr))\
+				+';'+str(hex(unknownErr))\
 
 
-			self.sendAt('at+cipsend','>','ERROR',5)
+		self.sendAt('at+cipsend','>','ERROR',5)
 
-			try:
-				self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
-			except Exception as e:
-				self.hotPlug('sendPacket(): '+str(e))
+		try:
+			self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
+		except Exception as e:
+			self.hotPlug('sendPacket(): '+str(e))
 
-			flagStatus = self.checkStatus('SEND OK','FAIL',3)
+		flagStatus = self.checkStatus('SEND OK','FAIL',3)
 
-			if flagStatus == 'ErrorTimeout':
-				errTime.setBit('at+cipsend')
-			elif flagStatus=='Error':
-				errGsm.setBit('at+cipsend')
-			else:
-				errGsm.clearBit('at+cipsend')
+		if flagStatus == 'ErrorTimeout':
+			errTime.setBit('at+cipsend')
+		elif flagStatus=='Error':
+			errGsm.setBit('at+cipsend')
+		else:
+			errGsm.clearBit('at+cipsend')
 
-			print "\n\nPacket: \t"+packet+"\n\n"
-			
-			return flagStatus
+		print "\n\nPacket: \t"+packet+"\n\n"
+		
+		return flagStatus
 
 class backFill(threading.Thread):
 
