@@ -1,16 +1,17 @@
 import time
-import pymysql
+import sqlite3
 from datetime import datetime as dt
+
 
 while True:
         try:
-                conn = pymysql.connect(host="localhost", user="root", passwd="aaggss", db="dredger")
+                conn = sqlite3.connect('/media/sd_card/backfill.db',check_same_thread=False)
+                #conn = sqlite3.connect('./backfill.db',check_same_thread=False)
                 cur = conn.cursor()
                 break
         except Exception as e:
                 print 'backfill.py: ',e
                 time.sleep(1) #Wait 1 secs before retrying
-
 
 
 class database_backup():
@@ -87,5 +88,5 @@ class database_backup():
 				dictRow['errUnknown']			= int(row[16],16)
 				return dictRow
 		except Exception as e:
-			print ('fetchData: '+str(e))
+			print ('2fetchData: '+str(e))
 
