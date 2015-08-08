@@ -49,7 +49,7 @@ def dummyPacket():
 class plc():
     def __init__(self):
         try:
-            self.instrument = minimalmodbus.Instrument('/dev/port2',1)
+            self.instrument = minimalmodbus.Instrument('/dev/plc',1)
             self.instrument.serial.baudrate = 9600
             self.instrument.serial.bytesize = 7
             self.instrument.serial.parity = serial.PARITY_EVEN
