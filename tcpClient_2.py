@@ -4,10 +4,10 @@ import serial
 import time
 import threading
 from backfill import database_backup
-from errorFile1 import errorHandlerMain      # Import from local file errorFile1
-from errorFile1 import errorHandlerGsm      # Import from local file errorFile1
-from errorFile1 import errorHandlerTimeout      # Import from local file errorFile1
-from errorFile1 import errorHandlerUnknown      # Import from local file errorFile1
+from errorFile import errorHandlerMain      # Import from local file errorFile
+from errorFile import errorHandlerGsm      # Import from local file errorFile
+from errorFile import errorHandlerTimeout      # Import from local file errorFile
+from errorFile import errorHandlerUnknown      # Import from local file errorFile
 
 import os
 import myLogger as log
@@ -519,10 +519,10 @@ if __name__ == '__main__':
     event = threading.Event()
     backfillEvent = threading.Event()
     backfillEvent.set()
-    errMain = errorHandlerMain()           # import from file errorFile1.py
-    errGsm = errorHandlerGsm()           # import from file errorFile1.py
-    errTime = errorHandlerTimeout()           # import from file errorFile1.py
-    errUnknown = errorHandlerUnknown()       # import from file errorFile1.py
+    errMain = errorHandlerMain()           # import from file errorFile.py
+    errGsm = errorHandlerGsm()           # import from file errorFile.py
+    errTime = errorHandlerTimeout()           # import from file errorFile.py
+    errUnknown = errorHandlerUnknown()       # import from file errorFile.py
 
 
     main()
