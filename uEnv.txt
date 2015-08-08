@@ -1,0 +1,4 @@
+mmcdev=1
+bootpart=1:2
+mmcroot=/dev/mmcblk1p2 ro
+optargs=quiet
