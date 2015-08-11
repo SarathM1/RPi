@@ -508,9 +508,13 @@ if __name__ == '__main__':
     #print "Sleeping for 20 seconds"
     #time.sleep(20)
 
-    debugLog    = log.debugLog('./log/dredger2_debug')
-    liveLog     = log.liveLog('./log/dredger2_live')
-    backLog     = log.backfillLog('./log/dredger2_backfill')
+    #debugLog    = log.debugLog('./log/dredger2_debug')         # Code for PC
+    #liveLog     = log.liveLog('./log/dredger2_live')
+    #backLog     = log.backfillLog('./log/dredger2_backfill')
+
+    debugLog    = log.debugLog('/root/RPi/log/dredger2_debug')         # Code for Beagle
+    liveLog     = log.liveLog('/root/RPi/log/dredger2_live')
+    backLog     = log.backfillLog('/root/RPi/log/dredger2_backfill')
 
     debugLog.critical("____________BOOT____________")
     liveLog.critical("____________BOOT____________")
