@@ -1,2 +1,2 @@
-ATTRS{product}=="CP2102 USB to UART Bridge Controller", ATTRS{manufacturer}=="Silicon Labs", SYMLINK+="gsmModem"
-ATTRS{product}=="USB-Serial Controller",ATTRS{manufacturer}=="Prolific Technology Inc.",SYMLINK+="plc"
+SUBSYSTEMS=="usb", ATTRS{product}=="CP2102 USB to UART Bridge Controller", ATTRS{manufacturer}=="Silicon Labs", SYMLINK+="gsmModem"
+SUBSYSTEMS=="usb", ATTRS{product}=="USB-Serial Controller",ATTRS{manufacturer}=="Prolific Technology Inc.",SYMLINK+="plc"
