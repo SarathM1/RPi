@@ -3,4 +3,5 @@
 /logSys
 /myLogger.pyc
 /__pycache__/*
+/errorFile.pyc
 *.db
