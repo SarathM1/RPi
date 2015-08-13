@@ -58,10 +58,11 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-
+			plc_ok("working")
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
+			plc_ok("plc_disconnected")
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
@@ -117,17 +118,17 @@ class Sim900():
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
-			led.modem_ok(1)
+			led.modem_ok("working")
 		except serial.SerialException:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led.modem_ok(0)
+			led.modem_ok("gsm_disconnected")
 			print '\n\t\tGSM: CANNOT OPEN PORT!!'
 
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led.modem_ok(0)
+			led.modem_ok("gsm_disconnected")
 			print 'Sim900, __init__:- '+str(e)
 
 		self.db=database_backup()
@@ -137,9 +138,9 @@ class Sim900():
 		try:
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
-			led.modem_ok(1)
+			led.modem_ok("working")
 		except Exception as e:
-			led.modem_ok(0)
+			led.modem_ok("gsm_disconnected")
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
 
@@ -207,7 +208,8 @@ class Sim900():
 		while len(status)==0:
 
 			if cntr>wait:
-				print '\n\tError, Time out, cntr = '+str(cntr)+'\n'
+				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
+				led.modem_ok("timeout")
 				return 'ErrorTimeout'
 			cntr=cntr+1
 
@@ -385,7 +387,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.comm_status_backfill()
+					led.comm_status("backfill")
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -454,7 +456,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.comm_status_live()
+						led.comm_status("live")
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
