@@ -58,11 +58,11 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-			plc_ok("working")
+			led.plc_ok("working")
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			plc_ok("plc_disconnected")
+			led.plc_ok("plc_disconnected")
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
