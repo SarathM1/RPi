@@ -1,22 +1,37 @@
 import Adafruit_BBIO.GPIO as GPIO
 import time
 
+com 	 = "P8_10"
+modem 	 = "P8_12"
 
-def modem_ok_live(): 
+GPIO.setup(com , GPIO.OUT)
+GPIO.setup(modem , GPIO.OUT)
 
-	GPIO.setup("P8_10", GPIO.OUT)
+def comm_status_live(): 
+
 	for i in range(1,3):
-		GPIO.output("P8_10", GPIO.HIGH)
+		GPIO.output(com, GPIO.HIGH)
 		time.sleep(0.5)
-		GPIO.output("P8_10", GPIO.LOW)
+		GPIO.output(com, GPIO.LOW)
 		time.sleep(0.5)
 
 
-def modem_ok_backfill(): 
+def comm_status_backfill(): 
 
-	GPIO.setup("P8_10", GPIO.OUT)
 	for i in range(1,5):
-		GPIO.output("P8_10", GPIO.HIGH)
+		GPIO.output(com, GPIO.HIGH)
 		time.sleep(0.05)
-		GPIO.output("P8_10", GPIO.LOW)
+		GPIO.output(com, GPIO.LOW)
 		time.sleep(0.05)
+
+def modem_ok(arg):
+	
+	if arg == 1 :
+		GPIO.output(modem , GPIO.HIGH)
+	else :
+		GPIO.output(modem, GPIO.HIGH)
+		time.sleep(1)
+		GPIO.output(modem, GPIO.LOW)
+		time.sleep(3)
+
+

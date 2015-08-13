@@ -117,16 +117,19 @@ class Sim900():
             #self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
             self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
             errMain.clearBit('gsmUsb')
-        
+        	led.modem_ok(1)
         except serial.SerialException:
             errMain.setBit('gsmUsb')
             liveLog.error("GSM: CANNOT OPEN PORT")
+            led.modem_ok(0)
             print '\n\t\tGSM: CANNOT OPEN PORT!!'
 
         except Exception as e:
             errMain.setBit('gsmUsb')
             liveLog.error("GSM: CANNOT OPEN PORT")
+            led.modem_ok(0)
             print 'Sim900, __init__:- '+str(e)
+
         self.db=database_backup()
     
     def hotPlug(self,loggerMsg="USB disconnected"):
@@ -134,7 +137,9 @@ class Sim900():
         try:
             #self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
             self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
+            led.modem_ok(1)
         except Exception as e:
+        	led.modem_ok(0)
             print 'hotPlug():',e
         debugLog.error(loggerMsg)
 
@@ -380,7 +385,7 @@ class backFill(threading.Thread):
                     backLog.info('SUCCESS=> Packet: '+str(arg['time']))
                     debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
                     print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-                    led.modem_ok_backfill()
+                    led.comm_status_backfill()
                     self.db.deleteDb(arg)
 
                 elif 'Error' in  flagSend:
@@ -449,7 +454,7 @@ class live(threading.Thread):
                         debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
                         liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
                         print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-                        led.modem_ok_live()
+                        led.comm_status_live()
 
                     elif flagSend=='ErrorTimeout':
                         liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
