@@ -7,6 +7,7 @@ plc		 = "P8_14"
 
 GPIO.setup(com , GPIO.OUT)
 GPIO.setup(modem , GPIO.OUT)
+GPIO.setup(plc , GPIO.OUT)
 
 def comm_status(arg): 
 	if arg == "live":
@@ -42,17 +43,17 @@ def modem_ok(arg):
 def plc_ok(arg):
 	
 	if arg == "working" :
-		GPIO.output(modem , GPIO.HIGH)
+		GPIO.output(plc , GPIO.HIGH)
 	elif arg == "plc_disconnected" :
 		for i in range(1,5):
-			GPIO.output(modem, GPIO.HIGH)
+			GPIO.output(plc, GPIO.HIGH)
 			time.sleep(0.05)
-			GPIO.output(modem, GPIO.LOW)
+			GPIO.output(plc, GPIO.LOW)
 			time.sleep(0.05)
 	else :
-		GPIO.output(modem, GPIO.HIGH)
+		GPIO.output(plc, GPIO.HIGH)
 		time.sleep(1)
-		GPIO.output(modem, GPIO.LOW)
+		GPIO.output(plc, GPIO.LOW)
 		time.sleep(3)
 
 
