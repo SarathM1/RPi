@@ -29,10 +29,10 @@ def modem_ok(arg):
 		GPIO.output(modem , GPIO.HIGH)
 	elif arg == "timeout" :
 		for i in range(1,5):
-		GPIO.output(modem, GPIO.HIGH)
-		time.sleep(0.05)
-		GPIO.output(modem, GPIO.LOW)
-		time.sleep(0.05)
+			GPIO.output(modem, GPIO.HIGH)
+			time.sleep(0.05)
+			GPIO.output(modem, GPIO.LOW)
+			time.sleep(0.05)
 	else :
 		GPIO.output(modem, GPIO.HIGH)
 		time.sleep(1)
@@ -45,10 +45,10 @@ def plc_ok(arg):
 		GPIO.output(modem , GPIO.HIGH)
 	elif arg == "plc_disconnected" :
 		for i in range(1,5):
-		GPIO.output(modem, GPIO.HIGH)
-		time.sleep(0.05)
-		GPIO.output(modem, GPIO.LOW)
-		time.sleep(0.05)
+			GPIO.output(modem, GPIO.HIGH)
+			time.sleep(0.05)
+			GPIO.output(modem, GPIO.LOW)
+			time.sleep(0.05)
 	else :
 		GPIO.output(modem, GPIO.HIGH)
 		time.sleep(1)
