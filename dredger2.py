@@ -165,6 +165,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
+			led.at_status()
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -512,13 +513,14 @@ def main():
 
 
 if __name__ == '__main__':
+	
+	led.code_status()
+
 	try:
 		os.system("clear")
 	except :
 		pass
 	
-	#print "Sleeping for 20 seconds"
-	#time.sleep(20)
 
 	#debugLog    = log.debugLog('./log/dredger2_debug')         # Code for PC
 	#liveLog     = log.liveLog('./log/dredger2_live')

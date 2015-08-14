@@ -4,10 +4,14 @@ import time
 com 	 = "P8_10"
 modem 	 = "P8_12"
 plc		 = "P8_14"
+at 		 = "P8_16"
+code	 = "P8_18"
 
 GPIO.setup(com , GPIO.OUT)
 GPIO.setup(modem , GPIO.OUT)
 GPIO.setup(plc , GPIO.OUT)
+GPIO.setup(at , GPIO.OUT)
+GPIO.setup(code , GPIO.OUT)
 
 def comm_status(arg): 
 	if arg == "live":
@@ -55,5 +59,17 @@ def plc_ok(arg):
 		time.sleep(1)
 		GPIO.output(plc, GPIO.LOW)
 		time.sleep(3)
+
+def at_status():
+	GPIO.output(at, GPIO.HIGH)
+	time.sleep(0.05)
+	GPIO.output(at, GPIO.LOW)
+	time.sleep(0.05)
+
+def code_status():
+	GPIO.output(code, GPIO.HIGH)
+
+
+
 
 
