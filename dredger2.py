@@ -211,6 +211,8 @@ class Sim900():
 				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
 				led.modem_ok("timeout")
 				return 'ErrorTimeout'
+			else:
+				led.modem_ok("working")
 			cntr=cntr+1
 
 			try:
