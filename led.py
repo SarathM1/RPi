@@ -60,11 +60,17 @@ def plc_ok(arg):
 		GPIO.output(plc, GPIO.LOW)
 		time.sleep(3)
 
-def at_status():
-	GPIO.output(at, GPIO.HIGH)
-	time.sleep(0.05)
-	GPIO.output(at, GPIO.LOW)
-	time.sleep(0.05)
+def at_status(arg):
+	if arg == "live" :
+		GPIO.output(at, GPIO.HIGH)
+		time.sleep(0.1)
+		GPIO.output(at, GPIO.LOW)
+		time.sleep(0.1)
+	else:
+		GPIO.output(at, GPIO.HIGH)
+		time.sleep(0.5)
+		GPIO.output(at, GPIO.LOW)
+		time.sleep(0.5)
 
 def code_status():
 	GPIO.output(code, GPIO.HIGH)

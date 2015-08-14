@@ -165,7 +165,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at_status()
+			led.at_status("live")
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -372,6 +372,7 @@ class backFill(threading.Thread):
 			arg = self.db.fetchData()
 			if not arg:
 				print 'Database is empty'
+				led.at_status("backfill_empty")
 				time.sleep(1)
 			else:
 				
