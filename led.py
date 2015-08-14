@@ -34,10 +34,11 @@ def modem_ok(arg):
 			GPIO.output(modem, GPIO.LOW)
 			time.sleep(0.05)
 	else :
-		GPIO.output(modem, GPIO.HIGH)
-		time.sleep(1)
 		GPIO.output(modem, GPIO.LOW)
 		time.sleep(3)
+		GPIO.output(modem, GPIO.HIGH)
+		time.sleep(1)
+		
 
 def plc_ok(arg):
 	
