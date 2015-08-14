@@ -13,11 +13,11 @@ GPIO.setup(plc , GPIO.OUT)
 GPIO.setup(at , GPIO.OUT)
 GPIO.setup(code , GPIO.OUT)
 
-GPIO.setup(com , GPIO.LOW)
-GPIO.setup(modem , GPIO.LOW)
-GPIO.setup(plc , GPIO.LOW)
-GPIO.setup(at , GPIO.LOW)
-GPIO.setup(code , GPIO.LOW)
+GPIO.output(com , GPIO.LOW)
+GPIO.output(modem , GPIO.LOW)
+GPIO.output(plc , GPIO.LOW)
+GPIO.output(at , GPIO.LOW)
+GPIO.output(code , GPIO.LOW)
 
 def comm_status(arg): 
 	if arg == "live":
