@@ -9,7 +9,7 @@ at 		 = 15
 code	 = 37
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.cleanup()
+GPIO.setwarnings(False)
 
 GPIO.setup(com , GPIO.OUT)
 GPIO.setup(modem , GPIO.OUT)
