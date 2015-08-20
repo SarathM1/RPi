@@ -1,11 +1,14 @@
-import Adafruit_BBIO.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 
-com 	 = "P8_10"
-modem 	 = "P8_12"
-plc		 = "P8_14"
-at 		 = "P8_16"
-code	 = "P8_18"
+
+com 	 = 35
+modem 	 = 11
+plc		 = 13
+at 		 = 15
+code	 = 37
+
+GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(com , GPIO.OUT)
 GPIO.setup(modem , GPIO.OUT)
@@ -45,9 +48,9 @@ def modem_ok(arg):
 			time.sleep(0.05)
 	else :
 		GPIO.output(modem, GPIO.LOW)
-		time.sleep(3)
-		GPIO.output(modem, GPIO.HIGH)
 		time.sleep(1)
+		GPIO.output(modem, GPIO.HIGH)
+		time.sleep(3)
 		
 
 def plc_ok(arg):
@@ -80,8 +83,4 @@ def at_status(arg):
 
 def code_status():
 	GPIO.output(code, GPIO.HIGH)
-
-
-
-
 
