@@ -527,9 +527,9 @@ if __name__ == '__main__':
 	#liveLog     = log.liveLog('./log/dredger2_live')
 	#backLog     = log.backfillLog('./log/dredger2_backfill')
 
-	debugLog    = log.debugLog('/root/RPi/log/dredger2_debug')         # Code for Beagle
-	liveLog     = log.liveLog('/root/RPi/log/dredger2_live')
-	backLog     = log.backfillLog('/root/RPi/log/dredger2_backfill')
+	debugLog    = log.debugLog('/home/pi/Desktop/RPi/log/dredger2_debug')         # Code for Beagle
+	liveLog     = log.liveLog('/home/pi/Desktop/RPi/log/dredger2_live')
+	backLog     = log.backfillLog('/home/pi/Desktop/RPi/log/dredger2_backfill')
 
 	debugLog.critical("____________BOOT____________")
 	liveLog.critical("____________BOOT____________")
