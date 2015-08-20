@@ -5,7 +5,7 @@ from datetime import datetime as dt
 
 while True:
         try:
-                conn = sqlite3.connect('/media/sd_card/backfill.db',check_same_thread=False)
+                conn = sqlite3.connect('/home/pi/Desktop/RPi/backfill.db',check_same_thread=False)
                 #conn = sqlite3.connect('./backfill.db',check_same_thread=False)
                 cur = conn.cursor()
                 break
