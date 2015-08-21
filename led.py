@@ -8,7 +8,7 @@ plc_ok_pin		 = 13
 at_pin 		 = 15
 code_pin	 = 37
 
-comm_status_status = 0
+comm_status = 0
 modem_ok_status 	 = 0
 plc_ok_status		 = 0
 at_status 		 = 0
