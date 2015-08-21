@@ -218,10 +218,10 @@ class Sim900():
 
 			if cntr>wait:
 				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
-				led_q.put((,,,,)) modem_ok("timeout")
+				led.modem_ok_status = 3
 				return 'ErrorTimeout'
 			else:
-				led_q.put((,,,,)) modem_ok("working")
+				led.modem_ok_status = 1
 			cntr=cntr+1
 
 			try:
@@ -524,7 +524,7 @@ def main():
 
 if __name__ == '__main__':
 	
-	led_q.put((,,,,)) code_status()
+	led.code_status = 1
 
 	try:
 		os.system("clear")
