@@ -131,7 +131,7 @@ class Sim900():
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led_q.put((,,,,)) modem_ok("gsm_disconnected")
+			led_q.modem_ok_status = 2
 			print 'Sim900, __init__:- '+str(e)
 			led.modem_ok_status = 2		# GSM disconnected from USB
 
