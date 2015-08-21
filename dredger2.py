@@ -380,7 +380,6 @@ class backFill(threading.Thread):
 			arg = self.db.fetchData()
 			if not arg:
 				print 'Database is empty'
-				led.comm_status = 2
 				time.sleep(1)
 			else:
 				
