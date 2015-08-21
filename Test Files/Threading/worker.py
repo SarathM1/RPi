@@ -29,7 +29,7 @@ class WorkerThread(threading.Thread):
 
     
 
-def main(args):
+def main():
     dir_q = Queue.Queue()
     
     thread = WorkerThread(dir_q=dir_q)
