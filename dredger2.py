@@ -2,7 +2,7 @@
 #!/usr/bin/python
 import serial
 import time
-import threading
+import threading, Queue
 from backfill import database_backup
 from errorFile import errorHandlerMain      # Import from local file errorFile
 from errorFile import errorHandlerGsm      # Import from local file errorFile
@@ -58,17 +58,18 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-			led.plc_ok("working")
+			led.plc_ok_status = 1
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			led.plc_ok("plc_disconnected")
+			led.plc_ok_status = 2 
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nplc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
+			led.plc_ok_status = 2
 
 	def readData(self):
 		cap=['Close','Open']
@@ -100,14 +101,15 @@ class plc():
 				debugLog.info("Data read from PLC")
 				print "\n\t\tDATA READ FROM PLC!!\n\n"
 				errMain.clearBit('plcComm')
-
+				led.plc_ok_status = 1		# PLC is working properly
 
 		except Exception as e:
 				liveLog.error("PLC: Communication Error")
 				print 'PLC_read_data: ',str(e)
 				errMain.setBit('plcComm')
-
 				arg = dummyPacket()
+				led.plc_ok_status = 3		# Communication Error with PLC
+				
 
 		return arg
 
@@ -118,18 +120,20 @@ class Sim900():
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
-			led.modem_ok("working")
+			led.modem_ok_status = 1		# GSM modem working properly
+
 		except serial.SerialException:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led.modem_ok("gsm_disconnected")
 			print '\n\t\tGSM: CANNOT OPEN PORT!!'
+			led.modem_ok_status = 2		# GSM disconnected from USB
 
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led.modem_ok("gsm_disconnected")
+			led_q.put((,,,,)) modem_ok("gsm_disconnected")
 			print 'Sim900, __init__:- '+str(e)
+			led.modem_ok_status = 2		# GSM disconnected from USB
 
 		self.db=database_backup()
 	
@@ -138,9 +142,10 @@ class Sim900():
 		try:
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
-			led.modem_ok("working")
+			led.modem_ok_status = 1			# GSM Connection OK via USB
+
 		except Exception as e:
-			led.modem_ok("gsm_disconnected")
+			led.modem_ok_status = 1
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
 
@@ -165,7 +170,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at_status("live")
+			led.at_status = 1
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -173,6 +178,7 @@ class Sim900():
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
 			#errUnknown.clearBit(command)
+			led.at_status = 0
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
@@ -180,6 +186,7 @@ class Sim900():
 			errGsm.setBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
+			led.at_status = 0
 			return 'Error'
 		
 		else:
@@ -187,6 +194,7 @@ class Sim900():
 			#errTime.clearBit(command)
 			debugLog.error('OTHER=> '+command)
 			errUnknown.setBit(command)
+			led.at_status = 0
 			return 'Other'
 
 		#else:
@@ -210,10 +218,10 @@ class Sim900():
 
 			if cntr>wait:
 				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
-				led.modem_ok("timeout")
+				led_q.put((,,,,)) modem_ok("timeout")
 				return 'ErrorTimeout'
 			else:
-				led.modem_ok("working")
+				led_q.put((,,,,)) modem_ok("working")
 			cntr=cntr+1
 
 			try:
@@ -372,7 +380,7 @@ class backFill(threading.Thread):
 			arg = self.db.fetchData()
 			if not arg:
 				print 'Database is empty'
-				led.at_status("backfill_empty")
+				led.comm_status = 2
 				time.sleep(1)
 			else:
 				
@@ -391,7 +399,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.comm_status("backfill")
+					led.comm_status = 2
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -460,7 +468,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.comm_status("live")
+						led.comm_status = 1
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
@@ -480,6 +488,7 @@ class live(threading.Thread):
 					liveLog.error('FAILED=> DATA SENDING FAILED,packet: '+str(arg['time']))
 					errMain.setBit('gsmInit')
 					errMain.setBit('liveSend')
+
 					self.db.insertDb(arg,errGsm.code,errMain.code,errTime.code,errUnknown.code)
 					
 					debugLog.critical('Error in gsmInit,PACKET PUSHED TO BACKUP db,packet: '+str(arg['time']))
@@ -515,13 +524,13 @@ def main():
 
 if __name__ == '__main__':
 	
-	led.code_status()
+	led_q.put((,,,,)) code_status()
 
 	try:
 		os.system("clear")
 	except :
 		pass
-	
+	led_q = Queue.Queue()
 
 	#debugLog    = log.debugLog('./log/dredger2_debug')         # Code for PC
 	#liveLog     = log.liveLog('./log/dredger2_live')
