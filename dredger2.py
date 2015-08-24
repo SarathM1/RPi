@@ -510,8 +510,17 @@ def main():
 
 
 
+
 if __name__ == '__main__':
-	
+	gsm_th = led.hwThread(pin["modem_ok"])
+
+	threads = []
+	#threads.append(plc_th)
+	threads.append(gsm_th)
+
+	for each_thread in threads:
+		each_thread.start()		# Starting all threads here
+		
 	led.on(led.pin['code'])
 
 	#try:
