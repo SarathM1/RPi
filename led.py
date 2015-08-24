@@ -102,10 +102,10 @@ def led_init():
 		gpio.output(pin[x], low)
 
 def on(pin):
-	gpio.output(code, high)
+	gpio.output(pin, high)
 
 def off(pin):
-	gpio.output(code, low)
+	gpio.output(pin, low)
 
 def blink_led(pin,sec):
 	"""
