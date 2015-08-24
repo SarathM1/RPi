@@ -360,7 +360,7 @@ class backFill(threading.Thread):
 			if not arg:
 				print 'Database is empty'
 				
-				for i in range(10):
+				for i in range(5):
 					led.blink_led(led.pin['comm_status'],0.1)
 				
 				time.sleep(1)
