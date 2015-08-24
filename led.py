@@ -16,8 +16,9 @@ class hwThread(threading.Thread):
 		self.pin = pin_no
 
 	def run(self):
-		
+		print "\n\tPLC_OK: "+str(plc_ok)+", stoprequest: "+str(self.stoprequest.isSet())	
 		while not self.stoprequest.isSet():
+			print "\n\tPLC_OK: "+str(plc_ok)+", stoprequest: "+str(self.stoprequest.isSet())	
 			time.sleep(1)  # debugging
 			hw(pin["plc_ok"],plc_ok)
 			hw(pin["modem_ok"],modem_ok)
@@ -38,7 +39,7 @@ def hw(pin_no,status):
 	elif status == "working":
 		if pin["plc_ok"] == pin_no:
 			print "\n\tWORKING!!"
-		on(pin_no)
+		blink_led(pin_no,1)
 	elif status == "usb_disconnected":
 		if pin["plc_ok"] == pin_no:
 			print "\n\tUSB DISCONNECTED!!"

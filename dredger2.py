@@ -40,7 +40,7 @@ def dummyPacket():
 
 class plc():
 	def __init__(self):
-		self.plc_init(self):
+		self.plc_init()
 
 	def plc_init(self):
 		try:
