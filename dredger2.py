@@ -516,10 +516,10 @@ if __name__ == '__main__':
 	
 	led.code.put("success")
 
-	try:
-		os.system("clear")
-	except :
-		pass
+	#try:
+	#	os.system("clear")
+	#except :
+	#	pass
 	
 	#debugLog    = log.debugLog('./log/dredger2_debug')         # Code for PC
 	#liveLog     = log.liveLog('./log/dredger2_live')
