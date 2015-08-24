@@ -87,19 +87,24 @@ def hw(pin,status):
 	pin - pin # of device
 	"""
 	if status == "off" :
-		print "\n\tOFF!!"
+		if pin == pin["plc_ok"]:
+			print "\n\tOFF!!"
 		off(pin)
 	elif status == "working":
-		print "\n\tWORKING!!"
+		if pin == pin["plc_ok"]:
+			print "\n\tWORKING!!"
 		on(pin)
 	elif status == "usb_disconnected":
-		print "\n\tUSB DISCONNECTED!!"
+		if pin == pin["plc_ok"]:
+			print "\n\tUSB DISCONNECTED!!"
 		blink_led(pin,1)
 	elif status == "\n\tCOMMUNICATION ERROR!!":
-		print "\ncomm_error"
+		if pin == pin["plc_ok"]:
+			print "\ncomm_error"
 		blink_led(pin,0.1)
 	else:
-		print "Error!!"
+		if pin == pin["plc_ok"]:
+			print "Error!!"
 	time.sleep(1)
 
 
