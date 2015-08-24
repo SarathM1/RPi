@@ -145,7 +145,6 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		#if not errMain.checkBit('gsmUsb'):
 		print '{0:20}'.format(command) ,
 		
 		try:
@@ -158,39 +157,28 @@ class Sim900():
 		self.status=self.checkStatus(success,error,wait)
 
 		if 'Success' in self.status:
-			#errGsm.clearBit(command)
-			#errTime.clearBit(command)
-			#errUnknown.clearBit(command)
 			led.blink_led(led.pin['at'],0.1)
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
-			#errGsm.setBit(command)
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
-			#errUnknown.clearBit(command)
 			led.off(led.pin['at'])
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
 			debugLog.error('ERROR=> '+command)
 			errGsm.setBit(command)
-			#errTime.clearBit(command)
-			#errUnknown.clearBit(command)
 			led.off(led.pin['at'])
 			return 'Error'
 		
 		else:
-			#errGsm.clearBit(command)
-			#errTime.clearBit(command)
 			debugLog.error('OTHER=> '+command)
 			errUnknown.setBit(command)
 			led.off(led.pin['at'])
 			return 'Other'
 
-		#else:
-		#   print '\n\t\t sendAT: GSM DISCONNECTED'
-
+		
 	def checkStatus(self,success='OK',error='ERROR',wait=3):
 		"""
 		Function to wait and respond for Replies from modem for each
@@ -371,6 +359,10 @@ class backFill(threading.Thread):
 			arg = self.db.fetchData()
 			if not arg:
 				print 'Database is empty'
+				
+				for i in range(10):
+					led.blink_led(led.pin['comm_status'],0.1)
+				
 				time.sleep(1)
 			else:
 				
