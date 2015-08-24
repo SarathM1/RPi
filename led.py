@@ -138,22 +138,18 @@ plc_ok		 	= "off"
 at 		 		= Queue.Queue()
 at.put("off")
 
-code	 		= Queue.Queue()
-code.put("off")
 
 led_init()
 
 plc_th = hwThread(pin["plc_ok"])
 gsm_th = hwThread(pin["modem_ok"])
-at_th = debugThread(pin["at"],at)
-code_th = debugThread(pin["code"],code)
+#at_th = debugThread(pin["at"],at)
 commStatus_th = commStatusThread(pin["comm_status"],comm_status)
 
 threads = []
 threads.append(plc_th)
 threads.append(gsm_th)
-threads.append(at_th)
-threads.append(code_th)
+#threads.append(at_th)
 threads.append(commStatus_th)
 
 for each_thread in threads:
