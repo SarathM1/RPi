@@ -161,7 +161,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.blink_led(pin['at'],0.1)
+			led.blink_led(led.pin['at'],0.1)
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -169,7 +169,7 @@ class Sim900():
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
 			#errUnknown.clearBit(command)
-			led.off(pin['at'])
+			led.off(led.pin['at'])
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
@@ -177,7 +177,7 @@ class Sim900():
 			errGsm.setBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.off(pin['at'])
+			led.off(led.pin['at'])
 			return 'Error'
 		
 		else:
@@ -185,7 +185,7 @@ class Sim900():
 			#errTime.clearBit(command)
 			debugLog.error('OTHER=> '+command)
 			errUnknown.setBit(command)
-			led.off(pin['at'])
+			led.off(led.pin['at'])
 			return 'Other'
 
 		#else:
@@ -389,7 +389,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.blink_led(pin['comm_status'],0.1)		# Led status: Backfill send ok
+					led.blink_led(led.pin['comm_status'],0.1)		# Led status: Backfill send ok
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -458,7 +458,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.blink_led(pin['comm_status'],1)
+						led.blink_led(led.pin['comm_status'],1)
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
@@ -514,7 +514,7 @@ def main():
 
 if __name__ == '__main__':
 	
-	led.on(pin['code'])
+	led.on(led.pin['code'])
 
 	#try:
 	#	os.system("clear")
