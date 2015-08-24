@@ -1,5 +1,5 @@
 import RPi.GPIO as gpio
-from RPi.GPIO import out as out
+from RPi.GPIO import OUT as out
 from RPi.GPIO import LOW as low 
 from RPi.GPIO import HIGH as high 
 
