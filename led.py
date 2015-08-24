@@ -19,13 +19,8 @@ class hwThread(threading.Thread):
 		
 		while not self.stoprequest.isSet():
 			time.sleep(1)  # debugging
-			print "hwThread, Run(), flag plc_ok = " + str(plc_ok) + "PIN: " + str(self.pin)# debgging
-			if self.pin == pin["plc_ok"]:
-				
-				hw(pin["plc_ok"],plc_ok)
-			else:
-				print "hwThread, Run(), flag modem_ok = " + str(modem_ok) + "PIN: " + str(self.pin)# debgging
-				hw(pin["modem_ok"],modem_ok)
+			hw(pin["plc_ok"],plc_ok)
+			hw(pin["modem_ok"],modem_ok)
 
 	def join(self, timeout=None):
 		self.stoprequest.set()
@@ -104,11 +99,12 @@ at.put("off")
 
 led_init()
 
-plc_th = hwThread(pin["plc_ok"])
-#gsm_th = hwThread(pin["modem_ok"])
+
+#plc_th = hwThread(pin["plc_ok"])
+gsm_th = hwThread(pin["modem_ok"])
 
 threads = []
-threads.append(plc_th)
+#threads.append(plc_th)
 threads.append(gsm_th)
 
 for each_thread in threads:
