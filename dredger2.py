@@ -161,7 +161,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at = "success"
+			led.at.put("success")
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -169,7 +169,7 @@ class Sim900():
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
 			#errUnknown.clearBit(command)
-			led.at = 0
+			led.at.put("off")
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
@@ -177,7 +177,7 @@ class Sim900():
 			errGsm.setBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at = 0
+			led.at.put("off")
 			return 'Error'
 		
 		else:
@@ -185,7 +185,7 @@ class Sim900():
 			#errTime.clearBit(command)
 			debugLog.error('OTHER=> '+command)
 			errUnknown.setBit(command)
-			led.at = 0
+			led.at.put("off")
 			return 'Other'
 
 		#else:
@@ -514,7 +514,7 @@ def main():
 
 if __name__ == '__main__':
 	
-	led.code = "success"
+	led.code.put("success")
 
 	try:
 		os.system("clear")

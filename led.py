@@ -2,29 +2,104 @@ import RPi.GPIO as gpio
 from RPi.GPIO import out as out
 from RPi.GPIO import LOW as low 
 from RPi.GPIO import HIGH as high 
+
 import time
+import threading, Queue
+import random
 
-pin = {}
+class hwThread(threading.Thread):
+    
+    def __init__(self, pin):
+        super(hwThread, self).__init__()
+        self.stoprequest = threading.Event()
 
-pin["comm_status"] 	= 35
-pin["modem_ok"] 	= 11
-pin["plc_ok"]		= 13
-pin["at"] 		 	= 15
-pin["code"]	 		= 37
+        self.pin = pin
 
-comm_status 	= "off"
-modem_ok 	 	= "off"
-plc_ok		 	= "off"
-at 		 		= "off"
-code	 		= "off"
+    def run(self):
+        
+        while not self.stoprequest.isSet():
+            if self.pin == pin["plc_ok"]:
+            	hw(pin["plc_ok"],plc_ok)
+            else:
+            	hw(pin["modem_ok"],modem_ok)
 
-gpio.setmode(gpio.BOARD)
-gpio.setwarnings(False)
+    def join(self, timeout=None):
+        self.stoprequest.set()
+        super(hwThread, self).join(timeout)
+
+class debugThread(threading.Thread):
+    
+    def __init__(self, pin, q):
+        super(debugThread, self).__init__()
+        self.q = q
+        self.pin = pin
+        self.stoprequest = threading.Event()
+
+    def run(self):
+        
+        while not self.stoprequest.isSet():
+        	status = self.q.get()
+        	
+        	if status == "off":
+        		off(self.pin)
+
+    		elif status == "on":
+    			blink_led(self.pin,0.1)
+
+    def join(self, timeout=None):
+        self.stoprequest.set()
+        super(debugThread, self).join(timeout)
+
+class commStatusThread(threading.Thread):
+    
+    def __init__(self, pin, q):
+        super(commStatusThread, self).__init__()
+        self.q = q
+        self.pin = pin
+        self.stoprequest = threading.Event()
+
+    def run(self):
+        
+        while not self.stoprequest.isSet():
+        	status = self.q.get()
+        	
+        	if status == "off":
+        		off(self.pin)
+
+    		elif status == "live_send_ok":
+    			blink_led(self.pin,1)
+
+    		elif status == "backfill_send_ok":
+    			blink_led(self.pin,0.1)
+
+    def join(self, timeout=None):
+        self.stoprequest.set()
+        super(commStatusThread, self).join(timeout)
+
+def hw(pin,status):
+	"""
+	To check state of PLC and GSM
+	pin - pin # of device
+	"""
+	if status == "off" :
+		off(pin)
+	elif status == "working":
+		on(pin)
+	elif status == "usb_disconnected":
+		blink_led(pin,1)
+	elif status == "comm_error":
+		blink_led(pin,0.1)
 
 
-for x in pin :
-	gpio.setup(pin[x], out)
-	gpio.output(pin[x], low)
+
+def led_init():
+	gpio.setmode(gpio.BOARD)
+	gpio.setwarnings(False)
+
+
+	for x in pin :
+		gpio.setup(pin[x], out)
+		gpio.output(pin[x], low)
 
 def on(pin):
 	gpio.output(code, high)
@@ -32,11 +107,54 @@ def on(pin):
 def off(pin):
 	gpio.output(code, low)
 
-def blink_led(pin): 
+def blink_led(pin,sec):
+	"""
+	To blink and led connected to 'pin'
+	with intervel 'sec' seconds
+	""" 
 	on(pin)
-	time.sleep(0.05)
+	time.sleep(sec)
 	off(pin)
-	time.sleep(0.05)
+	time.sleep(sec)
+
+if __name__ == '__main__':
+	pin = {}
+
+	pin["comm_status"] 	= 35
+	pin["modem_ok"] 	= 11
+	pin["plc_ok"]		= 13
+	pin["at"] 		 	= 15
+	pin["code"]	 		= 37
+
+	comm_status 	= Queue.Queue()
+	comm_status.put("off")
+
+	modem_ok 	 	= "off"
+	plc_ok		 	= "off"
+	
+	at 		 		= Queue.Queue()
+	at.put("off")
+	
+	code	 		= Queue.Queue()
+	code.put("off")
+
+	led_init()
+
+	plc = hwThread(pin["plc_ok"])
+	gsm = hwThread(pin["modem_ok"])
+	at = debugThread(pin["at"],at)
+	code = debugThread(pin["code"],code)
+	commStatus = commStatusThread(pin["comm_status"],comm_status)
+
+	threads = []
+	threads.append(plc)
+	threads.append(gsm)
+	threads.append(at)
+	threads.append(code)
+	threads.append(commStatus)
+
+	for each_thread in threads:
+		each_thread.start()		# Starting all threads here
 
 
 
