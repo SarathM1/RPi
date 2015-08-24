@@ -1,4 +1,4 @@
-import os, time
+import time
 import threading, Queue
 import random
 
