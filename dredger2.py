@@ -40,6 +40,9 @@ def dummyPacket():
 
 class plc():
 	def __init__(self):
+		self.plc_init(self):
+
+	def plc_init(self):
 		try:
 			self.instrument = minimalmodbus.Instrument('/dev/plc',1)
 			self.instrument.serial.baudrate = 9600
@@ -63,9 +66,12 @@ class plc():
 			led.plc_ok = "usb_disconnected"
 
 	def readData(self):
+
 		cap=['Close','Open']
 		status=['Off','On']
 		arg={}
+		
+		self.plc_init() # Trying Hotplug
 
 		try:
 
