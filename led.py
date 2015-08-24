@@ -9,18 +9,19 @@ import random
 
 class hwThread(threading.Thread):
 	
-	def __init__(self, pin):
+	def __init__(self, pin_no):
 		super(hwThread, self).__init__()
 		self.stoprequest = threading.Event()
 
-		self.pin = pin
+		self.pin = pin_no
 
 	def run(self):
 		
 		while not self.stoprequest.isSet():
 			time.sleep(1)  # debugging
+			print "hwThread, Run(), flag plc_ok = " + str(plc_ok) + "PIN: " + str(self.pin)# debgging
 			if self.pin == pin["plc_ok"]:
-				print "hwThread, Run(), flag plc_ok = " + str(plc_ok) + "PIN: " + str(self.pin)# debgging
+				
 				hw(pin["plc_ok"],plc_ok)
 			else:
 				print "hwThread, Run(), flag modem_ok = " + str(modem_ok) + "PIN: " + str(self.pin)# debgging
@@ -66,20 +67,20 @@ def led_init():
 		gpio.setup(pin[x], out)
 		gpio.output(pin[x], low)
 
-def on(pin):
-	gpio.output(pin, high)
+def on(pin_no):
+	gpio.output(pin_no, high)
 
-def off(pin):
-	gpio.output(pin, low)
+def off(pin_no):
+	gpio.output(pin_no, low)
 
-def blink_led(pin,sec):
+def blink_led(pin_no,sec):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
 	""" 
-	on(pin)
+	on(pin_no)
 	time.sleep(sec)
-	off(pin)
+	off(pin_no)
 	time.sleep(sec)
 
 #if __name__ == '__main__':
@@ -104,7 +105,7 @@ at.put("off")
 led_init()
 
 plc_th = hwThread(pin["plc_ok"])
-gsm_th = hwThread(pin["modem_ok"])
+#gsm_th = hwThread(pin["modem_ok"])
 
 threads = []
 threads.append(plc_th)
