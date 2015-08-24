@@ -27,6 +27,7 @@ class hwThread(threading.Thread):
         self.stoprequest.set()
         super(hwThread, self).join(timeout)
 
+
 class debugThread(threading.Thread):
     
     def __init__(self, pin, q):
@@ -46,7 +47,7 @@ class debugThread(threading.Thread):
         		off(self.pin)
 
     		elif status == "on":
-    			blink_led(self.pin,0.1)
+    			blink_led(self.pin,0.5)
 
     def join(self, timeout=None):
         self.stoprequest.set()
