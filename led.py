@@ -18,7 +18,7 @@ class hwThread(threading.Thread):
 	def run(self):
 		
 		while not self.stoprequest.isSet():
-			print "hwThread, Run()"
+			#print "hwThread, Run()"
 			if self.pin == pin["plc_ok"]:
 				hw(pin["plc_ok"],plc_ok)
 			else:
@@ -85,18 +85,21 @@ def hw(pin,status):
 	To check state of PLC and GSM
 	pin - pin # of device
 	"""
-	print "\n\tIn func hw\n"
 	if status == "off" :
+		print "\n\tOFF!!"
 		off(pin)
 	elif status == "working":
+		print "\n\tWORKING!!"
 		on(pin)
 	elif status == "usb_disconnected":
-		print "usb_disconnected"
+		print "\n\tUSB DISCONNECTED!!"
 		blink_led(pin,1)
-	elif status == "comm_error":
-		print "comm_error"
+	elif status == "\n\tCOMMUNICATION ERROR!!":
+		print "\ncomm_error"
 		blink_led(pin,0.1)
-
+	else:
+		print "Error!!"
+	time.sleep(1)
 
 
 def led_init():
