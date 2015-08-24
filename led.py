@@ -18,6 +18,7 @@ class hwThread(threading.Thread):
     def run(self):
         
         while not self.stoprequest.isSet():
+        	print "hwThread, Run()"
             if self.pin == pin["plc_ok"]:
             	hw(pin["plc_ok"],plc_ok)
             else:
@@ -84,6 +85,7 @@ def hw(pin,status):
 	To check state of PLC and GSM
 	pin - pin # of device
 	"""
+	print "\n\tIn func hw\n"
 	if status == "off" :
 		off(pin)
 	elif status == "working":
