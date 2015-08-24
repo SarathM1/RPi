@@ -512,7 +512,7 @@ def main():
 
 
 if __name__ == '__main__':
-	gsm_th = led.hwThread(pin["modem_ok"])
+	gsm_th = led.hwThread()
 
 	threads = []
 	#threads.append(plc_th)

@@ -9,11 +9,9 @@ import random
 
 class hwThread(threading.Thread):
 	
-	def __init__(self, pin_no):
+	def __init__(self):
 		super(hwThread, self).__init__()
 		self.stoprequest = threading.Event()
-
-		self.pin = pin_no
 
 	def run(self):
 		print "\n\tPLC_OK: "+str(plc_ok)+", stoprequest: "+str(self.stoprequest.isSet())	
