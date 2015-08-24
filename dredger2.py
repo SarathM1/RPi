@@ -152,7 +152,7 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		#print '{0:20}'.format(command) ,
+		print '{0:20}'.format(command) ,
 		
 		try:
 			self.obj.write(command+'\r\n')
@@ -231,16 +231,16 @@ class Sim900():
 
 		
 		if success in status:
-			#print '{0:20} ==> {1:50}'.format('Success',string)
+			print '{0:20} ==> {1:50}'.format('Success',string)
 			return 'Success'  # success => AT Command sent
 
 		elif error in status:
 			debugLog.error('\t\t\tReply: '+string)
-			#print '{0:20} ==> {1:50}'.format('Error',string)
+			print '{0:20} ==> {1:50}'.format('Error',string)
 			return 'Error'
 		
 		else:
-			#print '{0:20} ==> {1:50}'.format('Other',string)
+			print '{0:20} ==> {1:50}'.format('Other',string)
 			return 'Other'
 		
 	def gsmInit(self,arg):
