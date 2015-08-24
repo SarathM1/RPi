@@ -81,29 +81,29 @@ class commStatusThread(threading.Thread):
 		self.stoprequest.set()
 		super(commStatusThread, self).join(timeout)
 """
-def hw(pin,status):
+def hw(pin_no,status):
 	"""
 	To check state of PLC and GSM
-	pin - pin # of device
+	pin_no - pin # of device
 	"""
 	if status == "off" :
-		if pin == pin["plc_ok"]:
+		if pin["plc_ok"] == pin_no:
 			print "\n\tOFF!!"
-		off(pin)
+		off(pin_no)
 	elif status == "working":
-		if pin == pin["plc_ok"]:
+		if pin["plc_ok"] == pin_no:
 			print "\n\tWORKING!!"
-		on(pin)
+		on(pin_no)
 	elif status == "usb_disconnected":
-		if pin == pin["plc_ok"]:
+		if pin["plc_ok"] == pin_no:
 			print "\n\tUSB DISCONNECTED!!"
-		blink_led(pin,1)
+		blink_led(pin_no,1)
 	elif status == "\n\tCOMMUNICATION ERROR!!":
-		if pin == pin["plc_ok"]:
+		if pin["plc_ok"] == pin_no:
 			print "\ncomm_error"
-		blink_led(pin,0.1)
+		blink_led(pin_no,0.1)
 	else:
-		if pin == pin["plc_ok"]:
+		if pin["plc_ok"] == pin_no:
 			print "Error!!"
 	time.sleep(1)
 
