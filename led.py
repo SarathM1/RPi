@@ -20,67 +20,16 @@ class hwThread(threading.Thread):
 		while not self.stoprequest.isSet():
 			time.sleep(1)  # debugging
 			if self.pin == pin["plc_ok"]:
-				print "hwThread, Run(), flag plc_ok = " + str(plc_ok)  + str(pin['plc_ok'])# debgging
+				print "hwThread, Run(), flag plc_ok = " + str(plc_ok) + "PIN: " + str(self.pin)# debgging
 				hw(pin["plc_ok"],plc_ok)
 			else:
+				print "hwThread, Run(), flag modem_ok = " + str(modem_ok) + "PIN: " + str(self.pin)# debgging
 				hw(pin["modem_ok"],modem_ok)
 
 	def join(self, timeout=None):
 		self.stoprequest.set()
 		super(hwThread, self).join(timeout)
 
-"""
-class debugThread(threading.Thread):
-	
-	def __init__(self, pin, q):
-		super(debugThread, self).__init__()
-		self.q = q
-		self.pin = pin
-		self.stoprequest = threading.Event()
-
-	def run(self):
-		
-		while not self.stoprequest.isSet():
-			print "\n\twaiting for Queue, PIN: "+str(self.pin)+"\n"
-			status = self.q.get()
-			print "Done waiting: "+str(status)
-			
-			if status == "off":
-				off(self.pin)
-
-			elif status == "on":
-				blink_led(self.pin,0.5)
-
-	def join(self, timeout=None):
-		self.stoprequest.set()
-		super(debugThread, self).join(timeout)
-
-class commStatusThread(threading.Thread):
-	
-	def __init__(self, pin, q):
-		super(commStatusThread, self).__init__()
-		self.q = q
-		self.pin = pin
-		self.stoprequest = threading.Event()
-
-	def run(self):
-		
-		while not self.stoprequest.isSet():
-			status = self.q.get()
-			
-			if status == "off":
-				off(self.pin)
-
-			elif status == "live_send_ok":
-				blink_led(self.pin,1)
-
-			elif status == "backfill_send_ok":
-				blink_led(self.pin,0.1)
-
-	def join(self, timeout=None):
-		self.stoprequest.set()
-		super(commStatusThread, self).join(timeout)
-"""
 def hw(pin_no,status):
 	"""
 	To check state of PLC and GSM
@@ -156,14 +105,10 @@ led_init()
 
 plc_th = hwThread(pin["plc_ok"])
 gsm_th = hwThread(pin["modem_ok"])
-#at_th = debugThread(pin["at"],at)
-#commStatus_th = commStatusThread(pin["comm_status"],comm_status)
 
 threads = []
 threads.append(plc_th)
 threads.append(gsm_th)
-#threads.append(at_th)
-#threads.append(commStatus_th)
 
 for each_thread in threads:
 	each_thread.start()		# Starting all threads here
