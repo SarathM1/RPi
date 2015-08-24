@@ -117,44 +117,44 @@ def blink_led(pin,sec):
 	off(pin)
 	time.sleep(sec)
 
-if __name__ == '__main__':
-	pin = {}
+#if __name__ == '__main__':
+pin = {}
 
-	pin["comm_status"] 	= 35
-	pin["modem_ok"] 	= 11
-	pin["plc_ok"]		= 13
-	pin["at"] 		 	= 15
-	pin["code"]	 		= 37
+pin["comm_status"] 	= 35
+pin["modem_ok"] 	= 11
+pin["plc_ok"]		= 13
+pin["at"] 		 	= 15
+pin["code"]	 		= 37
 
-	comm_status 	= Queue.Queue()
-	comm_status.put("off")
+comm_status 	= Queue.Queue()
+comm_status.put("off")
 
-	modem_ok 	 	= "off"
-	plc_ok		 	= "off"
-	
-	at 		 		= Queue.Queue()
-	at.put("off")
-	
-	code	 		= Queue.Queue()
-	code.put("off")
+modem_ok 	 	= "off"
+plc_ok		 	= "off"
 
-	led_init()
+at 		 		= Queue.Queue()
+at.put("off")
 
-	plc_th = hwThread(pin["plc_ok"])
-	gsm_th = hwThread(pin["modem_ok"])
-	at_th = debugThread(pin["at"],at)
-	code_th = debugThread(pin["code"],code)
-	commStatus_th = commStatusThread(pin["comm_status"],comm_status)
+code	 		= Queue.Queue()
+code.put("off")
 
-	threads = []
-	threads.append(plc_th)
-	threads.append(gsm_th)
-	threads.append(at_th)
-	threads.append(code_th)
-	threads.append(commStatus_th)
+led_init()
 
-	for each_thread in threads:
-		each_thread.start()		# Starting all threads here
+plc_th = hwThread(pin["plc_ok"])
+gsm_th = hwThread(pin["modem_ok"])
+at_th = debugThread(pin["at"],at)
+code_th = debugThread(pin["code"],code)
+commStatus_th = commStatusThread(pin["comm_status"],comm_status)
+
+threads = []
+threads.append(plc_th)
+threads.append(gsm_th)
+threads.append(at_th)
+threads.append(code_th)
+threads.append(commStatus_th)
+
+for each_thread in threads:
+	each_thread.start()		# Starting all threads here
 
 
 
