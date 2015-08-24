@@ -18,7 +18,8 @@ class hwThread(threading.Thread):
 	def run(self):
 		
 		while not self.stoprequest.isSet():
-			#print "hwThread, Run()"
+			print "hwThread, Run(), flag plc_ok = " + str(plc_ok)  # debgging
+			time.sleep(1)  # debugging
 			if self.pin == pin["plc_ok"]:
 				hw(pin["plc_ok"],plc_ok)
 			else:
