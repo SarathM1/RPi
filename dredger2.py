@@ -13,15 +13,6 @@ import os
 import myLogger as log
 import minimalmodbus
 import led
-"""
-Install Library Minimalmodbus 0.6,
-there is error in using MODE_ASCII in python 3 for Minimalmodbus 0.5 library
-
-Source: http://sourceforge.net/projects/minimalmodbus/?source=typ_redirect
-Commands:
-				cd /home/wa/Music/MinimalModbus-0.6
-				sudo python3 setup.py install
-"""
 
 
 def dummyPacket():
@@ -58,18 +49,18 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-			led.plc_ok_status = 1
+			led.plc_ok = "working"
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			led.plc_ok_status = 2 
+			led.plc_ok = "usb_disconnected" 
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nplc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
-			led.plc_ok_status = 2
+			led.plc_ok = "usb_disconnected"
 
 	def readData(self):
 		cap=['Close','Open']
@@ -101,14 +92,14 @@ class plc():
 				debugLog.info("Data read from PLC")
 				print "\n\t\tDATA READ FROM PLC!!\n\n"
 				errMain.clearBit('plcComm')
-				led.plc_ok_status = 1		# PLC is working properly
+				led.plc_ok = "working"		# PLC is working properly
 
 		except Exception as e:
 				liveLog.error("PLC: Communication Error")
 				print 'PLC_read_data: ',str(e)
 				errMain.setBit('plcComm')
 				arg = dummyPacket()
-				led.plc_ok_status = 3		# Communication Error with PLC
+				led.plc_ok = "comm_error"		# Communication Error with PLC
 				
 
 		return arg
@@ -120,20 +111,20 @@ class Sim900():
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
-			led.modem_ok_status = 1		# GSM modem working properly
+			led.modem_ok = "working"		# GSM modem working properly
 
 		except serial.SerialException:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
 			print '\n\t\tGSM: CANNOT OPEN PORT!!'
-			led.modem_ok_status = 2		# GSM disconnected from USB
+			led.modem_ok = "usb_disconnected"		# GSM disconnected from USB
 
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led_q.modem_ok_status = 2
+			led.modem_ok = "usb_disconnected"
 			print 'Sim900, __init__:- '+str(e)
-			led.modem_ok_status = 2		# GSM disconnected from USB
+			led.modem_ok = "usb_disconnected"		# GSM disconnected from USB
 
 		self.db=database_backup()
 	
@@ -142,10 +133,10 @@ class Sim900():
 		try:
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
-			led.modem_ok_status = 1			# GSM Connection OK via USB
+			led.modem_ok = "working"			# GSM Connection OK via USB
 
 		except Exception as e:
-			led.modem_ok_status = 1
+			led.modem_ok = "working"
 			print 'hotPlug():',e
 		debugLog.error(loggerMsg)
 
@@ -170,7 +161,7 @@ class Sim900():
 			#errGsm.clearBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at_status = 1
+			led.at = "success"
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -178,7 +169,7 @@ class Sim900():
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
 			#errUnknown.clearBit(command)
-			led.at_status = 0
+			led.at = 0
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
@@ -186,7 +177,7 @@ class Sim900():
 			errGsm.setBit(command)
 			#errTime.clearBit(command)
 			#errUnknown.clearBit(command)
-			led.at_status = 0
+			led.at = 0
 			return 'Error'
 		
 		else:
@@ -194,7 +185,7 @@ class Sim900():
 			#errTime.clearBit(command)
 			debugLog.error('OTHER=> '+command)
 			errUnknown.setBit(command)
-			led.at_status = 0
+			led.at = 0
 			return 'Other'
 
 		#else:
@@ -218,10 +209,10 @@ class Sim900():
 
 			if cntr>wait:
 				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
-				led.modem_ok_status = 3
+				led.modem_ok = "comm_error"
 				return 'ErrorTimeout'
 			else:
-				led.modem_ok_status = 1
+				led.modem_ok = "working"
 			cntr=cntr+1
 
 			try:
@@ -398,7 +389,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.comm_status = 2
+					led.comm_status = "backfill_send_ok"
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -467,7 +458,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.comm_status = 1
+						led.comm_status = "live_send_ok"
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
@@ -523,14 +514,13 @@ def main():
 
 if __name__ == '__main__':
 	
-	led.code_status = 1
+	led.code = "success"
 
 	try:
 		os.system("clear")
 	except :
 		pass
-	led_q = Queue.Queue()
-
+	
 	#debugLog    = log.debugLog('./log/dredger2_debug')         # Code for PC
 	#liveLog     = log.liveLog('./log/dredger2_live')
 	#backLog     = log.backfillLog('./log/dredger2_backfill')
