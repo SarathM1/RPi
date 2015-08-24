@@ -72,6 +72,7 @@ class plc():
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
 				print '\n\t\tERROR: PLC DISCONNECTED !!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
+				led.plc_ok = "usb_disconnected"
 				arg = dummyPacket()
 
 			else:
@@ -222,22 +223,20 @@ class Sim900():
 		string = ''.join(string)
 		string = string.replace('\r',' ').replace(',,','; ')
 
-		"""
+		
 		if success in status:
-			#print '\t\t',
-			print '{0:20} ==> {1:50}'.format('Success',string)
+			#print '{0:20} ==> {1:50}'.format('Success',string)
 			return 'Success'  # success => AT Command sent
 
 		elif error in status:
 			debugLog.error('\t\t\tReply: '+string)
-			print '{0:20} ==> {1:50}'.format('Error',string)
+			#print '{0:20} ==> {1:50}'.format('Error',string)
 			return 'Error'
 		
 		else:
-			print '{0:20} ==> {1:50}'.format('Other',string)
+			#print '{0:20} ==> {1:50}'.format('Other',string)
 			return 'Other'
-		"""
-
+		
 	def gsmInit(self,arg):
 		"""
 		if errMain.checkBit('gsmUsb'):                  # CHECK IF GSM IS DISCONNECTED FROM RPi
