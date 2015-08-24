@@ -222,7 +222,7 @@ class Sim900():
 		string = ''.join(string)
 		string = string.replace('\r',' ').replace(',,','; ')
 
-
+		"""
 		if success in status:
 			#print '\t\t',
 			print '{0:20} ==> {1:50}'.format('Success',string)
@@ -236,6 +236,7 @@ class Sim900():
 		else:
 			print '{0:20} ==> {1:50}'.format('Other',string)
 			return 'Other'
+		"""
 
 	def gsmInit(self,arg):
 		"""

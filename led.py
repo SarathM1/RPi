@@ -89,8 +89,10 @@ def hw(pin,status):
 	elif status == "working":
 		on(pin)
 	elif status == "usb_disconnected":
+		print "usb_disconnected"
 		blink_led(pin,1)
 	elif status == "comm_error":
+		print "comm_error"
 		blink_led(pin,0.1)
 
 
