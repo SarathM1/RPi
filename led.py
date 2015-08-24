@@ -18,9 +18,9 @@ class hwThread(threading.Thread):
 	def run(self):
 		
 		while not self.stoprequest.isSet():
-			print "hwThread, Run(), flag plc_ok = " + str(plc_ok)  # debgging
 			time.sleep(1)  # debugging
 			if self.pin == pin["plc_ok"]:
+				print "hwThread, Run(), flag plc_ok = " + str(plc_ok)  + str(pin['plc_ok'])# debgging
 				hw(pin["plc_ok"],plc_ok)
 			else:
 				hw(pin["modem_ok"],modem_ok)
@@ -29,7 +29,7 @@ class hwThread(threading.Thread):
 		self.stoprequest.set()
 		super(hwThread, self).join(timeout)
 
-
+"""
 class debugThread(threading.Thread):
 	
 	def __init__(self, pin, q):
@@ -80,7 +80,7 @@ class commStatusThread(threading.Thread):
 	def join(self, timeout=None):
 		self.stoprequest.set()
 		super(commStatusThread, self).join(timeout)
-
+"""
 def hw(pin,status):
 	"""
 	To check state of PLC and GSM
@@ -152,13 +152,13 @@ led_init()
 plc_th = hwThread(pin["plc_ok"])
 gsm_th = hwThread(pin["modem_ok"])
 #at_th = debugThread(pin["at"],at)
-commStatus_th = commStatusThread(pin["comm_status"],comm_status)
+#commStatus_th = commStatusThread(pin["comm_status"],comm_status)
 
 threads = []
 threads.append(plc_th)
 threads.append(gsm_th)
 #threads.append(at_th)
-threads.append(commStatus_th)
+#threads.append(commStatus_th)
 
 for each_thread in threads:
 	each_thread.start()		# Starting all threads here
