@@ -146,7 +146,7 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		print '{0:20}'.format(command) ,
+		#print '{0:20}'.format(command) ,
 		
 		try:
 			self.obj.write(command+'\r\n')
