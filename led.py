@@ -140,18 +140,18 @@ if __name__ == '__main__':
 
 	led_init()
 
-	plc = hwThread(pin["plc_ok"])
-	gsm = hwThread(pin["modem_ok"])
-	at = debugThread(pin["at"],at)
-	code = debugThread(pin["code"],code)
-	commStatus = commStatusThread(pin["comm_status"],comm_status)
+	plc_th = hwThread(pin["plc_ok"])
+	gsm_th = hwThread(pin["modem_ok"])
+	at_th = debugThread(pin["at"],at)
+	code_th = debugThread(pin["code"],code)
+	commStatus_th = commStatusThread(pin["comm_status"],comm_status)
 
 	threads = []
-	threads.append(plc)
-	threads.append(gsm)
-	threads.append(at)
-	threads.append(code)
-	threads.append(commStatus)
+	threads.append(plc_th)
+	threads.append(gsm_th)
+	threads.append(at_th)
+	threads.append(code_th)
+	threads.append(commStatus_th)
 
 	for each_thread in threads:
 		each_thread.start()		# Starting all threads here
