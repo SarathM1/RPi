@@ -38,7 +38,9 @@ class debugThread(threading.Thread):
     def run(self):
         
         while not self.stoprequest.isSet():
+        	print "IN THREAD debugThread, waiting for Queue"
         	status = self.q.get()
+        	print "Done waiting: "+str(status)
         	
         	if status == "off":
         		off(self.pin)
