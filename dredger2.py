@@ -71,7 +71,6 @@ class plc():
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nERR IN plc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
-			self.plc_ok_q.put("usb_disconnected")
 
 	def readData(self):
 

@@ -17,6 +17,7 @@ class hwThread(threading.Thread):
 
 	def run(self):
 		while not self.stoprequest.isSet():
+			print "Blocking"
 			status = self.q.get()
 			print 'plc_ok STATUS: '+status
 			hw(pin["plc_ok"],status)
