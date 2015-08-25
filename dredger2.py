@@ -121,6 +121,12 @@ class plc():
 class Sim900():
 	def __init__ (self):
 		self.status=0
+
+		self.modem_ok_q = queue()
+		
+		modemThread = led.modem_ok_th(self.modem_ok_q)
+		modemThread.start()
+
 		self.gsm_init()
 		self.db=database_backup()
 	
@@ -129,13 +135,13 @@ class Sim900():
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
-			led.modem_ok = "working"		# GSM modem working properly
+			self.modem_ok_q.put("working")		# GSM modem working properly
 
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
 			debugLog.error(loggerMsg)
-			led.modem_ok = "usb_disconnected" 
+			self.modem_ok_q.put("usb_disconnected")
 			print 'gsm_init():- '+str(e)
 		
 	def sendAt(self,command,success='OK',error='ERROR',wait=2):
@@ -195,10 +201,10 @@ class Sim900():
 
 			if cntr>wait:
 				print '\n\tError, Timeout, cntr = '+str(cntr)+'\n'
-				led.modem_ok = "comm_error"
+				self.modem_ok_q.put("comm_error")
 				return 'ErrorTimeout'
 			else:
-				led.modem_ok = "working"
+				self.modem_ok_q.put("working")
 			cntr=cntr+1
 
 			try:

@@ -39,7 +39,7 @@ class modem_modem_ok_th(threading.Thread):
 				
 			self.q.put(status)
 			print "QUE SIZE = "+ str(self.q.qsize())
-			hw(pin["plc_ok"],status)
+			hw(pin["modem_ok"],status)
 
 def hw(pin_no,status):
 	"""
