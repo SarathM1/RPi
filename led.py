@@ -19,8 +19,8 @@ class hwThread(threading.Thread):
 			status = self.q.get()
 
 			with self.q.mutex:
-    			self.q.queue.clear()
-    			
+				self.q.queue.clear()
+				
 			self.q.put(status)
 			print "QUE SIZE = "+ str(self.q.qsize())
 			#print 'plc_ok STATUS: '+status
