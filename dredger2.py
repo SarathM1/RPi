@@ -41,9 +41,9 @@ def dummyPacket():
 
 
 class plc():
-	def __init__(self,plc_ok_q):
-		self.plc_init()
+	def __init__(self):
 		self.plc_ok_q = plc_ok_q
+		self.plc_init()
 
 	def plc_init(self):
 		try:
@@ -416,7 +416,7 @@ class live(threading.Thread):
 	def __init__(self,event):
 		threading.Thread.__init__(self)
 
-		self.delta=plc(plc_ok_q)
+		self.delta=plc()
 		
 		self.db=database_backup()
 		
