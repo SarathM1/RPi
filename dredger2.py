@@ -44,7 +44,7 @@ class plc():
 	def __init__(self):
 		self.plc_ok_q = queue()
 		
-		ledThread = led.hwThread(self.plc_ok_q)
+		ledThread = led.plc_ok_th(self.plc_ok_q)
 		ledThread.start()
 
 		self.plc_init()
@@ -121,39 +121,23 @@ class plc():
 class Sim900():
 	def __init__ (self):
 		self.status=0
+		self.gsm_init()
+		self.db=database_backup()
+	
+	def gsm_init(self,loggerMsg="usb_disconnected"):
 		try:
 			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
 			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
 			errMain.clearBit('gsmUsb')
 			led.modem_ok = "working"		# GSM modem working properly
 
-		except serial.SerialException:
-			errMain.setBit('gsmUsb')
-			liveLog.error("GSM: CANNOT OPEN PORT")
-			print '\n\t\tGSM: CANNOT OPEN PORT!!'
-			led.modem_ok = "usb_disconnected"		# GSM disconnected from USB
-
 		except Exception as e:
 			errMain.setBit('gsmUsb')
 			liveLog.error("GSM: CANNOT OPEN PORT")
-			led.modem_ok = "usb_disconnected"
-			print 'Sim900, __init__:- '+str(e)
-			led.modem_ok = "usb_disconnected"		# GSM disconnected from USB
-
-		self.db=database_backup()
-	
-	def hotPlug(self,loggerMsg="USB disconnected"):
-		print loggerMsg
-		try:
-			#self.obj = serial.Serial('/dev/ttyS0', 9600, timeout=1)
-			self.obj = serial.Serial('/dev/gsmModem', 9600, timeout=1)
-			led.modem_ok = "working"			# GSM Connection OK via USB
-
-		except Exception as e:
-			led.modem_ok = "working"
-			print 'hotPlug():',e
-		debugLog.error(loggerMsg)
-
+			debugLog.error(loggerMsg)
+			led.modem_ok = "usb_disconnected" 
+			print 'gsm_init():- '+str(e)
+		
 	def sendAt(self,command,success='OK',error='ERROR',wait=2):
 		"""
 		Function to send AT commands
@@ -164,7 +148,7 @@ class Sim900():
 		try:
 			self.obj.write(command+'\r\n')
 		except Exception as e:
-			self.hotPlug('sendAt(): '+str(e))
+			self.gsm_init('sendAt(): '+str(e))
 
 		time.sleep(0.25)
 
@@ -203,7 +187,7 @@ class Sim900():
 			status = self.obj.read(100).strip()
 		except Exception as e:
 			status=error
-			self.hotPlug('checkStatus: ' + str(e))
+			self.gsm_init('checkStatus: ' + str(e))
 
 
 		cntr=1                      # Timeout in secs
@@ -221,7 +205,7 @@ class Sim900():
 				status = self.obj.read(100).strip()
 			except Exception as e:
 				status=error
-				self.hotPlug('checkStatus(): ' + str(e))
+				self.gsm_init('checkStatus(): ' + str(e))
 
 			time.sleep(1)
 			if wait>1:         # If waitin for more than 5 sec display count
@@ -341,7 +325,7 @@ class Sim900():
 		try:
 			self.obj.write(packet+'\x0A\x0D\x0A\x0D\x1A')
 		except Exception as e:
-			self.hotPlug('sendPacket(): '+str(e))
+			self.gsm_init('sendPacket(): '+str(e))
 
 		flagStatus = self.checkStatus('SEND OK','FAIL',3)
 
