@@ -142,7 +142,6 @@ class Sim900():
 			self.modem_ok_q.put("usb_disconnected")
 			liveLog.error("GSM: CANNOT OPEN PORT")
 			debugLog.error(loggerMsg)
-			self.modem_ok_q.put("usb_disconnected")
 			print 'gsm_init():- '+str(e)
 		
 	def sendAt(self,command,success='OK',error='ERROR',wait=2):
