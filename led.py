@@ -16,8 +16,9 @@ class hwThread(threading.Thread):
 
 	def run(self):
 		while True:
-			print "Blocking"
+			#print "Blocking"
 			status = self.q.get()
+			self.q.put(status)
 			print 'plc_ok STATUS: '+status
 			hw(pin["plc_ok"],status)
 	
