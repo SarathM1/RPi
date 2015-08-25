@@ -12,7 +12,7 @@ class hwThread(threading.Thread):
 	def __init__(self,q):
 		super(hwThread, self).__init__()
 		self.q = q
-		self.q.put("off")
+		#self.q.put("off")
 
 	def run(self):
 		while True:
