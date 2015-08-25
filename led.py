@@ -15,6 +15,7 @@ class hwThread(threading.Thread):
 		self.q.put("off")
 
 	def run(self):
+		print "\n\tRUNNING THREAD hwThread!!\n"
 		while True:
 			#print "Blocking"
 			status = self.q.get()
