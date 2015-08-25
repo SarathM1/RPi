@@ -17,8 +17,8 @@ class plc_ok_th(threading.Thread):
 		while True:
 			status = self.q.get()
 
-			#with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
-			#	self.q.queue.clear()  # Flushig Queue
+			with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
+				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)							# DANGEROUS!! (DID FOR PERSISTANCE)
 			print "QUE SIZE = "+ str(self.q.qsize())
@@ -37,7 +37,7 @@ class modem_ok_th(threading.Thread):
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
 				
-			print "QUE SIZE = "+ str(self.q.qsize())
+			#print "QUE SIZE = "+ str(self.q.qsize())
 			modem_check(pin["modem_ok"],status)
 
 def plc_check(pin_no,status):
@@ -46,25 +46,25 @@ def plc_check(pin_no,status):
 	pin_no - pin # of device
 	"""
 	if status == "off" :
-		if pin["modem_ok"] == pin_no:
-			print "\n\tOFF!!"
+		if pin["plc_ok"] == pin_no:
+			print "\n\tPLC OFF!!"
 		off(pin_no)
 	elif status == "working":
-		if pin["modem_ok"] == pin_no:
-			print "\n\tWORKING!!"
+		if pin["plc_ok"] == pin_no:
+			print "\n\tPLC WORKING!!"
 		on(pin_no)
 	elif status == "usb_disconnected":
-		if pin["modem_ok"] == pin_no:
-			print "\n\tUSB DISCONNECTED!!"
+		if pin["plc_ok"] == pin_no:
+			print "\n\tPLC USB DISCONNECTED!!"
 		blink_led(pin_no,1)
-	elif status == "\n\tCOMMUNICATION ERROR!!":
-		if pin["modem_ok"] == pin_no:
-			print "\ncomm_error"
+	elif status == "comm_error":
+		if pin["plc_ok"] == pin_no:
+			print "\n\tPLC COMMUNICATION ERROR!!"
 		blink_led(pin_no,0.1)
 	else:
-		if pin["modem_ok"] == pin_no:
+		if pin["plc_ok"] == pin_no:
 			print "Error!!"
-	time.sleep(1)							# DANGEROUS !! MAY CAUSE ERRROR
+	#time.sleep(0.01)							# DANGEROUS !! MAY CAUSE ERRROR
 
 def modem_check(pin_no,status):
 	"""
@@ -72,25 +72,15 @@ def modem_check(pin_no,status):
 	pin_no - pin # of device
 	"""
 	if status == "off" :
-		if pin["modem_ok"] == pin_no:
-			print "\n\tOFF!!"
 		off(pin_no)
 	elif status == "working":
-		if pin["modem_ok"] == pin_no:
-			print "\n\tWORKING!!"
 		on(pin_no)
 	elif status == "usb_disconnected":
-		if pin["modem_ok"] == pin_no:
-			print "\n\tUSB DISCONNECTED!!"
 		blink_led(pin_no,1)
 	elif status == "\n\tCOMMUNICATION ERROR!!":
-		if pin["modem_ok"] == pin_no:
-			print "\ncomm_error"
 		blink_led(pin_no,0.1)
 	else:
-		if pin["modem_ok"] == pin_no:
-			print "Error!!"
-	
+		pass	
 
 def led_init():
 	gpio.setmode(gpio.BOARD)
