@@ -2,15 +2,17 @@
 #!/usr/bin/python
 import serial
 import time
-import threading, Queue
+import threading
+from Queue import Queue as queue
+
 from backfill import database_backup
 from errorFile import errorHandlerMain      # Import from local file errorFile
 from errorFile import errorHandlerGsm      # Import from local file errorFile
 from errorFile import errorHandlerTimeout      # Import from local file errorFile
 from errorFile import errorHandlerUnknown      # Import from local file errorFile
+import myLogger as log
 
 import os
-import myLogger as log
 import minimalmodbus
 import led
 
@@ -39,8 +41,9 @@ def dummyPacket():
 
 
 class plc():
-	def __init__(self):
+	def __init__(self,plc_ok_q):
 		self.plc_init()
+		self.plc_ok_q = plc_ok_q
 
 	def plc_init(self):
 		try:
@@ -52,19 +55,19 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-			led.plc_ok.put("working")
+			self.plc_ok_q.put("working")
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			led.plc_ok.put("usb_disconnected") 
+			self.plc_ok_q.put("usb_disconnected") 
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
-			led.plc_ok.put("usb_disconnected")
+			self.plc_ok_q.put("usb_disconnected")
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nERR IN plc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
-			led.plc_ok.put("usb_disconnected")
+			self.plc_ok_q.put("usb_disconnected")
 
 	def readData(self):
 
@@ -79,7 +82,7 @@ class plc():
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
 				print '\n\t\tERROR: PLC DISCONNECTED !!!@\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
-				led.plc_ok.put("usb_disconnected")
+				self.plc_ok_q.put("usb_disconnected")
 				arg = dummyPacket()
 
 			else:
@@ -100,14 +103,14 @@ class plc():
 				debugLog.info("Data read from PLC")
 				print "\n\t\tDATA READ FROM PLC!!\n\n"
 				errMain.clearBit('plcComm')
-				led.plc_ok.put("working")		# PLC is working properly
+				self.plc_ok_q.put("working")		# PLC is working properly
 
 		except Exception as e:
 				liveLog.error("PLC: Communication Error")
 				print 'PLC_read_data: ',str(e)
 				errMain.setBit('plcComm')
 				arg = dummyPacket()
-				led.plc_ok.put("comm_error")		# Communication Error with PLC
+				self.plc_ok_q.put("comm_error")		# Communication Error with PLC
 				
 
 		return arg
@@ -356,7 +359,7 @@ class backFill(threading.Thread):
 		threading.Thread.__init__(self)
 		self.db=database_backup()
 		self.gsm = Sim900()
-
+		
 	def run(self):
 		i=1
 		while True:
@@ -411,11 +414,16 @@ class backFill(threading.Thread):
 class live(threading.Thread):
 
 	def __init__(self,event):
-		self.delta=plc()
-		self.db=database_backup()
 		threading.Thread.__init__(self)
+
+		self.delta=plc()
+		
+		self.db=database_backup()
+		
 		self.gsm = Sim900()
+		
 		errMain.setBit('boot')          # Bit 'boot' is set for only the first Live packet
+		
 
 	def run(self):
 		while True:
@@ -504,8 +512,12 @@ class live(threading.Thread):
 			time.sleep(20)                   #backfill runs for 20 sec's
 
 def main():
+	
 	t1 = backFill(event)
 	t2 = live(event)
+	t3 = led.hwThread(plc_ok_q)
+
+	t3.start()
 	t1.start()
 	t2.start()
 
@@ -513,7 +525,9 @@ def main():
 
 
 if __name__ == '__main__':
-		
+	plc_ok_q = queue()
+	plc_ok_q.put("off")
+
 	led.on(led.pin['code'])
 
 	#try:

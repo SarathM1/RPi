@@ -4,18 +4,19 @@ from RPi.GPIO import LOW as low
 from RPi.GPIO import HIGH as high 
 
 import time
-import threading, Queue
+import threading
 import random
 
 class hwThread(threading.Thread):
 	
-	def __init__(self):
+	def __init__(self,q):
 		super(hwThread, self).__init__()
 		self.stoprequest = threading.Event()
+		self.q = q
 
 	def run(self):
 		while not self.stoprequest.isSet():
-			status = plc_ok.get()
+			status = self.q.get()
 			print 'plc_ok STATUS: '+status
 			hw(pin["plc_ok"],status)
 			
@@ -83,19 +84,6 @@ pin["modem_ok"] 	= 11
 pin["plc_ok"]		= 13
 pin["at"] 		 	= 15
 pin["code"]	 		= 37
-
-"""comm_status 	= Queue.Queue()
-comm_status.put("off")
-"""
-modem_ok 	 	= Queue.Queue()
-modem_ok.put("off")
-
-plc_ok		 	= Queue.Queue()
-plc_ok.put("off")
-
-"""at 		 		= Queue.Queue()
-at.put("off")
-"""
 
 led_init()
 
