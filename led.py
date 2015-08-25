@@ -38,7 +38,7 @@ class modem_ok_th(threading.Thread):
 				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)
-			#print "QUE SIZE = "+ str(self.q.qsize())
+			print "QUE SIZE = "+ str(self.q.qsize())
 			modem_check(pin["modem_ok"],status)
 
 def plc_check(pin_no,status):
@@ -65,7 +65,7 @@ def plc_check(pin_no,status):
 	else:
 		if pin["modem_ok"] == pin_no:
 			print "Error!!"
-	time.sleep(1)
+	#time.sleep(1)
 
 def modem_check(pin_no,status):
 	"""
@@ -91,7 +91,7 @@ def modem_check(pin_no,status):
 	else:
 		if pin["modem_ok"] == pin_no:
 			print "Error!!"
-	time.sleep(1)
+	#time.sleep(1)
 
 def led_init():
 	gpio.setmode(gpio.BOARD)

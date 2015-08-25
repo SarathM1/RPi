@@ -143,6 +143,7 @@ class Sim900():
 			liveLog.error("GSM: CANNOT OPEN PORT")
 			debugLog.error(loggerMsg)
 			print 'gsm_init():- '+str(e)
+			time.sleep(1)
 		
 	def sendAt(self,command,success='OK',error='ERROR',wait=2):
 		"""
