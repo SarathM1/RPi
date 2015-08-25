@@ -13,6 +13,7 @@ class hwThread(threading.Thread):
 		super(hwThread, self).__init__()
 		self.stoprequest = threading.Event()
 		self.q = q
+		self.q.put("off")
 
 	def run(self):
 		while not self.stoprequest.isSet():

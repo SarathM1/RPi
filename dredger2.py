@@ -43,8 +43,7 @@ def dummyPacket():
 class plc():
 	def __init__(self):
 		self.plc_ok_q = queue()
-		self.plc_ok_q.put("off")
-
+		
 		ledThread = led.hwThread(self.plc_ok_q)
 		ledThread.start()
 
