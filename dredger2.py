@@ -139,6 +139,7 @@ class Sim900():
 
 		except Exception as e:
 			errMain.setBit('gsmUsb')
+			self.modem_ok_q.put("usb_disconnected")
 			liveLog.error("GSM: CANNOT OPEN PORT")
 			debugLog.error(loggerMsg)
 			self.modem_ok_q.put("usb_disconnected")

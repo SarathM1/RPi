@@ -21,13 +21,13 @@ class plc_ok_th(threading.Thread):
 				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)
-			print "QUE SIZE = "+ str(self.q.qsize())
+			#print "QUE SIZE = "+ str(self.q.qsize())
 			hw(pin["plc_ok"],status)
 
-class modem_modem_ok_th(threading.Thread):
+class modem_ok_th(threading.Thread):
 	
 	def __init__(self,q):
-		super(modem_modem_ok_th, self).__init__()
+		super(modem_ok_th, self).__init__()
 		self.q = q
 
 	def run(self):
@@ -38,7 +38,7 @@ class modem_modem_ok_th(threading.Thread):
 				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)
-			print "QUE SIZE = "+ str(self.q.qsize())
+			#print "QUE SIZE = "+ str(self.q.qsize())
 			hw(pin["modem_ok"],status)
 
 def hw(pin_no,status):
@@ -47,23 +47,23 @@ def hw(pin_no,status):
 	pin_no - pin # of device
 	"""
 	if status == "off" :
-		if pin["plc_ok"] == pin_no:
+		if pin["modem_ok"] == pin_no:
 			print "\n\tOFF!!"
 		off(pin_no)
 	elif status == "working":
-		if pin["plc_ok"] == pin_no:
+		if pin["modem_ok"] == pin_no:
 			print "\n\tWORKING!!"
-		blink_led(pin_no,1)
+		on(pin_no)
 	elif status == "usb_disconnected":
-		if pin["plc_ok"] == pin_no:
+		if pin["modem_ok"] == pin_no:
 			print "\n\tUSB DISCONNECTED!!"
 		blink_led(pin_no,1)
 	elif status == "\n\tCOMMUNICATION ERROR!!":
-		if pin["plc_ok"] == pin_no:
+		if pin["modem_ok"] == pin_no:
 			print "\ncomm_error"
 		blink_led(pin_no,0.1)
 	else:
-		if pin["plc_ok"] == pin_no:
+		if pin["modem_ok"] == pin_no:
 			print "Error!!"
 	time.sleep(1)
 
