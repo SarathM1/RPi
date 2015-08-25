@@ -418,6 +418,10 @@ class live(threading.Thread):
 
 		self.plc_ok_q = plc_ok_q
 
+		ledThread = led.hwThread(self.plc_ok_q)
+
+		ledThread.start()
+
 		self.delta=plc(self.plc_ok_q)
 		
 		self.db=database_backup()
@@ -519,9 +523,7 @@ def main():
 
 	t1 = backFill(event)
 	t2 = live(event,plc_ok_q)
-	t3 = led.hwThread(plc_ok_q)
-
-	t3.start()
+	
 	t1.start()
 	t2.start()
 
