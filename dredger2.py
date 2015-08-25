@@ -60,6 +60,7 @@ class plc():
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
+			led.plc_ok.put("usb_disconnected")
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nERR IN plc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
@@ -76,7 +77,7 @@ class plc():
 		try:
 
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
-				print '\n\t\tERROR: PLC DISCONNECTED !!\
+				print '\n\t\tERROR: PLC DISCONNECTED !!!@\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
 				led.plc_ok.put("usb_disconnected")
 				arg = dummyPacket()
