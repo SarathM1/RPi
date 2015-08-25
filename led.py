@@ -10,18 +10,16 @@ import random
 class hwThread(threading.Thread):
 	
 	def __init__(self,q):
-		print "\n\tIN hwThread CONSTRUCTOR!!\n"
 		super(hwThread, self).__init__()
 		self.q = q
 		self.q.put("off")
 
 	def run(self):
-		print "\n\tRUNNING THREAD hwThread!!\n"
 		while True:
-			#print "Blocking"
 			status = self.q.get()
 			self.q.put(status)
-			print 'plc_ok STATUS: '+status
+			print "QUE SIZE = "+ str(self.q.qsize())
+			#print 'plc_ok STATUS: '+status
 			hw(pin["plc_ok"],status)
 	
 def hw(pin_no,status):
