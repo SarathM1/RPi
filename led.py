@@ -10,6 +10,7 @@ import random
 class hwThread(threading.Thread):
 	
 	def __init__(self,q):
+		print "\n\tIN hwThread CONSTRUCTOR!!\n"
 		super(hwThread, self).__init__()
 		self.q = q
 		self.q.put("off")
