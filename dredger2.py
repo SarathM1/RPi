@@ -61,7 +61,7 @@ class plc():
 
 		except Exception as e:
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			print '\nplc_init: '+str(e)+'\n'
+			print '\nERR IN plc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
 			led.plc_ok.put("usb_disconnected")
 
