@@ -52,18 +52,18 @@ class plc():
 			self.instrument.serial.timeout = 0.1
 			self.instrument.mode = minimalmodbus.MODE_ASCII
 			errMain.clearBit('plcUsb')
-			led.plc_ok = "working"
+			led.plc_ok.put("working")
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
-			led.plc_ok = "usb_disconnected" 
+			led.plc_ok.put("usb_disconnected") 
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
 			liveLog.error("PLC: CANNOT OPEN PORT")
 			print '\nplc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
-			led.plc_ok = "usb_disconnected"
+			led.plc_ok.put("usb_disconnected")
 
 	def readData(self):
 
@@ -78,7 +78,7 @@ class plc():
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
 				print '\n\t\tERROR: PLC DISCONNECTED !!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
-				led.plc_ok = "usb_disconnected"
+				led.plc_ok.put("usb_disconnected")
 				arg = dummyPacket()
 
 			else:
@@ -99,14 +99,14 @@ class plc():
 				debugLog.info("Data read from PLC")
 				print "\n\t\tDATA READ FROM PLC!!\n\n"
 				errMain.clearBit('plcComm')
-				led.plc_ok = "working"		# PLC is working properly
+				led.plc_ok.put("working")		# PLC is working properly
 
 		except Exception as e:
 				liveLog.error("PLC: Communication Error")
 				print 'PLC_read_data: ',str(e)
 				errMain.setBit('plcComm')
 				arg = dummyPacket()
-				led.plc_ok = "comm_error"		# Communication Error with PLC
+				led.plc_ok.put("comm_error")		# Communication Error with PLC
 				
 
 		return arg
@@ -512,14 +512,6 @@ def main():
 
 
 if __name__ == '__main__':
-	gsm_th = led.hwThread()
-
-	threads = []
-	#threads.append(plc_th)
-	threads.append(gsm_th)
-
-	for each_thread in threads:
-		each_thread.start()		# Starting all threads here
 		
 	led.on(led.pin['code'])
 
