@@ -41,7 +41,7 @@ def dummyPacket():
 
 
 class plc():
-	def __init__(self):
+	def __init__(self,plc_ok_q):
 		self.plc_ok_q = plc_ok_q
 		self.plc_init()
 
@@ -413,10 +413,12 @@ class backFill(threading.Thread):
 
 class live(threading.Thread):
 
-	def __init__(self,event):
+	def __init__(self,event,plc_ok_q):
 		threading.Thread.__init__(self)
 
-		self.delta=plc()
+		self.plc_ok_q = plc_ok_q
+
+		self.delta=plc(self.plc_ok_q)
 		
 		self.db=database_backup()
 		
@@ -512,9 +514,11 @@ class live(threading.Thread):
 			time.sleep(20)                   #backfill runs for 20 sec's
 
 def main():
-	
+	plc_ok_q = queue()
+	plc_ok_q.put("off")
+
 	t1 = backFill(event)
-	t2 = live(event)
+	t2 = live(event,plc_ok_q)
 	t3 = led.hwThread(plc_ok_q)
 
 	t3.start()
@@ -525,9 +529,7 @@ def main():
 
 
 if __name__ == '__main__':
-	plc_ok_q = queue()
-	plc_ok_q.put("off")
-
+	
 	led.on(led.pin['code'])
 
 	#try:
