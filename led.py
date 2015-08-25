@@ -7,25 +7,40 @@ import time
 import threading
 import random
 
-class hwThread(threading.Thread):
+class plc_ok_th(threading.Thread):
 	
 	def __init__(self,q):
-		super(hwThread, self).__init__()
+		super(plc_ok_th, self).__init__()
 		self.q = q
-		#self.q.put("off")
 
 	def run(self):
 		while True:
 			status = self.q.get()
 
 			with self.q.mutex:
-				self.q.queue.clear()
+				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)
 			print "QUE SIZE = "+ str(self.q.qsize())
-			#print 'plc_ok STATUS: '+status
 			hw(pin["plc_ok"],status)
+
+class modem_modem_ok_th(threading.Thread):
 	
+	def __init__(self,q):
+		super(modem_modem_ok_th, self).__init__()
+		self.q = q
+
+	def run(self):
+		while True:
+			status = self.q.get()
+
+			with self.q.mutex:
+				self.q.queue.clear()  # Flushig Queue
+				
+			self.q.put(status)
+			print "QUE SIZE = "+ str(self.q.qsize())
+			hw(pin["plc_ok"],status)
+
 def hw(pin_no,status):
 	"""
 	To check state of PLC and GSM
