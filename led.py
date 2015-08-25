@@ -87,15 +87,6 @@ pin["code"]	 		= 37
 
 led_init()
 
-gsm_th = hwThread()
-
-threads = []
-#threads.append(plc_th)
-threads.append(gsm_th)
-
-for each_thread in threads:
-	each_thread.start()		# Starting all threads here
-
 
 
 
