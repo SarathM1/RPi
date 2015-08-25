@@ -41,7 +41,7 @@ def dummyPacket():
 
 
 class plc():
-	def __init__(self,plc_ok_q):
+	def __init__(self):
 		self.plc_init()
 		self.plc_ok_q = plc_ok_q
 
