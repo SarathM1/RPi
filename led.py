@@ -22,7 +22,7 @@ class plc_ok_th(threading.Thread):
 				
 			self.q.put(status)
 			#print "QUE SIZE = "+ str(self.q.qsize())
-			hw(pin["plc_ok"],status)
+			plc_check(pin["plc_ok"],status)
 
 class modem_ok_th(threading.Thread):
 	
@@ -39,9 +39,9 @@ class modem_ok_th(threading.Thread):
 				
 			self.q.put(status)
 			#print "QUE SIZE = "+ str(self.q.qsize())
-			hw(pin["modem_ok"],status)
+			modem_check(pin["modem_ok"],status)
 
-def hw(pin_no,status):
+def plc_check(pin_no,status):
 	"""
 	To check state of PLC and GSM
 	pin_no - pin # of device
@@ -67,6 +67,31 @@ def hw(pin_no,status):
 			print "Error!!"
 	time.sleep(1)
 
+def modem_check(pin_no,status):
+	"""
+	To check state of PLC and GSM
+	pin_no - pin # of device
+	"""
+	if status == "off" :
+		if pin["modem_ok"] == pin_no:
+			print "\n\tOFF!!"
+		off(pin_no)
+	elif status == "working":
+		if pin["modem_ok"] == pin_no:
+			print "\n\tWORKING!!"
+		on(pin_no)
+	elif status == "usb_disconnected":
+		if pin["modem_ok"] == pin_no:
+			print "\n\tUSB DISCONNECTED!!"
+		blink_led(pin_no,1)
+	elif status == "\n\tCOMMUNICATION ERROR!!":
+		if pin["modem_ok"] == pin_no:
+			print "\ncomm_error"
+		blink_led(pin_no,0.1)
+	else:
+		if pin["modem_ok"] == pin_no:
+			print "Error!!"
+	time.sleep(1)
 
 def led_init():
 	gpio.setmode(gpio.BOARD)
