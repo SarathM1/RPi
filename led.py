@@ -14,12 +14,11 @@ class hwThread(threading.Thread):
 		self.stoprequest = threading.Event()
 
 	def run(self):
-		print "\n\tPLC_OK: "+str(plc_ok)+", stoprequest: "+str(self.stoprequest.isSet())	
 		while not self.stoprequest.isSet():
-			print "\n\tPLC_OK: "+str(plc_ok)+", stoprequest: "+str(self.stoprequest.isSet())	
-			time.sleep(1)  # debugging
-			hw(pin["plc_ok"],plc_ok)
-			hw(pin["modem_ok"],modem_ok)
+			status = plc_ok.get()
+			print 'plc_ok STATUS: '+status
+			hw(pin["plc_ok"],status)
+			
 
 	def join(self, timeout=None):
 		self.stoprequest.set()
@@ -77,7 +76,6 @@ def blink_led(pin_no,sec):
 	off(pin_no)
 	time.sleep(sec)
 
-#if __name__ == '__main__':
 pin = {}
 
 pin["comm_status"] 	= 35
@@ -86,20 +84,30 @@ pin["plc_ok"]		= 13
 pin["at"] 		 	= 15
 pin["code"]	 		= 37
 
-comm_status 	= Queue.Queue()
+"""comm_status 	= Queue.Queue()
 comm_status.put("off")
+"""
+modem_ok 	 	= Queue.Queue()
+modem_ok.put("off")
 
-modem_ok 	 	= "off"
-plc_ok		 	= "off"
+plc_ok		 	= Queue.Queue()
+plc_ok.put("off")
 
-at 		 		= Queue.Queue()
+"""at 		 		= Queue.Queue()
 at.put("off")
-
+"""
 
 led_init()
 
+gsm_th = hwThread()
 
-#plc_th = hwThread(pin["plc_ok"])
+threads = []
+#threads.append(plc_th)
+threads.append(gsm_th)
+
+for each_thread in threads:
+	each_thread.start()		# Starting all threads here
+
 
 
 
