@@ -17,11 +17,11 @@ class plc_ok_th(threading.Thread):
 		while True:
 			status = self.q.get()
 
-			#with self.q.mutex:
+			#with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
 			#	self.q.queue.clear()  # Flushig Queue
 				
-			self.q.put(status)
-			#print "QUE SIZE = "+ str(self.q.qsize())
+			self.q.put(status)							# DANGEROUS!! (DID FOR PERSISTANCE)
+			print "QUE SIZE = "+ str(self.q.qsize())
 			plc_check(pin["plc_ok"],status)
 
 class modem_ok_th(threading.Thread):
@@ -37,7 +37,6 @@ class modem_ok_th(threading.Thread):
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
 				
-			#self.q.put(status)
 			print "QUE SIZE = "+ str(self.q.qsize())
 			modem_check(pin["modem_ok"],status)
 
@@ -65,7 +64,7 @@ def plc_check(pin_no,status):
 	else:
 		if pin["modem_ok"] == pin_no:
 			print "Error!!"
-	#time.sleep(1)
+	time.sleep(1)							# DANGEROUS !! MAY CAUSE ERRROR
 
 def modem_check(pin_no,status):
 	"""
@@ -91,7 +90,7 @@ def modem_check(pin_no,status):
 	else:
 		if pin["modem_ok"] == pin_no:
 			print "Error!!"
-	#time.sleep(0.5)
+	
 
 def led_init():
 	gpio.setmode(gpio.BOARD)
