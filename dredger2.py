@@ -52,6 +52,7 @@ class plc():
 	def plc_init(self):
 		try:
 			self.instrument = minimalmodbus.Instrument('/dev/plc',1)
+			print "PLC USB Detected!!"
 			self.instrument.serial.baudrate = 9600
 			self.instrument.serial.bytesize = 7
 			self.instrument.serial.parity = serial.PARITY_EVEN
