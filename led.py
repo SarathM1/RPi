@@ -20,8 +20,9 @@ class plc_ok_th(threading.Thread):
 			with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
 				self.q.queue.clear()  # Flushig Queue
 				
-			self.q.put(status)							# DANGEROUS!! (DID FOR PERSISTANCE)
-			#print "QUE SIZE = "+ str(self.q.qsize())
+			#self.q.put(status)							# DANGEROUS!! (DID FOR PERSISTANCE)
+			if self.q.qsize()>1:
+				print "QUE SIZE = "+ str(self.q.qsize())
 			plc_check(pin["plc_ok"],status)
 
 class modem_ok_th(threading.Thread):
