@@ -91,40 +91,40 @@ class plc():
 		
 		self.plc_init() # Trying Hotplug
 
-		#try:
+		try:
 
-		if errMain.checkBit('plcUsb'):       # If PLC is disconnected
-			print '\n\t\tERROR: PLC DISCONNECTED !!!@\
-				\n\r\t\tRETURNING DUMMY PACKET\n\n'
-			arg = dummyPacket()
+			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
+				print '\n\t\tERROR: PLC DISCONNECTED !!!@\
+					\n\r\t\tRETURNING DUMMY PACKET\n\n'
+				arg = dummyPacket()
 
-		else:
+			else:
 
-			arg['dredger_name']         = 'dredger2'
-			arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
-			arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
-			arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
-			arg['service_tank_level']   = self.instrument.read_register(4097)
-			arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
-			arg['flowmeter_1_in']       = self.instrument.read_register(4098)
-			arg['flowmeter_1_out']      = self.instrument.read_register(4100)
-			arg['engine_1_status']      = status[self.instrument.read_register(4106)]
-			arg['flowmeter_2_in']       = self.instrument.read_register(4103)
-			arg['flowmeter_2_out']      = self.instrument.read_register(4101)
-			arg['engine_2_status']      = status[self.instrument.read_register(4107)]
+				arg['dredger_name']         = 'dredger2'
+				arg['time']                 = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime())
+				arg['storage_tank_level']   = self.instrument.read_register(4096) #404097 is 4097-1 in python
+				arg['storage_tank_cap']     = cap[self.instrument.read_register(4104)]
+				arg['service_tank_level']   = self.instrument.read_register(4097)
+				arg['service_tank_cap']     = cap[self.instrument.read_register(4105)]
+				arg['flowmeter_1_in']       = self.instrument.read_register(4098)
+				arg['flowmeter_1_out']      = self.instrument.read_register(4100)
+				arg['engine_1_status']      = status[self.instrument.read_register(4106)]
+				arg['flowmeter_2_in']       = self.instrument.read_register(4103)
+				arg['flowmeter_2_out']      = self.instrument.read_register(4101)
+				arg['engine_2_status']      = status[self.instrument.read_register(4107)]
 
-			debugLog.info("Data read from PLC")
-			print "\n\t\tDATA READ FROM PLC!!\n\n"
-			errMain.clearBit('plcComm')
-			self.plc_ok_q.put("working")		# PLC is working properly
+				debugLog.info("Data read from PLC")
+				print "\n\t\tDATA READ FROM PLC!!\n\n"
+				errMain.clearBit('plcComm')
+				self.plc_ok_q.put("working")		# PLC is working properly
 
-		"""except Exception as e:
+		except Exception as e:
 				liveLog.error("PLC: Communication Error")
 				print 'PLC_read_data: ',str(e)
 				errMain.setBit('plcComm')
 				arg = dummyPacket()
 				self.plc_ok_q.put("comm_error")		# Communication Error with PLC
-		"""		
+		
 
 		return arg
 
