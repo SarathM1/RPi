@@ -21,7 +21,7 @@ class plc_ok_th(threading.Thread):
 				self.q.queue.clear()  # Flushig Queue
 				
 			self.q.put(status)							# DANGEROUS!! (DID FOR PERSISTANCE)
-			print "QUE SIZE = "+ str(self.q.qsize())
+			#print "QUE SIZE = "+ str(self.q.qsize())
 			plc_check(pin["plc_ok"],status)
 
 class modem_ok_th(threading.Thread):
@@ -50,8 +50,8 @@ def plc_check(pin_no,status):
 			print "\n\tPLC OFF!!"
 		off(pin_no)
 	elif status == "working":
-		if pin["plc_ok"] == pin_no:
-			print "\n\tPLC WORKING!!"
+		#if pin["plc_ok"] == pin_no:
+			#print "\n\tPLC WORKING!!"
 		on(pin_no)
 	elif status == "usb_disconnected":
 		if pin["plc_ok"] == pin_no:
