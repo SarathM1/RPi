@@ -50,17 +50,11 @@ class plc():
 		self.plc_init()
 
 	def plc_init(self):
+
 		try:
 			self.instrument = minimalmodbus.Instrument('/dev/plc',1)
 			print "PLC USB Detected!!"
-			self.instrument.serial.baudrate = 9600
-			self.instrument.serial.bytesize = 7
-			self.instrument.serial.parity = serial.PARITY_EVEN
-			self.instrument.serial.stopbits = 1
-			self.instrument.serial.timeout = 0.1
-			self.instrument.mode = minimalmodbus.MODE_ASCII
-			errMain.clearBit('plcUsb')
-			self.plc_ok_q.put("working")
+		
 		except serial.SerialException:
 			errMain.setBit('plcUsb')
 			liveLog.error("PLC: CANNOT OPEN PORT")
@@ -68,10 +62,26 @@ class plc():
 			print '\n\t\tPLC: CANNOT OPEN PORT!!'
 
 		except Exception as e:
-			self.plc_ok_q.put("usb_disconnected")
-			liveLog.error("PLC: CANNOT OPEN PORT")
-			print '\nERR IN plc_init: '+str(e)+'\n'
 			errMain.setBit('plcUsb')                               # Error code for logging
+			liveLog.error("PLC: CANNOT OPEN PORT")
+			self.plc_ok_q.put("usb_disconnected")
+			print '\nERR IN plc_init: '+str(e)+'\n'
+			
+
+		else:						# IF USB is ok check for communication error
+			try:
+				self.instrument.serial.baudrate = 9600
+				self.instrument.serial.bytesize = 7
+				self.instrument.serial.parity = serial.PARITY_EVEN
+				self.instrument.serial.stopbits = 1
+				self.instrument.serial.timeout = 0.1
+				self.instrument.mode = minimalmodbus.MODE_ASCII
+				errMain.clearBit('plcUsb')
+				self.plc_ok_q.put("working")
+			except Exception, e:
+				print '\n--> OTHER ERROR IN plc_init()'+str(e)+'\n'
+			
+
 
 	def readData(self):
 
@@ -86,7 +96,6 @@ class plc():
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
 				print '\n\t\tERROR: PLC DISCONNECTED !!!@\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
-				self.plc_ok_q.put("usb_disconnected")
 				arg = dummyPacket()
 
 			else:
