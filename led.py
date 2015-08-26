@@ -6,6 +6,7 @@ from RPi.GPIO import HIGH as high
 import time
 import threading
 import random
+from Queue import Empty
 
 class plc_ok_th(threading.Thread):
 	
@@ -18,7 +19,7 @@ class plc_ok_th(threading.Thread):
 			
 			try:
 				status = self.q.get(True,0.5)		# To make queue non-blocking
-			except Queue.Empty as e:
+			except Empty as e:
 				continue
 			
 			with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
