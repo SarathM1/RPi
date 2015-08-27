@@ -1,3 +1,4 @@
 #!/bin/sh
-git commit -a -m "Debugging"
+git add dredger2.py led.py;
+git commit -m "Debugging";
 git push origin debugging;
