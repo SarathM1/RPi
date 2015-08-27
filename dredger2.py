@@ -165,7 +165,6 @@ class Sim900():
 		elif 'Timeout' in self.status:
 			debugLog.error('TIMEOUT=> '+command)
 			errTime.setBit(command)
-			led.off(led.pin['at'])
 			return 'ErrorTimeout'
 		
 		elif 'Error' in self.status:
