@@ -47,7 +47,7 @@ class modem_ok_th(threading.Thread):
 
 def plc_check(pin_no,status):
 	"""
-	To check state of PLC and GSM
+	To check state of PLC 
 	pin_no - pin # of device
 	"""
 	if status == "off" :
