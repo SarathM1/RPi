@@ -63,12 +63,6 @@ class plc():
 			self.plc_ok_q.put("working")
 			print "PLC USB Detected!!"
 		
-		except serial.SerialException:
-			errMain.setBit('plcUsb')
-			liveLog.error("PLC: CANNOT OPEN PORT")
-			self.plc_ok_q.put("usb_disconnected") 
-			print '\n\t\tPLC: CANNOT OPEN PORT!!'
-
 		except Exception as e:
 			errMain.setBit('plcUsb')                               # Error code for logging
 			liveLog.error("PLC: CANNOT OPEN PORT")
