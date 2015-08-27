@@ -21,7 +21,7 @@ class plc_ok_th(threading.Thread):
 				status = self.q.get(True,0.5)		# To make queue non-blocking
 			except Empty as e:
 				continue
-			
+			print "Status= " + status
 			with self.q.mutex:							# TRY UNCOMMENTING, IF QUEUE SIZE INCREASES
 				self.q.queue.clear()  # Flushig Queue
 				
