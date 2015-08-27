@@ -28,3 +28,1023 @@
 
 2015-08-20 17:17:35 	 ERROR=> at+cipclose=1
 
+2015-08-26 16:23:23 	 ____________BOOT____________
+
+2015-08-26 16:23:26 	 			Reply: ERROR
+
+2015-08-26 16:23:26 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:24:23 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:23:23
+
+2015-08-26 16:24:48 	 			Reply: ERROR
+
+2015-08-26 16:24:48 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:25:13 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:24:46
+
+2015-08-26 16:25:38 	 			Reply: ERROR
+
+2015-08-26 16:25:38 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:26:02 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:25:35
+
+2015-08-26 16:26:27 	 			Reply: ERROR
+
+2015-08-26 16:26:27 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:27:11 	 ____________BOOT____________
+
+2015-08-26 16:27:14 	 			Reply: ERROR  +CREG: 1
+
+2015-08-26 16:27:14 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:29:55 	 ____________BOOT____________
+
+2015-08-26 16:29:57 	 			Reply: ERROR
+
+2015-08-26 16:29:57 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:31:51 	 ____________BOOT____________
+
+2015-08-26 16:31:54 	 			Reply: ERROR
+
+2015-08-26 16:31:54 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:32:11 	 ____________BOOT____________
+
+2015-08-26 16:32:13 	 			Reply: ERROR
+
+2015-08-26 16:32:14 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:32:34 	 ____________BOOT____________
+
+2015-08-26 16:32:37 	 			Reply: ERROR
+
+2015-08-26 16:32:37 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:32:56 	 ____________BOOT____________
+
+2015-08-26 16:32:59 	 			Reply: ERROR
+
+2015-08-26 16:32:59 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:34:07 	 ____________BOOT____________
+
+2015-08-26 16:34:10 	 			Reply: ERROR
+
+2015-08-26 16:34:10 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:34:48 	 ____________BOOT____________
+
+2015-08-26 16:34:51 	 			Reply: ERROR
+
+2015-08-26 16:34:51 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:35:22 	 ____________BOOT____________
+
+2015-08-26 16:35:58 	 ____________BOOT____________
+
+2015-08-26 16:36:01 	 			Reply: ERROR
+
+2015-08-26 16:36:01 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:36:58 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:35:59
+
+2015-08-26 16:37:44 	 ____________BOOT____________
+
+2015-08-26 16:37:47 	 			Reply: ERROR
+
+2015-08-26 16:37:47 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:39:34 	 ____________BOOT____________
+
+2015-08-26 16:39:37 	 			Reply: ERROR
+
+2015-08-26 16:39:37 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:39:53 	 ____________BOOT____________
+
+2015-08-26 16:39:56 	 			Reply: ERROR
+
+2015-08-26 16:39:56 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:40:52 	 ____________BOOT____________
+
+2015-08-26 16:40:55 	 			Reply: ERROR
+
+2015-08-26 16:40:55 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:41:14 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 16:41:21 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:40:53
+
+2015-08-26 16:41:46 	 			Reply: ERROR
+
+2015-08-26 16:41:46 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:42:10 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:41:43
+
+2015-08-26 16:42:35 	 			Reply: ERROR
+
+2015-08-26 16:42:35 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:42:59 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:42:32
+
+2015-08-26 16:43:24 	 			Reply: ERROR
+
+2015-08-26 16:43:24 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:43:48 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:43:21
+
+2015-08-26 16:44:13 	 			Reply: ERROR
+
+2015-08-26 16:44:13 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:44:39 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:44:10
+
+2015-08-26 16:45:01 	 Data read from PLC
+
+2015-08-26 16:45:04 	 			Reply: ERROR
+
+2015-08-26 16:45:04 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:45:30 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:45:01
+
+2015-08-26 16:45:55 	 			Reply: ERROR
+
+2015-08-26 16:45:55 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:46:19 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:45:52
+
+2015-08-26 16:46:44 	 			Reply: ERROR
+
+2015-08-26 16:46:44 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:47:09 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:46:41
+
+2015-08-26 16:47:34 	 			Reply: ERROR
+
+2015-08-26 16:47:34 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:47:58 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:47:31
+
+2015-08-26 16:48:23 	 			Reply: ERROR
+
+2015-08-26 16:48:23 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:48:49 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:48:20
+
+2015-08-26 16:49:14 	 			Reply: ERROR
+
+2015-08-26 16:49:14 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:49:38 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:49:11
+
+2015-08-26 16:50:03 	 			Reply: ERROR
+
+2015-08-26 16:50:03 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:55:28 	 ____________BOOT____________
+
+2015-08-26 16:55:28 	 Data read from PLC
+
+2015-08-26 16:55:31 	 			Reply: ERROR
+
+2015-08-26 16:55:31 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:55:55 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:55:28
+
+2015-08-26 16:56:18 	 Data read from PLC
+
+2015-08-26 16:56:20 	 			Reply: ERROR
+
+2015-08-26 16:56:20 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:56:46 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:56:17
+
+2015-08-26 16:57:09 	 Data read from PLC
+
+2015-08-26 16:57:11 	 			Reply: ERROR
+
+2015-08-26 16:57:11 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:57:37 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:57:08
+
+2015-08-26 16:58:02 	 			Reply: ERROR
+
+2015-08-26 16:58:02 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:58:28 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:57:59
+
+2015-08-26 16:58:52 	 			Reply: ERROR
+
+2015-08-26 16:58:52 	 ERROR=> at+cipclose=1
+
+2015-08-26 16:59:16 	 LIVE :SUCCESS=> Packet: 2015-08-26 16:58:50
+
+2015-08-26 16:59:41 	 			Reply: ERROR
+
+2015-08-26 16:59:41 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:01:47 	 ____________BOOT____________
+
+2015-08-26 17:01:50 	 			Reply: ERROR
+
+2015-08-26 17:01:50 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:02:14 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:01:47
+
+2015-08-26 17:02:39 	 			Reply: ERROR
+
+2015-08-26 17:02:39 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:22:16 	 ____________BOOT____________
+
+2015-08-26 17:22:18 	 			Reply: ERROR
+
+2015-08-26 17:22:18 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:22:43 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:22:16
+
+2015-08-26 17:23:08 	 			Reply: ERROR
+
+2015-08-26 17:23:08 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:23:34 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:23:05
+
+2015-08-26 17:23:57 	 Data read from PLC
+
+2015-08-26 17:23:59 	 			Reply: ERROR
+
+2015-08-26 17:23:59 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:24:25 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:23:56
+
+2015-08-26 17:26:40 	 ____________BOOT____________
+
+2015-08-26 17:26:43 	 			Reply: ERROR
+
+2015-08-26 17:26:43 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:27:07 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:26:40
+
+2015-08-26 17:27:32 	 			Reply: ERROR
+
+2015-08-26 17:27:32 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:28:26 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:27:29
+
+2015-08-26 17:28:51 	 			Reply: ERROR
+
+2015-08-26 17:28:51 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:33:59 	 ____________BOOT____________
+
+2015-08-26 17:33:59 	 Data read from PLC
+
+2015-08-26 17:34:02 	 			Reply: ERROR
+
+2015-08-26 17:34:02 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:35:24 	 ____________BOOT____________
+
+2015-08-26 17:35:26 	 			Reply: ERROR
+
+2015-08-26 17:35:26 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:35:51 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:35:24
+
+2015-08-26 17:40:21 	 ____________BOOT____________
+
+2015-08-26 17:40:24 	 			Reply: ERROR
+
+2015-08-26 17:40:24 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:40:42 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 17:40:54 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:40:21
+
+2015-08-26 17:41:19 	 			Reply: ERROR
+
+2015-08-26 17:41:19 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:43:07 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:41:16
+
+2015-08-26 17:43:31 	 			Reply: ERROR
+
+2015-08-26 17:43:31 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:43:57 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:43:29
+
+2015-08-26 17:44:22 	 			Reply: ERROR
+
+2015-08-26 17:44:22 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:44:46 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:44:19
+
+2015-08-26 17:45:11 	 			Reply: ERROR
+
+2015-08-26 17:45:11 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:45:41 	 ____________BOOT____________
+
+2015-08-26 17:45:44 	 			Reply: ERROR
+
+2015-08-26 17:45:44 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:46:10 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:45:41
+
+2015-08-26 17:46:35 	 			Reply: ERROR
+
+2015-08-26 17:46:35 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:51:47 	 ____________BOOT____________
+
+2015-08-26 17:51:50 	 			Reply: ERROR
+
+2015-08-26 17:51:50 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:52:16 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:51:47
+
+2015-08-26 17:52:49 	 			Reply: ERROR
+
+2015-08-26 17:52:49 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:53:13 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:52:46
+
+2015-08-26 17:53:38 	 			Reply: ERROR
+
+2015-08-26 17:53:38 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:54:21 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:53:35
+
+2015-08-26 17:54:46 	 			Reply: ERROR
+
+2015-08-26 17:54:46 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:55:10 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:54:43
+
+2015-08-26 17:55:35 	 			Reply: ERROR
+
+2015-08-26 17:55:35 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:55:55 	 ____________BOOT____________
+
+2015-08-26 17:55:58 	 			Reply: ERROR
+
+2015-08-26 17:55:58 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:56:37 	 ____________BOOT____________
+
+2015-08-26 17:56:40 	 			Reply: ERROR
+
+2015-08-26 17:56:40 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:57:07 	 ____________BOOT____________
+
+2015-08-26 17:57:10 	 			Reply: ERROR
+
+2015-08-26 17:57:10 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:57:35 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:57:07
+
+2015-08-26 17:57:57 	 Data read from PLC
+
+2015-08-26 17:58:00 	 			Reply: ERROR
+
+2015-08-26 17:58:00 	 ERROR=> at+cipclose=1
+
+2015-08-26 17:58:26 	 LIVE :SUCCESS=> Packet: 2015-08-26 17:57:57
+
+2015-08-26 18:00:51 	 ____________BOOT____________
+
+2015-08-26 18:00:54 	 			Reply: ERROR
+
+2015-08-26 18:00:54 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:01:18 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:00:52
+
+2015-08-26 18:01:41 	 Data read from PLC
+
+2015-08-26 18:01:43 	 			Reply: ERROR
+
+2015-08-26 18:01:43 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:02:08 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:01:40
+
+2015-08-26 18:02:32 	 			Reply: ERROR
+
+2015-08-26 18:02:32 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:03:00 	 LIVE :FAILED=> Packet: 2015-08-26 18:02:30
+
+2015-08-26 18:03:09 	 BACKFILL :SUCCESS=> Packet: 2015-08-26 18:02:30
+
+2015-08-26 18:03:22 	 Data read from PLC
+
+2015-08-26 18:03:25 	 			Reply: ERROR
+
+2015-08-26 18:03:25 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:03:51 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:03:22
+
+2015-08-26 18:04:13 	 Data read from PLC
+
+2015-08-26 18:04:16 	 			Reply: ERROR
+
+2015-08-26 18:04:16 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:04:42 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:04:13
+
+2015-08-26 18:05:05 	 Data read from PLC
+
+2015-08-26 18:05:08 	 			Reply: ERROR
+
+2015-08-26 18:05:08 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:05:35 	 LIVE :FAILED=> Packet: 2015-08-26 18:05:04
+
+2015-08-26 18:05:38 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 18:06:19 	 BACKFILL :FAILED=> Packet: 2015-08-26 18:05:04
+
+2015-08-26 18:06:25 	 Data read from PLC
+
+2015-08-26 18:06:45 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 18:06:57 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:06:25
+
+2015-08-26 18:07:01 	 			Reply: ERROR
+
+2015-08-26 18:07:01 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:07:02 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 18:07:10 	 			Reply: ERROR
+
+2015-08-26 18:07:11 	 ERROR=> at+cipsend
+
+2015-08-26 18:07:45 	 BACKFILL :FAILED=> Packet: 2015-08-26 18:05:04
+
+2015-08-26 18:07:51 	 Data read from PLC
+
+2015-08-26 18:07:54 	 			Reply: ERROR
+
+2015-08-26 18:07:54 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:08:19 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:07:51
+
+2015-08-26 18:08:23 	 			Reply: ERROR  CLOSED
+
+2015-08-26 18:08:23 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:08:24 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 18:08:32 	 BACKFILL :SUCCESS=> Packet: 2015-08-26 18:05:04
+
+2015-08-26 18:08:42 	 Data read from PLC
+
+2015-08-26 18:08:44 	 			Reply: ERROR
+
+2015-08-26 18:08:44 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:09:10 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:08:41
+
+2015-08-26 18:09:33 	 Data read from PLC
+
+2015-08-26 18:09:35 	 			Reply: ERROR
+
+2015-08-26 18:09:35 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:09:54 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-26 18:10:14 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:09:32
+
+2015-08-26 18:10:36 	 Data read from PLC
+
+2015-08-26 18:10:39 	 			Reply: ERROR
+
+2015-08-26 18:10:39 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:11:03 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:10:36
+
+2015-08-26 18:23:20 	 ____________BOOT____________
+
+2015-08-26 18:23:23 	 			Reply: ERROR
+
+2015-08-26 18:23:23 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:25:03 	 ____________BOOT____________
+
+2015-08-26 18:25:04 	 Data read from PLC
+
+2015-08-26 18:25:06 	 			Reply: ERROR
+
+2015-08-26 18:25:06 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:25:31 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:25:03
+
+2015-08-26 18:25:55 	 			Reply: ERROR
+
+2015-08-26 18:25:55 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:26:20 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:25:53
+
+2015-08-26 18:26:44 	 			Reply: ERROR
+
+2015-08-26 18:26:44 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:27:10 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:26:42
+
+2015-08-26 18:27:35 	 			Reply: ERROR
+
+2015-08-26 18:27:35 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:27:45 	 ____________BOOT____________
+
+2015-08-26 18:27:45 	 Data read from PLC
+
+2015-08-26 18:27:48 	 			Reply: ERROR
+
+2015-08-26 18:27:48 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:28:12 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:27:45
+
+2015-08-26 18:28:37 	 			Reply: ERROR
+
+2015-08-26 18:28:37 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:29:03 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:28:34
+
+2015-08-26 18:29:27 	 			Reply: ERROR
+
+2015-08-26 18:29:27 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:29:39 	 ____________BOOT____________
+
+2015-08-26 18:29:39 	 Data read from PLC
+
+2015-08-26 18:29:42 	 			Reply: ERROR
+
+2015-08-26 18:29:42 	 ERROR=> at+cipclose=1
+
+2015-08-26 18:30:30 	 ____________BOOT____________
+
+2015-08-26 18:30:30 	 Data read from PLC
+
+2015-08-26 18:30:33 	 			Reply: at+cipclose=1  ERROR
+
+2015-08-26 18:30:33 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:34:37 	 LIVE :SUCCESS=> Packet: 2015-08-26 18:30:30
+
+2015-08-27 09:35:00 	 Data read from PLC
+
+2015-08-27 09:35:02 	 			Reply: ERROR
+
+2015-08-27 09:35:02 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:35:28 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:34:59
+
+2015-08-27 09:35:51 	 Data read from PLC
+
+2015-08-27 09:35:53 	 			Reply: ERROR
+
+2015-08-27 09:35:53 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:36:19 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:35:50
+
+2015-08-27 09:36:42 	 Data read from PLC
+
+2015-08-27 09:36:44 	 			Reply: ERROR
+
+2015-08-27 09:36:44 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:37:08 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:36:41
+
+2015-08-27 09:37:31 	 Data read from PLC
+
+2015-08-27 09:37:34 	 			Reply: ERROR
+
+2015-08-27 09:37:34 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:37:58 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:37:30
+
+2015-08-27 09:38:20 	 Data read from PLC
+
+2015-08-27 09:38:23 	 			Reply: ERROR
+
+2015-08-27 09:38:23 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:38:51 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:38:20
+
+2015-08-27 09:39:14 	 Data read from PLC
+
+2015-08-27 09:39:17 	 			Reply: ERROR
+
+2015-08-27 09:39:17 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:39:42 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:39:13
+
+2015-08-27 09:40:05 	 Data read from PLC
+
+2015-08-27 09:40:07 	 			Reply: ERROR
+
+2015-08-27 09:40:07 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:40:32 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:40:04
+
+2015-08-27 09:40:54 	 Data read from PLC
+
+2015-08-27 09:40:57 	 			Reply: ERROR
+
+2015-08-27 09:40:57 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:41:21 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:40:54
+
+2015-08-27 09:41:44 	 Data read from PLC
+
+2015-08-27 09:41:46 	 			Reply: ERROR
+
+2015-08-27 09:41:46 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:42:10 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:41:43
+
+2015-08-27 09:42:33 	 Data read from PLC
+
+2015-08-27 09:42:36 	 			Reply: ERROR
+
+2015-08-27 09:42:36 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:43:01 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:42:32
+
+2015-08-27 09:43:24 	 Data read from PLC
+
+2015-08-27 09:43:26 	 			Reply: ERROR
+
+2015-08-27 09:43:26 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:43:52 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:43:23
+
+2015-08-27 09:44:15 	 Data read from PLC
+
+2015-08-27 09:44:17 	 			Reply: ERROR
+
+2015-08-27 09:44:17 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:44:42 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:44:14
+
+2015-08-27 09:45:04 	 Data read from PLC
+
+2015-08-27 09:45:07 	 			Reply: ERROR
+
+2015-08-27 09:45:07 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:45:33 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:45:04
+
+2015-08-27 09:45:55 	 Data read from PLC
+
+2015-08-27 09:45:58 	 			Reply: ERROR
+
+2015-08-27 09:45:58 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:46:23 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:45:55
+
+2015-08-27 09:46:46 	 Data read from PLC
+
+2015-08-27 09:46:49 	 			Reply: ERROR
+
+2015-08-27 09:46:49 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:47:13 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:46:45
+
+2015-08-27 09:47:35 	 Data read from PLC
+
+2015-08-27 09:47:38 	 			Reply: ERROR
+
+2015-08-27 09:47:38 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:48:02 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:47:35
+
+2015-08-27 09:48:25 	 Data read from PLC
+
+2015-08-27 09:48:27 	 			Reply: ERROR
+
+2015-08-27 09:48:27 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:48:53 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:48:24
+
+2015-08-27 09:49:15 	 Data read from PLC
+
+2015-08-27 09:49:18 	 			Reply: ERROR
+
+2015-08-27 09:49:18 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:49:42 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:49:15
+
+2015-08-27 09:50:05 	 Data read from PLC
+
+2015-08-27 09:50:07 	 			Reply: ERROR
+
+2015-08-27 09:50:07 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:50:32 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:50:04
+
+2015-08-27 09:50:54 	 Data read from PLC
+
+2015-08-27 09:50:57 	 			Reply: ERROR
+
+2015-08-27 09:50:57 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:51:22 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:50:54
+
+2015-08-27 09:51:45 	 Data read from PLC
+
+2015-08-27 09:51:48 	 			Reply: ERROR
+
+2015-08-27 09:51:48 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:52:12 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:51:45
+
+2015-08-27 09:52:34 	 Data read from PLC
+
+2015-08-27 09:52:37 	 			Reply: ERROR
+
+2015-08-27 09:52:37 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:53:01 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:52:34
+
+2015-08-27 09:53:24 	 Data read from PLC
+
+2015-08-27 09:53:26 	 			Reply: ERROR
+
+2015-08-27 09:53:26 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:53:52 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:53:23
+
+2015-08-27 09:54:14 	 Data read from PLC
+
+2015-08-27 09:54:17 	 			Reply: ERROR
+
+2015-08-27 09:54:17 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:54:43 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:54:14
+
+2015-08-27 09:55:05 	 Data read from PLC
+
+2015-08-27 09:55:08 	 			Reply: ERROR
+
+2015-08-27 09:55:08 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:55:32 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:55:05
+
+2015-08-27 09:55:55 	 Data read from PLC
+
+2015-08-27 09:55:58 	 			Reply: ERROR
+
+2015-08-27 09:55:58 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:56:22 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:55:55
+
+2015-08-27 09:56:44 	 Data read from PLC
+
+2015-08-27 09:56:47 	 			Reply: ERROR
+
+2015-08-27 09:56:47 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:57:11 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:56:44
+
+2015-08-27 09:57:34 	 Data read from PLC
+
+2015-08-27 09:57:36 	 			Reply: ERROR
+
+2015-08-27 09:57:36 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:58:01 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:57:33
+
+2015-08-27 09:58:23 	 Data read from PLC
+
+2015-08-27 09:58:26 	 			Reply: ERROR
+
+2015-08-27 09:58:26 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:58:50 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:58:23
+
+2015-08-27 09:59:13 	 Data read from PLC
+
+2015-08-27 09:59:15 	 			Reply: ERROR
+
+2015-08-27 09:59:15 	 ERROR=> at+cipclose=1
+
+2015-08-27 09:59:39 	 LIVE :SUCCESS=> Packet: 2015-08-27 09:59:12
+
+2015-08-27 10:00:02 	 Data read from PLC
+
+2015-08-27 10:00:05 	 			Reply: ERROR
+
+2015-08-27 10:00:05 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:00:29 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:00:02
+
+2015-08-27 10:00:51 	 Data read from PLC
+
+2015-08-27 10:00:54 	 			Reply: ERROR
+
+2015-08-27 10:00:54 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:01:20 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:00:51
+
+2015-08-27 10:01:42 	 Data read from PLC
+
+2015-08-27 10:01:45 	 			Reply: ERROR
+
+2015-08-27 10:01:45 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:02:09 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:01:42
+
+2015-08-27 10:02:32 	 Data read from PLC
+
+2015-08-27 10:02:34 	 			Reply: ERROR
+
+2015-08-27 10:02:34 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:03:00 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:02:31
+
+2015-08-27 10:03:23 	 Data read from PLC
+
+2015-08-27 10:03:25 	 			Reply: ERROR
+
+2015-08-27 10:03:25 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:03:49 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:03:22
+
+2015-08-27 10:04:12 	 Data read from PLC
+
+2015-08-27 10:04:15 	 			Reply: ERROR
+
+2015-08-27 10:04:15 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:04:39 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:04:11
+
+2015-08-27 10:05:01 	 Data read from PLC
+
+2015-08-27 10:05:04 	 			Reply: ERROR
+
+2015-08-27 10:05:04 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:05:28 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:05:01
+
+2015-08-27 10:05:50 	 Data read from PLC
+
+2015-08-27 10:05:53 	 			Reply: ERROR
+
+2015-08-27 10:05:53 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:06:17 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:05:50
+
+2015-08-27 10:06:40 	 Data read from PLC
+
+2015-08-27 10:06:43 	 			Reply: ERROR
+
+2015-08-27 10:06:43 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:07:07 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:06:39
+
+2015-08-27 10:07:29 	 Data read from PLC
+
+2015-08-27 10:07:32 	 			Reply: ERROR
+
+2015-08-27 10:07:32 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:07:58 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:07:29
+
+2015-08-27 10:08:20 	 Data read from PLC
+
+2015-08-27 10:08:23 	 			Reply: ERROR
+
+2015-08-27 10:08:23 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:08:48 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:08:20
+
+2015-08-27 10:09:10 	 Data read from PLC
+
+2015-08-27 10:09:13 	 			Reply: ERROR
+
+2015-08-27 10:09:13 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:09:37 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:09:10
+
+2015-08-27 10:10:00 	 Data read from PLC
+
+2015-08-27 10:10:03 	 			Reply: ERROR
+
+2015-08-27 10:10:03 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:10:27 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:09:59
+
+2015-08-27 10:10:49 	 Data read from PLC
+
+2015-08-27 10:10:52 	 			Reply: ERROR
+
+2015-08-27 10:10:52 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:16:09 	 ____________BOOT____________
+
+2015-08-27 10:16:12 	 			Reply: ERROR
+
+2015-08-27 10:16:12 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:17:05 	 ____________BOOT____________
+
+2015-08-27 10:17:06 	 Data read from PLC
+
+2015-08-27 10:17:09 	 			Reply: ERROR
+
+2015-08-27 10:17:09 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:17:55 	 ____________BOOT____________
+
+2015-08-27 10:17:59 	 			Reply: ERROR
+
+2015-08-27 10:17:59 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:18:07 	 ____________BOOT____________
+
+2015-08-27 10:18:10 	 			Reply: ERROR
+
+2015-08-27 10:18:10 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:18:34 	 ____________BOOT____________
+
+2015-08-27 10:18:37 	 			Reply: ERROR
+
+2015-08-27 10:18:37 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:19:05 	 ____________BOOT____________
+
+2015-08-27 10:19:08 	 			Reply: ERROR
+
+2015-08-27 10:19:08 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:19:34 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:19:05
+
+2015-08-27 10:19:56 	 Data read from PLC
+
+2015-08-27 10:19:59 	 			Reply: ERROR
+
+2015-08-27 10:19:59 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:20:20 	 OTHER=> at+cipstart="TCP","52.74.14.46","5000"
+
+2015-08-27 10:20:25 	 Returned "Other" status
+
+2015-08-27 10:20:33 	 BACKFILL :SUCCESS=> Packet: 2015-08-27 10:19:56
+
+2015-08-27 10:20:49 	 			Reply: ERROR
+
+2015-08-27 10:20:49 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:21:13 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:20:46
+
+2015-08-27 10:21:38 	 			Reply: ERROR
+
+2015-08-27 10:21:38 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:22:06 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:21:35
+
+2015-08-27 10:22:31 	 			Reply: ERROR
+
+2015-08-27 10:22:31 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:22:56 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:22:28
+
+2015-08-27 10:23:21 	 			Reply: ERROR
+
+2015-08-27 10:23:21 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:23:29 	 ____________BOOT____________
+
+2015-08-27 10:23:29 	 Data read from PLC
+
+2015-08-27 10:23:32 	 			Reply: ERROR
+
+2015-08-27 10:23:32 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:23:58 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:23:29
+
+2015-08-27 10:24:23 	 			Reply: ERROR
+
+2015-08-27 10:24:23 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:24:47 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:24:20
+
+2015-08-27 10:25:12 	 			Reply: ERROR
+
+2015-08-27 10:25:12 	 ERROR=> at+cipclose=1
+
+2015-08-27 10:25:46 	 LIVE :SUCCESS=> Packet: 2015-08-27 10:25:09
+
+2015-08-27 10:26:11 	 			Reply: ERROR
+
+2015-08-27 10:26:11 	 ERROR=> at+cipclose=1
+
