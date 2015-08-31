@@ -64,7 +64,7 @@ def plc_check(pin_no,status):
 	elif status == "usb_disconnected":
 		if pin["plc_ok"] == pin_no:
 			print "\n\tPLC USB DISCONNECTED!!"
-		blink_led(pin_no)
+		blink_fast(pin_no)
 		
 	elif status == "comm_error":
 		if pin["plc_ok"] == pin_no:
@@ -86,9 +86,9 @@ def modem_check(pin_no,status):
 	elif status == "working":
 		on(pin_no)
 	elif status == "usb_disconnected":
-		blink_led(pin_no)
+		blink_fast(pin_no)
 	elif status == "\n\tCOMMUNICATION ERROR!!":
-		blink_led(pin_no)
+		led_breathe(pin_no)
 	else:
 		pass	
 
@@ -107,7 +107,7 @@ def on(pin_no):
 def off(pin_no):
 	gpio.output(pin_no, low)
 
-def blink_led(pin_no,sec = 0.1):
+def blink_fast(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
@@ -121,8 +121,20 @@ def blink_led(pin_no,sec = 0.1):
 			time.sleep(sec)
 
 	except Exception, e:
-		print "blink_led: " + str(e)
-	
+		print "blink_fast: " + str(e)
+
+def blink_slow(pin_no,sec = 0.1):
+	"""
+	To blink and led connected to 'pin'
+	with intervel 'sec' seconds
+	""" 
+	try:
+		on(pin_no)
+		time.sleep(sec)
+		off(pin_no)
+			
+	except Exception, e:
+		print "blink_slow: " + str(e)
 
 def led_breathe(pin_no):
 	"""
