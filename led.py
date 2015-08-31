@@ -62,8 +62,10 @@ def plc_check(pin_no,status):
 		on(pin_no)
 
 	elif status == "usb_disconnected":
+		"""
 		if pin["plc_ok"] == pin_no:
 			print "\n\tPLC USB DISCONNECTED!!"
+		"""
 		blink_fast(pin_no)
 		
 	elif status == "comm_error":

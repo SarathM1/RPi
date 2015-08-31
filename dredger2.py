@@ -380,7 +380,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.blink_fast(led.pin['comm_status'])		# Led status: Backfill send ok
+					led.blink_slow(led.pin['comm_status'])		# Led status: Backfill send ok
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -454,7 +454,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.led_breathe(led.pin['comm_status'])
+						led.blink_fast(led.pin['comm_status'])
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
