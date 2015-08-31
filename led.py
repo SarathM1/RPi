@@ -107,16 +107,16 @@ def on(pin_no):
 def off(pin_no):
 	gpio.output(pin_no, low)
 
-def blink_led(pin_no):
+def blink_led(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
 	""" 
 	for i in range(5):
 		on(pin_no)
-		time.sleep(0.1)
+		time.sleep(sec)
 		off(pin_no)
-		time.sleep(0.1)
+		time.sleep(sec)
 
 def led_breathe(pin_no):
 	"""
