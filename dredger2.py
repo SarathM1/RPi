@@ -159,7 +159,7 @@ class Sim900():
 		self.status=self.checkStatus(success,error,wait)
 
 		if 'Success' in self.status:
-			led.blink_slow(led.pin['at'],0.1)
+			led.blink_slow(led.pin['at'])
 			return 'Success'
 		
 		elif 'Timeout' in self.status:

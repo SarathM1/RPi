@@ -43,7 +43,9 @@ class modem_ok_th(threading.Thread):
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
 				
-			#print "QUE SIZE = "+ str(self.q.qsize())
+			if self.q.qsize()>1:
+				print "QUE SIZE = "+ str(self.q.qsize())
+			
 			modem_check(pin["modem_ok"],status)
 
 def plc_check(pin_no,status):
@@ -76,8 +78,7 @@ def plc_check(pin_no,status):
 	else:
 		if pin["plc_ok"] == pin_no:
 			print "Error!!"
-	#time.sleep(0.01)							# DANGEROUS !! MAY CAUSE ERRROR
-
+	
 def modem_check(pin_no,status):
 	"""
 	To check state of PLC and GSM
@@ -109,7 +110,7 @@ def on(pin_no):
 def off(pin_no):
 	gpio.output(pin_no, low)
 
-def blink_fast(pin_no,sec = 0.1):
+def blink_fast(pin_no):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
@@ -125,7 +126,7 @@ def blink_fast(pin_no,sec = 0.1):
 	except Exception, e:
 		print "blink_fast: " + str(e)
 
-def blink_slow(pin_no,sec = 0.1):
+def blink_slow(pin_no):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
