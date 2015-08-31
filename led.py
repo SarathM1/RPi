@@ -55,7 +55,7 @@ def plc_check(pin_no,status):
 		if pin["plc_ok"] == pin_no:
 			print "\n\tPLC OFF!!"
 		off(pin_no)
-		
+
 	elif status == "working":
 		#if pin["plc_ok"] == pin_no:
 			#print "\n\tPLC WORKING!!"
@@ -107,7 +107,7 @@ def on(pin_no):
 def off(pin_no):
 	gpio.output(pin_no, low)
 
-def blink_led(pin_no,sec):
+def blink_led(pin_no):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
