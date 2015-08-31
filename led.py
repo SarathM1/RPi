@@ -112,27 +112,39 @@ def blink_led(pin_no,sec = 0.1):
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
 	""" 
-	for i in range(5):
-		on(pin_no)
-		time.sleep(sec)
-		off(pin_no)
-		time.sleep(sec)
+	try:
+		
+		for i in range(5):
+			on(pin_no)
+			time.sleep(sec)
+			off(pin_no)
+			time.sleep(sec)
+
+	except Exception, e:
+		print "blink_led: " + str(e)
+	
 
 def led_breathe(pin_no):
 	"""
 	Fn to vary the duty cycle to   
 	dim/brighten the leds
 	"""
-	pwm = PWM(pin_no,100) 	# create object for PWM on port pin_no at 100 Hertz
-	pwm.start(0)			# start led on 0 percent duty cycle (off)
-	for i in range(101):
-		pwm.ChangeDutyCycle(i) # Increase duty cycle from 0% to 100% (step by 1) 
-		time.sleep(0.01)
-	for i in range(100,-1,-1):
-		pwm.ChangeDutyCycle(i)	# Decrease duty cycle from 0% to 100% (step by 1)
-		time.sleep(0.01)
-	time.sleep(1)
-	pwm.stop()				# stop the PWM output 
+	try:
+		
+		pwm = PWM(pin_no,100) 	# create object for PWM on port pin_no at 100 Hertz
+		pwm.start(0)			# start led on 0 percent duty cycle (off)
+		for i in range(101):
+			pwm.ChangeDutyCycle(i) # Increase duty cycle from 0% to 100% (step by 1) 
+			time.sleep(0.01)
+		for i in range(100,-1,-1):
+			pwm.ChangeDutyCycle(i)	# Decrease duty cycle from 0% to 100% (step by 1)
+			time.sleep(0.01)
+		time.sleep(1)
+		pwm.stop()
+
+	except Exception, e:
+		print "led_breathe: " + str(e)
+					# stop the PWM output 
 
 pin = {}
 

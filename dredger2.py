@@ -159,7 +159,7 @@ class Sim900():
 		self.status=self.checkStatus(success,error,wait)
 
 		if 'Success' in self.status:
-			led.blink_led(pin_no)
+			led.blink_led(led.pin['at'],0.1)
 			return 'Success'
 		
 		elif 'Timeout' in self.status:
@@ -380,7 +380,7 @@ class backFill(threading.Thread):
 					backLog.info('SUCCESS=> Packet: '+str(arg['time']))
 					debugLog.critical('BACKFILL :SUCCESS=> Packet: '+str(arg['time']))
 					print '\n\n\tBACKFILL : DATA SENDING SUCCESS . .\n\n'
-					led.blink_led(pin_no)		# Led status: Backfill send ok
+					led.blink_led(led.pin['comm_status'])		# Led status: Backfill send ok
 					self.db.deleteDb(arg)
 
 				elif 'Error' in  flagSend:
@@ -454,7 +454,7 @@ class live(threading.Thread):
 						debugLog.critical('LIVE :SUCCESS=> Packet: '+str(arg['time']))
 						liveLog.info('SUCCESS=> Packet: '+str(arg['time']))
 						print '\n\n\tLIVE : DATA SENDING SUCCESS . .\n\n'
-						led.blink_led(pin_no)
+						led.blink_led(led.pin['comm_status'])
 
 					elif flagSend=='ErrorTimeout':
 						liveLog.error('CIPSEND Timeout=> Packet: '+str(arg['time']))
