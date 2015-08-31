@@ -123,10 +123,10 @@ def led_breathe(pin_no):
 	pwm.start(0)			# start led on 0 percent duty cycle (off)
 	for i in range(101):
 		pwm.ChangeDutyCycle(i) # Increase duty cycle from 0% to 100% (step by 1) 
-		time.sleep(0.03)
+		time.sleep(0.01)
 	for i in range(100,-1,-1):
 		pwm.ChangeDutyCycle(i)	# Decrease duty cycle from 0% to 100% (step by 1)
-		time.sleep(0.03)
+		time.sleep(0.01)
 	time.sleep(1)
 	pwm.stop()				# stop the PWM output 
 
