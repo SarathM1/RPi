@@ -116,17 +116,22 @@ def blink_led(pin_no,sec):
 	time.sleep(sec)
 	off(pin_no)
 
-def led_breathe():
-	obj = PWM(pin["at"],100)
-	obj.start(0)
-	while True:
-		for i in range(101):
-			obj.ChangeDutyCycle(i)
-			time.sleep(0.03)
-		for i in range(100,-1,-1):
-			obj.ChangeDutyCycle(i)
-			time.sleep(0.03)
-		time.sleep(1)
+def led_breathe(pin_no):
+	"""
+	Fn to vary the duty cycle to   
+	dim/brighten the leds
+	"""
+	pwm = PWM(pin_no,100) 	# create object for PWM on port pin_no at 100 Hertz
+	pwm.start(0)			# start led on 0 percent duty cycle (off)
+	for i in range(101):
+		pwm.ChangeDutyCycle(i) # Increase duty cycle from 0% to 100% (step by 1) 
+		time.sleep(0.03)
+	for i in range(100,-1,-1):
+		pwm.ChangeDutyCycle(i)	# Decrease duty cycle from 0% to 100% (step by 1)
+		time.sleep(0.03)
+	time.sleep(1)
+	pwm.stop()				# stop the PWM output 
+	
 pin = {}
 
 pin["comm_status"] 	= 35
@@ -136,7 +141,7 @@ pin["at"] 		 	= 15
 pin["code"]	 		= 37
 
 led_init()
-led_breathe()
+
 
 
 

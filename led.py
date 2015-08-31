@@ -61,7 +61,8 @@ def plc_check(pin_no,status):
 	elif status == "usb_disconnected":
 		if pin["plc_ok"] == pin_no:
 			print "\n\tPLC USB DISCONNECTED!!"
-		blink_led(pin_no,1)
+		#blink_led(pin_no,1)
+		led_breathe(pin_no)
 	elif status == "comm_error":
 		if pin["plc_ok"] == pin_no:
 			print "\n\tPLC COMMUNICATION ERROR!!"
@@ -111,6 +112,22 @@ def blink_led(pin_no,sec):
 	time.sleep(sec)
 	off(pin_no)
 	time.sleep(sec)
+
+def led_breathe(pin_no):
+	"""
+	Fn to vary the duty cycle to   
+	dim/brighten the leds
+	"""
+	pwm = PWM(pin_no,100) 	# create object for PWM on port pin_no at 100 Hertz
+	pwm.start(0)			# start led on 0 percent duty cycle (off)
+	for i in range(101):
+		pwm.ChangeDutyCycle(i) # Increase duty cycle from 0% to 100% (step by 1) 
+		time.sleep(0.03)
+	for i in range(100,-1,-1):
+		pwm.ChangeDutyCycle(i)	# Decrease duty cycle from 0% to 100% (step by 1)
+		time.sleep(0.03)
+	time.sleep(1)
+	pwm.stop()				# stop the PWM output 
 
 pin = {}
 
