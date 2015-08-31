@@ -110,7 +110,7 @@ def on(pin_no):
 def off(pin_no):
 	gpio.output(pin_no, low)
 
-def blink_fast(pin_no):
+def blink_fast(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
@@ -126,7 +126,7 @@ def blink_fast(pin_no):
 	except Exception, e:
 		print "blink_fast: " + str(e)
 
-def blink_slow(pin_no):
+def blink_slow(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
 	with intervel 'sec' seconds
