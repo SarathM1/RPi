@@ -54,30 +54,19 @@ def plc_check(pin_no,status):
 	pin_no - pin # of device
 	"""
 	if status == "off" :
-		if pin["plc_ok"] == pin_no:
-			print "\n\tPLC OFF!!"
 		off(pin_no)
 
 	elif status == "working":
-		#if pin["plc_ok"] == pin_no:
-			#print "\n\tPLC WORKING!!"
 		on(pin_no)
 
 	elif status == "usb_disconnected":
-		"""
-		if pin["plc_ok"] == pin_no:
-			print "\n\tPLC USB DISCONNECTED!!"
-		"""
 		blink_fast(pin_no)
 		
 	elif status == "comm_error":
-		if pin["plc_ok"] == pin_no:
-			print "\n\tPLC COMMUNICATION ERROR!!"
 		led_breathe(pin_no)
 
 	else:
-		if pin["plc_ok"] == pin_no:
-			print "Error!!"
+		print "Unexpected Value Pushed to Queue!!"
 	
 def modem_check(pin_no,status):
 	"""
