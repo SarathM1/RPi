@@ -90,7 +90,7 @@ def modem_check(pin_no,status):
 		on(pin_no)
 	elif status == "usb_disconnected":
 		blink_fast(pin_no)
-	elif status == "\n\tCOMMUNICATION ERROR!!":
+	elif status == "comm_error":
 		led_breathe(pin_no)
 	else:
 		pass	
