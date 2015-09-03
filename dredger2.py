@@ -577,6 +577,7 @@ if __name__ == '__main__':
 			pass
 	except KeyboardInterrupt as e:
 		print e
+		stopEvent.set()
 		for each_thread in threadPool:
 			each_thread.join()
 		print "\n\tSWITCHING OFF LED'S !!"
