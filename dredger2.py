@@ -117,12 +117,12 @@ class plc():
 		return arg
 
 class Sim900():
-	def __init__ (self,stopEvent):
+	def __init__ (self,stopEvent,parent):
 		self.status=0
 
 		self.modem_ok_q = queue()
 		
-		modemThread = led.modem_ok_th(self.modem_ok_q,stopEvent)
+		modemThread = led.modem_ok_th(self.modem_ok_q,stopEvent,parent)
 		threadPool.append(modemThread)
 		modemThread.start()
 
@@ -351,11 +351,11 @@ class backFill(threading.Thread):
 		self.db=database_backup()
 		self.stopEvent = stopEvent
 		self.sleepPeriod = 0.001
-		self.gsm = Sim900(stopEvent)
+		self.gsm = Sim900(stopEvent,"backfill")
 		threading.Thread.__init__(self,name=name)
 		
 	def run(self):
-		print "%s Starts" %(self.getName(),)
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		i=1
 		while not self.stopEvent.isSet():
 			event.wait()
@@ -419,7 +419,7 @@ class live(threading.Thread):
 		
 		self.db=database_backup()
 		
-		self.gsm = Sim900(stopEvent)
+		self.gsm = Sim900(stopEvent,"Live")
 		
 		errMain.setBit('boot')          # Bit 'boot' is set for only the first Live packet
 
@@ -430,7 +430,7 @@ class live(threading.Thread):
 
 
 	def run(self):
-		print "%s Starts" %(self.getName(),)
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		while not self.stopEvent.isSet():
 		
 			event.clear()

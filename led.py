@@ -18,7 +18,7 @@ class plc_ok_th(threading.Thread):
 		self.q = q
 		threading.Thread.__init__(self,name=name)
 	def run(self):
-		print "%s Starts" %(self.getName(),)
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		while not self.stopEvent.isSet():
 			
 			try:
@@ -41,15 +41,16 @@ class plc_ok_th(threading.Thread):
 
 class modem_ok_th(threading.Thread):
 	
-	def __init__(self,q,stopEvent,name = "modem_ok_th"):
+	def __init__(self,q,stopEvent,parent,name = "modem_ok_th"):
 		#super(modem_ok_th, self).__init__()
+		self.parent=parent
 		self.stopEvent = stopEvent
 		self.sleepPeriod = 0.001
 		self.q = q
 		threading.Thread.__init__(self,name=name)
 
 	def run(self):
-		print "%s Starts" %(self.getName(),)
+		print "\n\t THREAD %s STARTS (%s)!!" %(self.getName(),self.parent)
 		while not self.stopEvent.isSet():
 			status = self.q.get()
 
@@ -136,7 +137,7 @@ def blink_fast(pin_no,sec = 0.1):
 
 def cleanup():
 	gpio.cleanup()
-	
+
 def blink_slow(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
