@@ -57,7 +57,7 @@ class modem_ok_th(threading.Thread):
 				self.q.queue.clear()  # Flushig Queue
 				
 			if self.q.qsize()>1:
-				print "QUE SIZE = "+ str(self.q.qsize())
+				print "QUE SIZE = %d " %(self.q.qsize(), )
 			
 			modem_check(pin["modem_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
