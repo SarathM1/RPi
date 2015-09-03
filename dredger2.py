@@ -576,5 +576,8 @@ if __name__ == '__main__':
 		for each_thread in threadPool:
 			each_thread.join()
 
+	print "\n\tSWITCHING OFF LED'S !!"
+	led.cleanup()
+
 
 			

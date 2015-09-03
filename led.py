@@ -37,7 +37,6 @@ class plc_ok_th(threading.Thread):
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
-		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 class modem_ok_th(threading.Thread):
@@ -66,7 +65,6 @@ class modem_ok_th(threading.Thread):
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
-		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 def plc_check(pin_no,status):
@@ -136,6 +134,9 @@ def blink_fast(pin_no,sec = 0.1):
 	except Exception, e:
 		print "blink_fast: " + str(e)
 
+def cleanup():
+	gpio.cleanup()
+	
 def blink_slow(pin_no,sec = 0.1):
 	"""
 	To blink and led connected to 'pin'
