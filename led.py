@@ -37,7 +37,6 @@ class plc_ok_th(threading.Thread):
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
-		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 class modem_ok_th(threading.Thread):
@@ -66,7 +65,6 @@ class modem_ok_th(threading.Thread):
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
-		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 def plc_check(pin_no,status):
