@@ -121,7 +121,7 @@ class Sim900():
 		self.status=0
 
 		self.stopEvent = stopEvent
-		
+
 		self.modem_ok_q = modem_ok_q
 
 		self.gsm_init()
@@ -581,13 +581,8 @@ if __name__ == '__main__':
 			pass
 	except KeyboardInterrupt as e:
 		print e
-		stopEvent.set()
+		modemThread.join()
 		for each_thread in threadPool:
 			each_thread.join()
 		print "\n\tSWITCHING OFF LED'S !!"
 		led.cleanup()
-
-
-
-
-			
