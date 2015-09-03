@@ -82,7 +82,7 @@ class plc():
 		try:
 
 			if errMain.checkBit('plcUsb'):       # If PLC is disconnected
-				print '\n\t\tERROR: PLC DISCONNECTED !!!@\
+				print '\n\t\tERROR: PLC DISCONNECTED !!!\
 					\n\r\t\tRETURNING DUMMY PACKET\n\n'
 				arg = dummyPacket()
 
