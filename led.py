@@ -33,7 +33,7 @@ class plc_ok_th(threading.Thread):
 			
 			plc_check(pin["plc_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
-		print "\n\t ENDS THREAD: %s " %(self.getName(),)
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
@@ -62,7 +62,7 @@ class modem_ok_th(threading.Thread):
 			
 			modem_check(pin["modem_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
-		print "\n\t ENDS THREAD: %s " %(self.getName(),)
+		print "\n\t THREAD %s ENDS (%s)!!" %(self.getName(),self.parent)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()

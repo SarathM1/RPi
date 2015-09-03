@@ -405,7 +405,7 @@ class backFill(threading.Thread):
 
 			backfillEvent.set()
 			self.stopEvent.wait(self.sleepPeriod)
-		print "\n\t ENDS THREAD: %s " %(self.getName(),)
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
@@ -519,7 +519,7 @@ class live(threading.Thread):
 			if not self.stopEvent.isSet():
 				time.sleep(20)                   #backfill runs for 20 sec's
 			
-		print "\n\t ENDS THREAD: %s " %(self.getName(),)
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
