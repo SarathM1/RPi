@@ -521,6 +521,10 @@ class live(threading.Thread):
 			
 		print "\n\t ENDS THREAD: %s " %(self.getName(),)
 
+	def join(self,timeout = None):
+		self.stopEvent.set()
+		threading.Thread.join(self,timeout)
+
 def main():
 	t1 = backFill(event,stopEvent)
 	t2 = live(event,stopEvent)
