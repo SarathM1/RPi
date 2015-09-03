@@ -405,7 +405,7 @@ class backFill(threading.Thread):
 
 			backfillEvent.set()
 			self.stopEvent.wait(self.sleepPeriod)
-		print "%s Ends" %(self.getName(),)
+		print "\n\t ENDS THREAD: %s " %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
@@ -514,9 +514,12 @@ class live(threading.Thread):
 
 			event.set()
 
-			time.sleep(20)                   #backfill runs for 20 sec's
 			self.stopEvent.wait(self.sleepPeriod)
-		print "%s Ends" %(self.getName(),)
+
+			if not self.stopEvent.isSet():
+				time.sleep(20)                   #backfill runs for 20 sec's
+			
+		print "\n\t ENDS THREAD: %s " %(self.getName(),)
 
 def main():
 	t1 = backFill(event,stopEvent)
@@ -564,13 +567,14 @@ if __name__ == '__main__':
 
 	main()
 
-	while True:
-		try:
+	
+	try:
+		while True:
 			pass
-		except KeyboardInterrupt as e:
-			print e
-			for each_thread in threadPool:
-				each_thread.join()
+	except KeyboardInterrupt as e:
+		print e
+		for each_thread in threadPool:
+			each_thread.join()
 
 
 			

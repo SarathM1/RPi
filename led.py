@@ -33,10 +33,11 @@ class plc_ok_th(threading.Thread):
 			
 			plc_check(pin["plc_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
-		print "%s Ends" %(self.getName(),)
+		print "\n\t ENDS THREAD: %s " %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
+		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 class modem_ok_th(threading.Thread):
@@ -61,10 +62,11 @@ class modem_ok_th(threading.Thread):
 			
 			modem_check(pin["modem_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
-		print "%s Ends" %(self.getName(),)
+		print "\n\t ENDS THREAD: %s " %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
+		gpio.cleanup()
 		threading.Thread.join(self,timeout)
 
 def plc_check(pin_no,status):
