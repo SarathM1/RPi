@@ -41,10 +41,11 @@ def dummyPacket():
 
 
 class plc():
-	def __init__(self):
+	def __init__(self,stopEvent):
 		self.plc_ok_q = queue()
 		
-		ledThread = led.plc_ok_th(self.plc_ok_q)
+		ledThread = led.plc_ok_th(self.plc_ok_q,stopEvent)
+		threadPool.append(ledThread)
 		ledThread.start()
 
 		self.plc_init()
@@ -116,13 +117,12 @@ class plc():
 		return arg
 
 class Sim900():
-	def __init__ (self):
+	def __init__ (self,stopEvent,modem_ok_q):
 		self.status=0
 
-		self.modem_ok_q = queue()
-		
-		modemThread = led.modem_ok_th(self.modem_ok_q)
-		modemThread.start()
+		self.stopEvent = stopEvent
+
+		self.modem_ok_q = modem_ok_q
 
 		self.gsm_init()
 		self.db=database_backup()
@@ -345,14 +345,17 @@ class Sim900():
 
 class backFill(threading.Thread):
 
-	def __init__(self,event):
-		threading.Thread.__init__(self)
+	def __init__(self,event,stopEvent,name = "backFill"):
 		self.db=database_backup()
-		self.gsm = Sim900()
+		self.stopEvent = stopEvent
+		self.sleepPeriod = 0.001
+		self.gsm = Sim900(stopEvent,modem_ok_q)
+		threading.Thread.__init__(self,name=name)
 		
 	def run(self):
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		i=1
-		while True:
+		while not self.stopEvent.isSet():
 			event.wait()
 			backfillEvent.clear()
 
@@ -399,25 +402,35 @@ class backFill(threading.Thread):
 				time.sleep(0.5)
 
 			backfillEvent.set()
+			self.stopEvent.wait(self.sleepPeriod)
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
+
+	def join(self,timeout = None):
+		self.stopEvent.set()
+		threading.Thread.join(self,timeout)
 
 
 class live(threading.Thread):
 
-	def __init__(self,event):
-		threading.Thread.__init__(self)
-
-		self.delta=plc()
+	def __init__(self,event,stopEvent,name="live"):
+		self.delta=plc(stopEvent)
 		
 		self.db=database_backup()
 		
-		self.gsm = Sim900()
+		self.gsm = Sim900(stopEvent,modem_ok_q)
 		
 		errMain.setBit('boot')          # Bit 'boot' is set for only the first Live packet
-		
+
+		self.stopEvent = stopEvent
+		self.sleepPeriod = 0.001
+
+		threading.Thread.__init__(self,name=name)
+
 
 	def run(self):
-		while True:
-
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
+		while not self.stopEvent.isSet():
+		
 			event.clear()
 			backfillEvent.wait()
 			errMain.Code    =0  #Resetting All error codes for new data
@@ -499,11 +512,23 @@ class live(threading.Thread):
 
 			event.set()
 
-			time.sleep(20)                   #backfill runs for 20 sec's
+			self.stopEvent.wait(self.sleepPeriod)
+
+			if not self.stopEvent.isSet():
+				time.sleep(20)                   #backfill runs for 20 sec's
+			
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
+
+	def join(self,timeout = None):
+		self.stopEvent.set()
+		threading.Thread.join(self,timeout)
 
 def main():
-	t1 = backFill(event)
-	t2 = live(event)
+	t1 = backFill(event,stopEvent)
+	t2 = live(event,stopEvent)
+
+	threadPool.append(t1)
+	threadPool.append(t2)
 	
 	t1.start()
 	t2.start()
@@ -512,8 +537,15 @@ def main():
 
 
 if __name__ == '__main__':
-	
+	stopEvent = threading.Event()
+	threadPool = []
 	led.on(led.pin['code'])
+
+	modem_ok_q = queue()
+		
+	modemThread = led.modem_ok_th(modem_ok_q,stopEvent)
+	threadPool.append(modemThread)
+	modemThread.start()
 
 	#try:
 	#	os.system("clear")
@@ -542,3 +574,15 @@ if __name__ == '__main__':
 
 
 	main()
+
+	
+	try:
+		while True:
+			pass
+	except KeyboardInterrupt as e:
+		print e
+		modemThread.join()
+		for each_thread in threadPool:
+			each_thread.join()
+		print "\n\tSWITCHING OFF LED'S !!"
+		led.cleanup()
