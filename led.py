@@ -11,12 +11,15 @@ from Queue import Empty
 
 class plc_ok_th(threading.Thread):
 	
-	def __init__(self,q):
-		super(plc_ok_th, self).__init__()
+	def __init__(self,q,stopEvent,name="plc_ok_th"):
+		#super(plc_ok_th, self).__init__()
+		self.stopEvent = stopEvent
+		self.sleepPeriod = 0.001
 		self.q = q
-
+		threading.Thread.__init__(self,name=name)
 	def run(self):
-		while True:
+		print "%s Starts" %(self.getName(),)
+		while not self.stopEvent.isSet():
 			
 			try:
 				status = self.q.get(True,2)		# To make queue non-blocking
@@ -29,15 +32,25 @@ class plc_ok_th(threading.Thread):
 				print "QUE SIZE = "+ str(self.q.qsize())
 			
 			plc_check(pin["plc_ok"],status)
+			self.stopEvent.wait(self.sleepPeriod)
+		print "%s Ends" %(self.getName(),)
+
+	def join(self,timeout = None):
+		self.stopEvent.set()
+		threading.Thread.join(self,timeout)
 
 class modem_ok_th(threading.Thread):
 	
-	def __init__(self,q):
-		super(modem_ok_th, self).__init__()
+	def __init__(self,q,stopEvent,name = "modem_ok_th"):
+		#super(modem_ok_th, self).__init__()
+		self.stopEvent = stopEvent
+		self.sleepPeriod = 0.001
 		self.q = q
+		threading.Thread.__init__(self,name=name)
 
 	def run(self):
-		while True:
+		print "%s Starts" %(self.getName(),)
+		while not self.stopEvent.isSet():
 			status = self.q.get()
 
 			with self.q.mutex:
@@ -47,6 +60,12 @@ class modem_ok_th(threading.Thread):
 				print "QUE SIZE = "+ str(self.q.qsize())
 			
 			modem_check(pin["modem_ok"],status)
+			self.stopEvent.wait(self.sleepPeriod)
+		print "%s Ends" %(self.getName(),)
+
+	def join(self,timeout = None):
+		self.stopEvent.set()
+		threading.Thread.join(self,timeout)
 
 def plc_check(pin_no,status):
 	"""
