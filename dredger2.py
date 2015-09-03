@@ -117,14 +117,10 @@ class plc():
 		return arg
 
 class Sim900():
-	def __init__ (self,stopEvent,parent):
+	def __init__ (self,stopEvent,modem_ok_q):
 		self.status=0
 
-		self.modem_ok_q = queue()
-		
-		modemThread = led.modem_ok_th(self.modem_ok_q,stopEvent,parent)
-		threadPool.append(modemThread)
-		modemThread.start()
+		self.modem_ok_q = modem_ok_q
 
 		self.gsm_init()
 		self.db=database_backup()
@@ -351,7 +347,7 @@ class backFill(threading.Thread):
 		self.db=database_backup()
 		self.stopEvent = stopEvent
 		self.sleepPeriod = 0.001
-		self.gsm = Sim900(stopEvent,"backfill")
+		self.gsm = Sim900(stopEvent,modem_ok_q)
 		threading.Thread.__init__(self,name=name)
 		
 	def run(self):
@@ -419,7 +415,7 @@ class live(threading.Thread):
 		
 		self.db=database_backup()
 		
-		self.gsm = Sim900(stopEvent,"Live")
+		self.gsm = Sim900(stopEvent,modem_ok_q)
 		
 		errMain.setBit('boot')          # Bit 'boot' is set for only the first Live packet
 
@@ -542,6 +538,12 @@ if __name__ == '__main__':
 	stopEvent = threading.Event()
 	threadPool = []
 	led.on(led.pin['code'])
+
+	modem_ok_q = queue()
+		
+	modemThread = led.modem_ok_th(modem_ok_q,stopEvent)
+	threadPool.append(modemThread)
+	modemThread.start()
 
 	#try:
 	#	os.system("clear")

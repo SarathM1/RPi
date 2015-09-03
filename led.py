@@ -41,16 +41,15 @@ class plc_ok_th(threading.Thread):
 
 class modem_ok_th(threading.Thread):
 	
-	def __init__(self,q,stopEvent,parent,name = "modem_ok_th"):
+	def __init__(self,q,stopEvent,name = "modem_ok_th"):
 		#super(modem_ok_th, self).__init__()
-		self.parent=parent
 		self.stopEvent = stopEvent
 		self.sleepPeriod = 0.001
 		self.q = q
 		threading.Thread.__init__(self,name=name)
 
 	def run(self):
-		print "\n\t THREAD %s STARTS (%s)!!" %(self.getName(),self.parent)
+		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		while not self.stopEvent.isSet():
 			status = self.q.get()
 
@@ -62,7 +61,7 @@ class modem_ok_th(threading.Thread):
 			
 			modem_check(pin["modem_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
-		print "\n\t THREAD %s ENDS (%s)!!" %(self.getName(),self.parent)
+		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
 	def join(self,timeout = None):
 		self.stopEvent.set()
