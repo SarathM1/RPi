@@ -147,37 +147,38 @@ class Sim900():
 		Function to send AT commands
 		to GSM Module
 		"""
-		print '{0:20}'.format(command) ,
-		
-		try:
-			self.obj.write(command+'\r\n')
-		except Exception as e:
-			self.gsm_init('sendAt(): '+str(e))
+		if not self.stopEvent.isSet():
+			print '{0:20}'.format(command) ,
+			
+			try:
+				self.obj.write(command+'\r\n')
+			except Exception as e:
+				self.gsm_init('sendAt(): '+str(e))
 
-		time.sleep(0.25)
+			time.sleep(0.25)
 
-		self.status=self.checkStatus(success,error,wait)
+			self.status=self.checkStatus(success,error,wait)
 
-		if 'Success' in self.status:
-			led.blink_slow(led.pin['at'])
-			return 'Success'
-		
-		elif 'Timeout' in self.status:
-			debugLog.error('TIMEOUT=> '+command)
-			errTime.setBit(command)
-			return 'ErrorTimeout'
-		
-		elif 'Error' in self.status:
-			debugLog.error('ERROR=> '+command)
-			errGsm.setBit(command)
-			led.off(led.pin['at'])
-			return 'Error'
-		
-		else:
-			debugLog.error('OTHER=> '+command)
-			errUnknown.setBit(command)
-			led.off(led.pin['at'])
-			return 'Other'
+			if 'Success' in self.status:
+				led.blink_slow(led.pin['at'])
+				return 'Success'
+			
+			elif 'Timeout' in self.status:
+				debugLog.error('TIMEOUT=> '+command)
+				errTime.setBit(command)
+				return 'ErrorTimeout'
+			
+			elif 'Error' in self.status:
+				debugLog.error('ERROR=> '+command)
+				errGsm.setBit(command)
+				led.off(led.pin['at'])
+				return 'Error'
+			
+			else:
+				debugLog.error('OTHER=> '+command)
+				errUnknown.setBit(command)
+				led.off(led.pin['at'])
+				return 'Other'
 
 		
 	def checkStatus(self,success='OK',error='ERROR',wait=3):
