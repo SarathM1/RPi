@@ -60,7 +60,7 @@ class modem_ok_th(threading.Thread):
 				pass
 
 			
-			print "\n\tmodem_ok_th, status = %s" %(status, )
+			#print "\n\tmodem_ok_th, status = %s" %(status, )
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
 				
