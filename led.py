@@ -56,7 +56,10 @@ class modem_ok_th(threading.Thread):
 			try:
 				status = self.q.get(True,2)		# To make queue non-blocking
 			except Empty as e:
+				status = None
 				pass
+
+			
 			print "\n\tmodem_ok_th, status = %s" %(status, )
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
@@ -66,6 +69,7 @@ class modem_ok_th(threading.Thread):
 			
 			modem_check(pin["modem_ok"],status)
 			self.stopEvent.wait(self.sleepPeriod)
+
 		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
 	def join(self,timeout = None):
