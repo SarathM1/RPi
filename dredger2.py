@@ -514,8 +514,12 @@ class live(threading.Thread):
 
 			self.stopEvent.wait(self.sleepPeriod)
 
-			if not self.stopEvent.isSet():
-				time.sleep(20)                   #backfill runs for 20 sec's
+			c = 0
+			while not self.stopEvent.isSet():
+				c+=1
+				time.sleep(1)                   
+				if c == 20:				#backfill runs for 20 sec's
+					break
 			
 		print "\n\t THREAD %s ENDS !!" %(self.getName(),)
 
