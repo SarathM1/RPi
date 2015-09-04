@@ -544,7 +544,7 @@ if __name__ == '__main__':
 	modem_ok_q = queue()
 		
 	modemThread = led.modem_ok_th(modem_ok_q,stopEvent)
-	threadPool.append(modemThread)
+	#threadPool.append(modemThread)
 	modemThread.start()
 
 	#try:

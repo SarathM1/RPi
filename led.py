@@ -51,8 +51,8 @@ class modem_ok_th(threading.Thread):
 	def run(self):
 		print "\n\t THREAD %s STARTS !!" %(self.getName(),)
 		while not self.stopEvent.isSet():
-			status = self.q.get()
-
+			status = self.q.get(True,2)
+			print "\n\tmodem_ok_th, status = %s" %(status, )
 			with self.q.mutex:
 				self.q.queue.clear()  # Flushig Queue
 				
